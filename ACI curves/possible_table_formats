@@ -1,0 +1,45 @@
+
+\begin{table*}
+\begin{minipage}{\linewidth}
+\arraystretch{1.4}
+\centering
+\ra{1.3}
+\begin{tabular}{@{}lcccc@{}}\toprule
+Parameter & \emph{unit} & Value & E $\SI{}{\kilo \J \per \mol}$ & $Q_{10} (\SI{25}{\celsius})$ \\ \midrule
+$K_c$ & $\SI{}{\micro \bar}$ & 260 or 404 & 59.36 & 2.24 \\
+$K_o$ & $\SI{}{\milli \bar}$ & 179 or 248$^a$ & 35.94 & 1.63 \\
+$K\Gamma^*$ & $\SI{}{\micro \bar}$ & 38.6 or 37$^a$ & 23.4 & 1.37 \\
+$V_{c_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & 80 & 58.52 & 2.21 \\
+$V_{o_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.25 \times V_{c_{max}}$  & 58.52 & 2.21 \\
+$R_d$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.01 - 0.02 \times V_{c_{max}}$ & 66.4 & 2.46 \\
+$J_{max}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $1.4 - 2.0 \times V_{c_{max}}$ & 37 & 1.65 \\
+H & $\SI{}{\kilo \J \per \mol}$ &  & 220 & \\
+S & $\SI{}{\J \per \K \per \mol}$ & & 710 & \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\caption{Caption}
+\end{table*}
+
+%\footnote{The first value is appropriate when an internal diffusion conductance is included; the second value should be used if the internal conductance is not included (i.e. $g_m = \infty$) and $C_c$ is assumed to equal $C_i$.}
+
+\ctable[
+cap = Parameters,
+caption = Photosynthetic parameters and their activation energy,% for $T=\SI{25}{\celsius}$ \tmark,
+label = nowidth,
+pos = !htb
+]{lcccc}{
+\tnote[a]{The first value is appropriate when an internal diffusion conductance is included; the second value should be used if the internal conductance is not included (i.e. $g_m = \infty$) and $C_c$ is assumed to equal $C_i$.}
+\tnote[b]{From \citet{Farquharbiochemicalmodelphotosynthetic1980}}
+}{ \FL
+Parameter & \emph{unit} & Value & E $\SI{}{\kilo \J \per \mol}$ & $Q_{10} (\SI{25}{\celsius})$ \ML
+$K_c$ & $\SI{}{\micro \bar}$ & $260$ or $404$\tmark[a] & $59.36$\tmark[b] & $2.24$ \NN
+$K_o$ & $\SI{}{\milli \bar}$ & 179 or $248$\tmark[a] & 35.94 & 1.63 \NN
+$\Gamma^*$ & $\SI{}{\micro \bar}$ & 38.6 or 37\tmark[a] & 23.4 & 1.37 \NN
+$V_{c_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & 80 & 58.52 & 2.21 \NN
+$V_{o_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.25 \times V_{c_{max}}$  & 58.52 & 2.21 \NN
+$R_d$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.01 - 0.02 \times V_{c_{max}}$ & 66.4 & 2.46 \NN
+$J_{max}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $1.4 - 2.0 \times V_{c_{max}}$ & 37 & 1.65 \NN
+H & $\SI{}{\kilo \J \per \mol}$ &  & 220 & \NN
+S & $\SI{}{\J \per \K \per \mol}$ & & 710 & \LL
+}

@@ -1,0 +1,20 @@
+Package: photosynthesisR
+Type: Package
+Title: Photosynthesis modelling curves using various forms of the FvCB model
+Version: 0.1.0
+Author: Stephen Coleman
+Maintainer: Stephen Coleman <stcolema@tcd.ie>
+Description: Various functions to allow creation and inspection of
+    photosynthesis curves as functions of CO2 and light
+License: CO0
+Encoding: UTF-8
+LazyData: true
+Authors@R: person("Stephen", "Coleman", email = "stcolema@tcd.ie",
+                    role = c("aut", "cre"))
+Imports:
+    nlme,
+    rlang,
+    dplyr
+Suggests:
+    purrr
+RoxygenNote: 6.0.1

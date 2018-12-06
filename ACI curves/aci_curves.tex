@@ -1,0 +1,451 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+%\geometry{margin=2in} % for example, change the margins to 2 inches all round
+\geometry{left=2.75cm, right=2.75cm, top=3.5cm, bottom=4.5cm}
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% BibTex packages (url for website references)
+\usepackage[english]{babel}
+\usepackage[numbers]{natbib}
+% \usepackage{url}
+% \usepackage{Biblatex}
+
+%For inclusion of hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+%BibTex stuff and referencing sections by name 
+\urlstyle{same}
+\usepackage{nameref} 
+
+%%% END Article customizations
+
+%%% Change distance between bullet points
+\usepackage{enumitem}
+%\setlist{noitemsep}
+\setlist{itemsep=0.2pt, topsep=6pt, partopsep=0pt}
+%\setlist{nosep} % or \setlist{noitemsep} to leave space around whole list
+
+%%% For aside comments
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{caption}
+
+%%% AMS math
+\usepackage{amsmath}
+
+%%% For differential notation
+\usepackage{physics}
+
+%%% For SI unit notation
+% Dependencies for siunitx
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{cleveref}
+\usepackage{colortbl}
+\usepackage{csquotes}
+\usepackage{helvet}
+\usepackage{mathpazo}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+%%% User commands
+% theorem box
+\newcounter{aside}[section]\setcounter{aside}{0}
+\renewcommand{\theaside}{\arabic{section}.\arabic{aside}}
+\newenvironment{aside}[1][]{%
+\refstepcounter{aside}%
+\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=blue!20]
+{\strut Aside~\theaside};}}
+\mdfsetup{innertopmargin=10pt,linecolor=blue!20,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#1}}{\end{mdframed}}
+
+% For titification of tables
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
+\usepackage{ctable} % for footnoting tables
+
+% Aside environment for personal comments / ideas
+%\newcounter{asidectr}
+
+%\newenvironment{aside} 
+%  {\begin{mdframed}[style=0,%
+%      leftline=false,rightline=false,leftmargin=2em,rightmargin=2em,%
+%          innerleftmargin=0pt,innerrightmargin=0pt,linewidth=0.75pt,%
+%      skipabove=7pt,skipbelow=7pt]
+%  \refstepcounter{asidectr}% increment the environment's counter
+%  \small 
+%  \textit{Aside \theasidectr:}
+%  \newline
+%  \relax}
+%  {\end{mdframed}
+%}
+%\numberwithin{asidectr}{section}
+
+% Keywords command
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+}
+
+%%% The "real" document content comes below...
+
+\title{ACI curves}
+\author{Stephen Coleman}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document} \pgfplotsset{compat=1.16}
+\maketitle
+
+\begin{abstract}
+The study of the photosynthetic process frequently involves analysis of net assimilation - intercellular CO$_2$ concentration (ACI) curves. These are used in the estimation of key parameters associated with the Farquhar-van Caemmerer-Berry (FvCB) \cite{Farquharbiochemicalmodelphotosynthetic1980} model:
+\begin{itemize}
+ \item $V_{c_{max}}$: the rate of maximum Rubisco carboxylation;
+ \item $J$: electron transport rate;
+ \item $R_d$: daytime respiration; and
+ \item $g_m$: mesophyll conductance.
+\end{itemize}
+Accurate, unbiased estimation of these parameters is a non-trivial exercise with the optimal method still a matter of debate within the field \cite{Moualeu-Nganguenewmethodestimate2017}, \cite{YinTheoreticalreconsiderationswhen2009}, \cite{QianEstimationphotosynthesisparameters2012}. The problem of selecting suitable starting values for a non-linear model is thus complicated by the lack of unanimity on what is a ``good'' estimate of these. The core model we are using to estimate the parameters is based on \citet{SharkeyFittingphotosyntheticcarbon2007}. % and Laisk (NEED REFERENCE - think 1977 paper).
+\end{abstract}
+
+\keywords{ACI curves, parameter estimation, FvCB model}
+
+%\newpage
+%\tableofcontents
+%\newpage
+
+%\section{Models}
+%The main curve-fitting method utilised in the course of this project is the FvCB model. We endeavour to show some of the logic and theory driving this model and its assumptions.
+
+\section{FvCB model}
+The brilliant realisation of \citet{Farquharbiochemicalmodelphotosynthetic1980} was that $A$ could be accurately modeled as being in one of two steady-state systems. In one (\emph{Rubisco-limited photosynthesis}), the rate is limited by the properties of the enzyme ribulose 1.5 biphosphate carboxylase/oxygenase (Rubisco) (we assume saturating levels of the substrate, RuBP). In the second we assume that it is the substrate that determines the rate of assimilation; specifically its regeneration rate. Hence the second state is referred to as \emph{RuBP-regeneration-limited photosynthesis} \cite{SharkeyFittingphotosyntheticcarbon2007}.
+
+\begin{aside}
+Currently I focus only on the FvCB model, but since the original paper in 1980, many stalwarts have extended the model to specific cases (such as C$_4$ species) or to encompass more physiologically limiting factors (such as triose phosphate utilization (\emph{TPU}) in the synthesis of starch and sucrose). These will be added as deemed relevant, and for now we only include the TPU limiting effect mentioned by \citet{SharkeyFittingphotosyntheticcarbon2007}.
+\end{aside}
+
+\subsection{Some assumptions} \label{Assumptions}
+For parsimony's sake, we make several simplifying assumptions regarding the homogeneity of conditions within the leaf. We disregard any gradient of temperature ($T$) or O$_2$ within the leaf. According to \citet{CaemmererBiochemicalmodelsleaf2000}, these, specifically within C$_3$ species, are unlikely to be important. Due to the thinness of leaves we also assume an equal distribution of light to all chloroplasts within the leaf; however, it has been shown that under certain conditions these assumptions and their corollary, that photosynthesis itself is homogeneous across the leaf, do not hold. Non-uniform photosynthesis can occur and this will affect the gas-exchange measurements and their interpretation \cite{TerashimaAnatomynonuniformleaf1992}.
+
+\subsection{Rubisco limited photosynthesis}
+The photosynthetic carbon reduction (PCR) and photorespiratory carbon oxidation (PCO) cycles are linked by an enzyme common to both, RuBP \cite{Farquharbiochemicalmodelphotosynthetic1980}. In the PCO cycle, $0.5$ mol of CO$_2$ is released, thus:
+
+\begin{equation} \label{net_assimilation_raw}
+A = V_c - 0.5 V_o - R_d
+\end{equation}
+Where:
+\begin{itemize}
+ \item $V_c$: the rate of carboxylation; and
+ \item $V_o$: the rate of oxygenation.
+\end{itemize}
+We have from \citet{FarquharModelsdescribingkinetics1979} (assuming RuBP binding first in the reaction):
+
+\begin{align} \label{V_c}
+V_c &= V_{c_{max}}\frac{C_c}{C_c+K_c\left(1 + O/K_o\right)}\cdot\frac{R}{R + K^\prime_r} \\
+V_o &= V_{o_{max}}\frac{O}{O+K_o\left(1 + C_c/K_c\right)}\cdot\frac{R}{R + K^\prime_r}
+\end{align}
+Where:
+\begin{itemize}
+ \item $V_{c_{max}}$: the maximum velocity of the carboxylase;
+ \item $V_{o_{max}}$: the maximum velocity of the oxygenase;
+ \item $O$: the partial pressure of oxygen in the chloroplast;
+ \item $K_c$: the Michaelis-Menten constant for CO$_2$;
+ \item $K_o$: the Michaelis-Menten constant for O;
+ \item $R$: the concentration of free RuBP; and
+ \item $K^\prime_r$: the effective Michaelis-Menten constant for RuBP.
+\end{itemize}
+This leads to the ratio of oxygenation to carboxylation:
+
+\begin{equation} \label{ratio_oxygenation_carboxylation}
+\phi = \frac{V_o}{V_c} = \frac{V_{o_{max}}}{V_{c_{max}}}\cdot\frac{O/K_o}{C_c/K_c}
+\end{equation}
+We also have that the velocity of carboxylation, at saturating levels of RuBP, ($W_c$) is given by \cite{GrantTestsimplebiochemical1989}:
+
+\begin{equation} \label{RuBP_satuarted_carboxylation_rate}
+W_c = V_{c_{max}} \frac{C_c}{C_c + K_c (1 + O / K_o)}
+\end{equation}
+Note that this arises from setting the RuBP component of equation \ref{V_c} to 1.
+The compensation point for $C_c$ at which there is no net assimilation, $\Gamma^*$, is given by \cite{Farquharbiochemicalmodelphotosynthetic1980}:
+
+\begin{equation} \label{gamma_star}
+\Gamma^* = \frac{K_c O}{2 K_o}\cdot \frac{V_{o_{max}}}{V_{c_{max}}}
+\end{equation}
+Relating equations \ref{net_assimilation_raw}, \ref{ratio_oxygenation_carboxylation}, \ref{RuBP_satuarted_carboxylation_rate} and \ref{gamma_star} we have:
+
+\begin{equation} \label{rubisco_limited_photosynthesis}
+A = V_{c_{max}} \frac{C_c - \Gamma^*}{C_c+K_c(1+O/K_o)}-R_d
+\end{equation}
+This is the Rubisco-limited rate of assimilation, assuming saturation of RuBP.
+
+\subsection{RuBP regeneration limited photosynthesis}
+The physiology of this model is somewhat more complex, involving analysis of the cycle for the production of NADPH \cite{Farquharbiochemicalmodelphotosynthetic1980}. A thorough understanding of this is beyond the scope of this project, but we recommend the reader to the original paper \cite{Farquharbiochemicalmodelphotosynthetic1980} and \citet{CaemmererBiochemicalmodelsleaf2000}. We are content to state that when $A$ is limited by RuBP regeneration:
+
+\begin{equation} \label{RuBP_photosynthesis}
+A = J\frac{C_c - \Gamma^*}{4C_c + 8\Gamma^*}-R_d
+\end{equation}
+Where $J$ is the rate of electron transport. \citet{SharkeyFittingphotosyntheticcarbon2007} recommend the conservative use of $4$ and $8$ in the denominator based on the number of electrons required for NADP$^+$ reduction, however this is not always the case; values of 4.5 and 10.5 also occur in the literature.
+
+\begin{aside}
+I imagine that the model will use default values of 4 and 8 with an option to use 4.5 and 10.5. It is possible that we will allow any values.
+\end{aside}
+
+\subsection{TPU limited photosynthesis} \label{TPU_limited_photosynthesis}
+TPU is required at one third the rate of CO$_2$ fixation. If this is not acquired, the level of free phosphate declines and the rate of photosynthesis is limited. When this is limit is imposed, it can be seen that photosynthesis becomes independent of the ratio of oxygenation to carboxylation \cite{ThomasD.SharkeyPhotosynthesisIntactLeaves1985}. Thus, the rate equation is simply:
+
+\begin{equation} \label{TPU_photosynthesis}
+A = 3TPU - R_d
+\end{equation}
+Where $TPU$ is the rate of triose phosphate utilization.
+
+\begin{aside}
+From \citet{CaemmererBiochemicalmodelsleaf2000} we know that this model is too simple for the reality, please see section 2.4.3 for an extension as formulated by Harley and Sharkey in 1991. Currently I ignore it as equation \ref{TPU_photosynthesis} is sufficient for now, and may even be unnecessary itself for the scope of this project.
+\end{aside}
+
+\subsection{Summary}
+For the final model, our actual assimilation rate is calculated by combining these individual curves. The curve fitted is:
+
+\begin{equation} \label{FvCB_equation}
+A = \min \left \{A_{Rubisco}, A_{RuBP}, A_{TPU}\right \}
+\end{equation}
+Where:
+\begin{itemize}
+ \item $A_{Rubisco}$: the rate calculated from equation \ref{rubisco_limited_photosynthesis};
+ \item $A_{RuBP}$: the rate calculated from equation \ref{RuBP_photosynthesis}; and
+ \item $A_{TPU}$: the rate calculated from equation \ref{TPU_photosynthesis}.
+\end{itemize}
+%\section{FvCB model}
+%The ubiquitous model in the field is the FvCB model, a steady-state biochemical description of the net assimilation rate. It is based on the realisation of a number of limiting factors,
+
+\section{Parameters}
+Several parameters require estimation, and some measurements are not feasible for the majority of experiments. For these we need either a starting value that is our initial best guess (eminently feasible in C$_3$ species, less so in C$_4$) or a correction to some related measurement. We show the reasoning behind our choices below.
+
+\subsection{Relating $C_i$ to $C_c$}
+One of the driving factors in net assimilation rate ($A$) is the level of CO$_2$ present at the Rubisco site of carboxylation in the chloroplasts ($C_c$) \cite{VonCaemmererSteadystatemodelsphotosynthesis2013}. Estimation of the intercellular CO$_2$ partial pressure ($C_i$) is based on gas exchange measurements and is not a matter of controversy. Less well established is estimation of $C_c$ \cite{YinTheoreticalreconsiderationswhen2009}.  We can relate $C_i$ to $C_c$ using Flick's first law relating the diffusive flux to the concentration  under steady-state assumptions. We have:
+
+\begin{equation} \label{Flicks_law}
+J = -D\dv{\phi}{x}
+\end{equation}
+Where:
+\begin{itemize}
+ \item $J$ is the diffusion flux;
+ \item $D$ is the diffusion coefficient;
+ \item $\phi$ is the concentration; and
+ \item $x$ is position.
+\end{itemize}
+From this we can consider $A$ as our flux, and the difference between $C_c$ and $C_i$ as our gradient in concentration:
+
+\begin{equation} \label{Flicks_law_step_2}
+A = -D(C_c - C_i)
+\end{equation}
+The diffusion conductance between the substomatal cavities and the chloroplasts is $g_m$, the mesophyll conductance \cite{NiinemetsImportancemesophylldiffusion2009}. Hence we can write equation \ref{Flicks_law_step_2} as:
+
+\begin{equation} \label{Flicks_law_photosynthesis_form}
+A = g_m(C_i - C_c)
+\end{equation}
+Or equivalently:
+
+\begin{equation} \label{Ci_Cc_relationship}
+C_c = C_i - \frac{A}{g_m}
+\end{equation}
+Thus we can calculate $C_c$, the variable relevant to our models, using $C_i$.
+
+\begin{aside}
+This function might be used in an iterative process to calculate the parameters: I imagine a two step method where we initialise $C_c$ to $C_i$ or use the starting value of $g_m$ to calculate $C_c$ and then:
+\begin{enumerate}
+ \item Calculate parameters (incl. $g_m$) using current values of $C_c$; and
+ \item Update $C_c$ based on current value of $g_m$ and equation \ref{Ci_Cc_relationship}.
+\end{enumerate}
+Once $C_c$ and $g_m$ converge we stop. Possibly this is too expensive to include, but possibly could be an option in the function.
+
+We should also allow for someone having done the correction to $C_c$ themselves, so a bool instructing use of the correction should be included.
+\end{aside}
+
+\subsection{Light dependence of electron transport rate}
+We can relate $J_{max}$ to the incident irradiance by empirical equation:
+ \begin{equation} \label{J_J_max_relationship}
+ \theta J^2 - J\left (I_2 + J_{max}\right ) + I_2J_{max} = 0
+\end{equation}
+Where:
+\begin{itemize}
+ \item $I_2$: the useful light absorbed by PS II;
+ \item $J$: the electron transport;
+ \item $J_{max}$: the maximum electron transport; and
+ \item $\theta$: an empirical curvature factor (often around 0.7 \cite{EvansPhotosynthesisnitrogenrelationships}).
+\end{itemize}
+$I_2$ is related to total incident irradiance $I$ by:
+\begin{equation}
+I_2 = I \times \textrm{abs}(1-f)/2
+\end{equation}
+Where:
+\begin{itemize}
+ \item abs: the absorptance of leaves (commonly around 0.85 \cite{CaemmererBiochemicalmodelsleaf2000});
+ \item $f$: correction for the spectral quality of light (approximately 0.15 \cite{EvansDependenceQuantumYield1987}); and
+ \item The 2 in the denominator is due to the split of light between photosystems I and II.
+\end{itemize}
+We can thus solve for $J$ in the usual way:
+\begin{equation} \label{nonrectangular_hyperbola}
+J = \frac{I_2 + J_{max} - \sqrt{\left ( I_2 + J_{max}\right )^2 - 4\theta \cdot I_2 \cdot J_{max}}}{2 \theta}
+\end{equation}
+This is the non-rectangular hyperbola function.
+
+\subsection{Model parameters}
+Many parameters can be assigned \emph{a priori}, leaving only the estimation of a small number of key variables. The kinetic constants of rubisco vary very little among C$_3$ species such that one can use the same $K_c$, $K_o$ and $\Gamma^*$ across all members of this category \cite{CaemmererBiochemicalmodelsleaf2000}. This means that the only parameter requiring estimation for Rubisco is the maximal Rubisco activity, $V_{c_{max}}$. 
+%For this parameter:
+%\begin{displayquote}
+%``Rubisco has a molecular weight of $\SI{550}{\kilo \dalton}$ and eight catalytic sites per molecule.  Thus, with a catalytic turnover rate of $\SI{3.5}{\per \second}$ per site, $\SI{1}{\gram \per \metre \squared}$ of Rubisco has a $V_{c_{max}}$ of $\SI{51}{\micro \mol \per \metre \squared \per \second}$ when Rubisco sites are fully carbamylated.'' \cite{CaemmererBiochemicalmodelsleaf2000}
+%\end{displayquote}
+
+For RuBP-limited photosynthesis, we need to solve for $J_{max}$ as we can relate this to $J$ by equation \ref{nonrectangular_hyperbola}. According to \citet{Walcroftresponsephotosyntheticmodel1997}, the ratio $J_{max} : V_{c_{max}}$ is expected to vary from $2$ to $1.4$ across the range $[\SI{8}{\celsius}, \SI{30}{\celsius}]$.
+
+\citet{EvansCarbonDioxideDiffusion1996} recommend setting $g_m =  0.0045V_{c_{max}}$. Other values can be seen, with an assumption of $g_m = \infty$ used frequently, but this is controversial and can lead to biased estimates of $V_{c_{max}}$ and $J_{max}$ \cite{YinTheoreticalreconsiderationswhen2009}. Specific plants in specific conditions can see diverging values, but we feel this is a sufficient initial value.
+
+This means that if we have an empirically driven initial value for $V_{c_{max}}$ we can initialise all our parameters to some default temperature, however these relationships vary with temperature, the relationship of which we state below.
+
+%\begin{aside}
+%I think this is sufficient; we estimate $V_{c_{max}}$ and set $J_{max}$ equal to $1.6$ times this value $($depending on input $T)$.
+%\end{aside}
+
+
+\subsubsection{Temperature dependency}
+The dependency of the rate of carboxylation and oxygenation of Rubisco is reflected in the temperature dependency of $A$. As a rate dependent upon temperature, we will be using Arrhenius functions, equations of the form:
+
+\begin{equation} \label{arrhenius_eqn_kelvin}
+x(T) = k \cdot \exp \left(-\frac{E_a}{R \cdot T}\right)
+\end{equation}
+Where:
+\begin{itemize}
+ \item $x(T)$: the temperature dependent rate we are interested in;
+ \item $k$: the rate coefficient;
+ \item $E_a$: the activation energy, the kinetic energy of substrate required for the reaction to occur;
+ \item $R$: the universal gas constant ($\SI{8.314}{\J \per \K \per \mol}$); and
+ \item $T$: temperature (in Kelvin).
+\end{itemize}
+As most photosynthesis measurement are recorded in $\SI{}{\celsius}$, and specifically use a default value of $\SI{25}{\celsius}$, we transform the equation to this scale. In this case we have:
+
+\begin{equation} \label{arrhenius_eqn}
+x(T^\prime) = k' \cdot \exp \left(-\frac{(25 - T')E_a}{298.15 R \cdot (273.15 + T')}\right)
+\end{equation}
+Where $T'$, $k'$ are the relevant form of $T$, $k$ for a scale centred on $T = \SI{25}{\celsius}$. As we will not be using the Kelvin scale again, we denote $T = T'$, $k = k'$.
+
+Many reactions in photosynthesis are reversible, with differing activation energies depending on the direction of the reaction. Thus the net activation energy may vary depending on the ratio of forward to backward reactions. This means that the Arrhenius function \ref{arrhenius_eqn} is only semi-empirical, but it does allow easy comparison between studies.
+
+Another frequently used method to describe a dependency on temperature is the \emph{$Q_{10}$ temperature coefficient}. This is a measure of of the rate of  change of a system as a result of raising the temperature by $\SI{10}{\celsius}$. It is calculated:
+
+\begin{equation} \label{Q10_gen}
+Q_{10} = \left ( \frac{R(T_2)}{R(T_1)} \right )^{\SI{10}{\celsius}/(T_2 - T_1)}
+\end{equation}
+Where:
+\begin{itemize}
+ \item $Q_{10}$: the factor by which the reaction rate increases when temperature is raised by $\SI{10}{\celsius}$;
+ \item $T_i$: the temperature for the $i^{th}$ measurement; and
+ \item $R(T_i)$: the rate of the reaction at temperature $T_i$.
+\end{itemize}
+Alternatively we can write this in the form:
+\begin{equation}
+R(T_2) = R(T_1) Q_{10}^{(T_2 - T_1)/\SI{10}{\celsius}}
+\end{equation}
+Again, this general form is of less interest as we have a specific, default temperature of $\SI{25}{\celsius}$ for which we are quite well informed. Hence, we use:
+\begin{equation} \label{Q10}
+R(T) = R(\SI{25}{\celsius})Q_{10}^{(T-25)/10}
+\end{equation}
+\begin{aside}
+This function allows us to relate the temperature as $T = \SI{25}{\celsius}$ to a more general temperature; perhaps it is flawed for extremes, but I do not expect that our starting value calculation will work outside a limited rage (say $\SI{18}{\celsius}$ to $\SI{30}{\celsius}$) within more user input. This is not the end of the world and we can't solve everyone's problems all at once. This will be used to relate our default $\SI{25}{\celsius}$ values (given in table \ref{photosynthesis_params_T25}) to whatever the user has stated for values of $T$. This might be harder if we have varying temperatures? Hmm \ldots
+\end{aside}
+
+\subsubsection{Initial values}
+We use table \ref{photosynthesis_params_T25} for our initial values of photosynthetic parameters in our model. We can combine these with equation \ref{Q10} to calculate initial values for our model across a range of temperatures. Many of the values in table \ref{photosynthesis_params_T25} can be found in \citet{CaemmererBiochemicalmodelsleaf2000}.
+
+\ctable[
+cap = Parameters, botcap,
+caption = {Photosynthetic parameters and their activation energy for $T=\SI{25}{\celsius}$},% \cite{CaemmererBiochemicalmodelsleaf2000}},
+label = nowidth,
+pos = !htb,
+label = photosynthesis_params_T25
+] {lcccc} {
+\tnote[a]{The first value is appropriate when an internal diffusion conductance is included; the second value should be used if the internal conductance is not included (i.e. $g_m = \infty$) and $C_c$ is assumed to equal $C_i$.}
+\tnote[b]{From \citet{Farquharbiochemicalmodelphotosynthetic1980}}
+\tnote[c]{From \citet{EvansCarbonDioxideDiffusion1996}}
+}{ \FL
+Parameter & \emph{unit} & Value & E $(\SI{}{\kilo \J \per \mol})$ & $Q_{10} (T = \SI{25}{\celsius})$ \ML
+$K_c$ & $\SI{}{\micro \bar}$ & $260$ or $404$\tmark[a] & $59.36$\tmark[b] & $2.24$ \NN
+$K_o$ & $\SI{}{\milli \bar}$ & 179 or $248$\tmark[a] & 35.94 & 1.63 \NN
+$\Gamma^*$ & $\SI{}{\micro \bar}$ & 38.6 or 37\tmark[a] & 23.4 & 1.37 \NN
+$V_{c_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & 80 & 58.52 & 2.21 \NN
+$V_{o_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.25 \times V_{c_{max}}$  & 58.52 & 2.21 \NN
+$R_d$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.01 - 0.02 \times V_{c_{max}}$ & 66.4 & 2.46 \NN
+$J_{max}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $1.4 - 2.0 \times V_{c_{max}}$ & 37 & 1.65 \NN
+$g_m$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.0045V_{c_{max}}$\tmark[c] or $\infty$ & & \NN
+%H & $\SI{}{\kilo \J \per \mol}$ &  & 220 & \NN
+%S & $\SI{}{\J \per \K \per \mol}$ & & 710 & \NN
+$\theta$ & &  0.7 & \LL
+}
+
+
+%\newpage
+
+\bibliographystyle{plainnat}
+\bibliography{aci_bibliography}
+
+\end{document}
