@@ -227,6 +227,7 @@ FvCB <- function(C_c, PAR, G_star, K_c, K_o, O, V_cmax, J_max, alpha, theta, R_d
 # === Data =====================================================================
 
 # Read in data
+# set working directory based on computer
 name <- Sys.info()["nodename"]
 if(name == "D0132908"){
   my_wd <- "~/MAT80436 - Thesis/NLS_and_NLME_on_Rachel%27s_data"
@@ -254,6 +255,9 @@ ACI2_F <- na.omit(read.table("A-Ci2-F_clean.csv", sep = ",", header = TRUE, na.s
 # Treatments A1 (from above) and A2 (from above and below)
 # Therefore 6 treatments (3 within A1, 3 within A2)
 
+
+# Method of recording measurements (SIDE) is on the same individuals
+# So plant 1 will have readings for AD, AB and ADAB for the same thing
 
 # === EDA ======================================================================
 
@@ -297,6 +301,17 @@ LRC1 %>%
 ACI1 %>%
   select(contains("photo")) %>%
   glimpse()
+
+common_names_to_keep <- quos(MEAS, PLOT,  ID, SIDE, TREATMENT, Photo, Ci, Tleaf)
+LRC1_common <- LRC1 %>% 
+  dplyr::select(!!! common_names_to_keep)
+
+# "TREAT"
+# "PARabs"
+# "Photo_corr_diff"
+# "Parin.total"
+
+names(LRC1) == names(ACI1)
 
 # Update the datasets to contain all the variables of interest and to have more 
 # generic names
