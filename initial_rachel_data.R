@@ -180,6 +180,49 @@ FvCB <- function(C_c, PAR, G_star, K_c, K_o, O, V_cmax, J_max, alpha, theta, R_d
   ifelse(p1 < p2, p1, p2) - R_d
 }
 
+# === Method ===================================================================
+
+# Estimate quantum efficieny of PSII from strictly limited light level 
+# (flourescence measurements)
+# Flourescence factor used to calculate the efficiency of Photosystem II
+# (\phi_{PSII} or (1 - f) in my report) - this should be plant specific
+
+# Ideally calculate dark respiration for correction but does not tie in to model
+
+# Calculate J by modelling Photosynthesis to I_inc * phi_psII * 0.25 (model for
+# next line)
+# use J = I_inc * phi_psII * slope of the above model
+# J can be caluclated using the non-rectangular hyperbola too
+
+# 1. LRC2 @ 2% (linear part of curve, R_d and J_max)
+#      Lower intensities and O2 used to estimate J
+# 
+# 2. ACI2 (@ 2% O2)
+#      find compensation point (Gstar) per plant (Rd is not present as O2 is low)
+# 
+# 3. LRC1 (@ ambient O2)
+#      Calculate Cc using variable J
+#  
+
+# Read Yin (2009) variable J method to get from J to C_c to g_m
+# Yin adapts the variable J method in another paper from 2009 to estimate 
+# ambient CO2 levels
+
+# Calculate gm using ambient CO2 ACI curve at low oxygen (ACI2) (at constant
+# intensity) using variable J method
+
+# one g_m for each experimental unit (plant ID) - have flouresence measurements
+# to help with this
+
+# Photosynthesic Absorbed Radiation (PAR) is the incident light 
+# (Rachel has calculated the aborped PAR new column)
+
+# DARK used Dark adapted flourescence used to calculate R_dark (different to R_d)
+# (different every plant)
+
+# Most important R_d, V_cmax, J_max, \theta, g_m
+
+# Combine ACI1 and LRC1 treating parameters as constant (as per Didy dataset)
 
 # === Data =====================================================================
 
@@ -192,6 +235,11 @@ if(name == "D0132908"){
 }
 setwd(my_wd)
 
+# LRC1 @ 21% O2
+# LRC2 @ 2% O2
+# ACI1 @ 21%
+# ACI2 @ 2%
+
 LRC1 <- na.omit(read.table("LRC1.txt", sep = "\t", header = TRUE, na.strings = ""))
 Dark <- read.table("Dark-F.txt", sep = "\t", header = TRUE, na.strings = "")
 
@@ -202,28 +250,12 @@ LRC2 <- na.omit(read.table("LRC2_clean.csv", sep = ",", header = TRUE, na.string
 ACI1_F <- na.omit(read.table("A-Ci1-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
 ACI2_F <- na.omit(read.table("A-Ci2-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
 
-# === EDA ======================================================================
-
-# LRC1 @ 21% O2
-# LRC2 @ 2% (linear part of curve, R_d and J_max)
-# ACI1 @ 21%
-# ACI2 @ 2%
-# Flourescence factor used to calculate the efficiency of Photosystem II
-# (\phi_{PSII} or (1 - f) in my report)
-# one g_m for each experimental unit (plant ID) - have flouresence measurements
-# to help with this
-# PAR is the incident light (Rachel has calculated the aborped PAR new column)
-# DARK used Dark adapted flourescence used to calculate R_d (different every
-# plant)
-# Estimate quantum efficieny of PSII from strictly limited light level
-
-# Most important R_d, V_cmax, J_max, \theta, g_m
-
-# Light from above (AD), below (AB) and both (ADAB)
+# Light from above (AD), below (AB) and both (ADAB (not present in ACI))
 # Treatments A1 (from above) and A2 (from above and below)
 # Therefore 6 treatments (3 within A1, 3 within A2)
 
-#
+
+# === EDA ======================================================================
 
 # Constants
 R <- 0.008314472 # R is the concentration of free (unbound) RuP 2
@@ -245,7 +277,8 @@ Vcmax_initial <- 80
 Jmax_initial <- 1.6 * Vcmax_initial
 theta_initial <- 0.7
 f <- 0.15
-alpha_initial <- 0.85 * (1 - f) / 2 # not used as Rachel has done this bit - using value of 1
+abs <- 0.85 # Rachel has corrected for absoprtance already so set this to 1
+alpha_initial <- 1 * (1 - f) / 2  # normally by abs rather than 1
 Rd_initial <- 0.015 * Vcmax_initial
 gm_initial <- 0.0045 * Vcmax_initial
 
@@ -256,12 +289,12 @@ normal_ind <- LRC1$TREATMENT == "A1"
 treated_ind <- LRC1$TREATMENT == "A2"
 
 
-ACI2 %>%
+LRC1 %>%
   select(contains("PAR")) %>%
   glimpse()
 
 
-ACI2 %>%
+ACI1 %>%
   select(contains("photo")) %>%
   glimpse()
 
