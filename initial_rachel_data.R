@@ -184,12 +184,16 @@ FvCB <- function(C_c, PAR, G_star, K_c, K_o, O, V_cmax, J_max, alpha, theta, R_d
 # === Data =====================================================================
 
 # Read in data
-my_wd <- "C:/Users/steph/Desktop/Bioinformatics/MAT80436 - Thesis/Data - Rachel"
+name <- Sys.info()["nodename"]
+if(name == "D0132908"){
+  my_wd <- "~/MAT80436 - Thesis/NLS_and_NLME_on_Rachel%27s_data"
+} else {
+  my_wd <- "C:/Users/steph/Desktop/Bioinformatics/MAT80436 - Thesis/Data - Rachel"
+}
 setwd(my_wd)
 
 LRC1 <- na.omit(read.table("LRC1.txt", sep = "\t", header = TRUE, na.strings = ""))
 Dark <- read.table("Dark-F.txt", sep = "\t", header = TRUE, na.strings = "")
-LRC2_F <- na.omit(read.table("LRC2-F.txt", sep = "\t", header = TRUE, na.strings = ""))
 
 # Delete empty lines and any DIV/o errors - also empty column in LRC2
 ACI1 <- na.omit(read.table("A-Ci1_clean.csv", sep = ",", header = TRUE, na.strings = ""))
@@ -266,26 +270,6 @@ ACI2 %>%
 LRC1 <- update_aci_data(LRC1, Tleaf, Photo, Parin.total.1, O_pres = O_21)
 ACI1 <- update_aci_data(ACI1, Tleaf, Photo_corr_diff, PARabs, O_pres = O_21)
 
-# The non-constant values
-LRC1 <- LRC1 %>%
-  dplyr::mutate(
-    O = O_21,
-    R = R,
-    Kc = exp(38.05 - 79.43 / (R * (!!Tleaf + 273.15))),
-    Ko = exp(20.30 - 36.38 / (R * (!!Tleaf + 273.15))),
-    Gstar = exp(19.02 - 38.83 / (R * (!!Tleaf + 273.15))),
-    x = Ci - Gstar,
-    Photosynthesis = !!response,
-    y = Photosynthesis,
-    PAR = !!PAR,
-    c1 = Gstar + Kc * (1 + O / Ko),
-    c2 = 3 * Gstar,
-    x1 = c1 / x,
-    x2 = c2 / x,
-    I2 = PARi * alpha_initial,
-    Cc = Ci - !!response / gm_initial
-  )
-
 # Indices for subgroups
 A1_ind <- LRC1$TREATMENT == "A1"
 A2_ind <- LRC1$TREATMENT == "A2"
@@ -299,19 +283,6 @@ A2_AB_ind <- as.logical((LRC1$TREATMENT == "A2") * (LRC1$SIDE == "AB"))
 A2_ADAB_ind <- as.logical((LRC1$TREATMENT == "A2") * (LRC1$SIDE == "ADAB"))
 
 # --- NLS ----------------------------------------------------------------------
-
-nls(y ~ FvCB(Cc, PAR, Gstar, Kc, Ko, O, Vcmax, Jmax, 1.0, theta, Rd),
-  data = ACI1,
-  subset = A1_ind,
-  start = list(
-    Vcmax = 76.8,
-    Jmax = 100,
-    Rd = 1.4,
-    theta = theta_0 # ,
-    # alpha = alpha_initial
-  ),
-  control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-10)
-)
 
 # Grid search (kind of) for NLS in ACI1 data for each treatment effect
 nls_aci1 <- NULL
