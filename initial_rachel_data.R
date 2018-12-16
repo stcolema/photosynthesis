@@ -393,21 +393,6 @@ x12 <- summary(nls_aci1)
 x12$coefficients
 
 
-model1_coef <- summary(nls_aci1)$coefficients
-model2_coef <- summary(nls_aci2)$coefficients
-
-model1_coef %<>%
-  t %>%
-  as.data.frame()
-
-model2_coef %<>%
-  t %>%
-  as.data.frame()
-
-g(Vcmax1, Jmax1, alpha1, theta1, Rd1) %=% model1_coef[1,]
-g(Vcmax2, Jmax2, alpha2, theta2, Rd2) %=% model2_coef[1,]
-
-
 nls_aci1 <- nls(Photosynthesis ~
                FvCB(
                  Ci,
@@ -461,124 +446,156 @@ nls_aci2 <- nls(Photosynthesis ~
 )
 
 
-# Grid search (kind of) for NLS in ACI1 data for each treatment effect
-nls_aci1 <- NULL
-for (V_cmax_0 in c(50, 70, 90, 120, 200, 500, 1000)) {
-  for (J_max_0 in c(50, 100, 120, 200, 500, 800, 1000)) {
-    for (R_d_0 in c(1:5)) {
-      for (theta_0 in c(0.5, 1.0, 1.5, 2.0)) {
-        nls_aci1 <- attempt::try_catch(
-          expr = nls(y ~
-          FvCB(
-            Cc,
-            PAR,
-            Gstar,
-            Kc,
-            Ko,
-            O,
-            Vcmax,
-            Jmax,
-            1.0,
-            theta,
-            Rd
-          ),
-          data = combined_data,
-          subset = select_A1,
-          start = list(
-            Vcmax = V_cmax_0,
-            Jmax = J_max_0,
-            Rd = R_d_0,
-            theta = theta_0 # ,
-            # alpha = alpha_initial
-          ),
-          control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-10)
-          ),
-          .e = function(a) return(NULL),
-          .w = function(a) return(NULL)
-        )
-        if (!is.null(nls_aci1)) {
-          print(paste(
-            "SUCCESS!!! Vcmax:", V_cmax_0,
-            "Jmax:", J_max_0,
-            "Rd:", R_d_0,
-            "theta:", theta_0
-          ))
-          Vc_work <- V_cmax_0
-          J_work <- J_max_0
-          break
-        } else {
-          print(paste(
-            "Failed. Vcmax:", V_cmax_0,
-            "Jmax:", J_max_0,
-            "Rd:", R_d_0,
-            "theta:", theta_0
-          ))
-        }
-      }
-    }
-  }
-}
+model1_coef <- summary(nls_aci1)$coefficients
+model2_coef <- summary(nls_aci2)$coefficients
 
-nls_aci2 <- NULL
-for (V_cmax_0 in c(10, 50, 70, 80, 90, 100, 120, 150, 200, 500, 1000)) {
-  for (J_max_0 in c(10, 50, 100, 120, 200, 300, 500, 800, 1000, 5000)) {
-    for (R_d_0 in c(1:5)) {
-      for (theta_0 in c(0.5, 1.0, 1.5, 2.0)) {
-        nls_aci2 <- attempt::try_catch(
-          expr = nls(y ~
-          FvCB(
-            Cc,
-            PAR,
-            Gstar,
-            Kc,
-            Ko,
-            O,
-            Vcmax,
-            Jmax,
-            1.0,
-            theta,
-            Rd
-          ),
-          data = ACI1,
-          subset = A2_ind,
-          start = list(
-            Vcmax = V_cmax_0,
-            Jmax = J_max_0,
-            Rd = R_d_0,
-            theta = theta_0 # ,
-            # alpha = alpha_initial
-          ),
-          control = list(maxiter = 250, minFactor = 1e-10, printEval = F, tol = 1e-10)
-          ),
-          .e = function(a) return(NULL),
-          .w = function(a) return(NULL)
-        )
-        if (!is.null(nls_aci2)) {
-          print(paste(
-            "SUCCESS!!! Vcmax:", V_cmax_0,
-            "Jmax:", J_max_0,
-            "Rd:", R_d_0,
-            "theta:", theta_0
-          ))
-          Vc_work <- V_cmax_0
-          J_work <- J_max_0
-          break
-        } else {
-          print(paste(
-            "Failed. Vcmax:", V_cmax_0,
-            "Jmax:", J_max_0,
-            "Rd:", R_d_0,
-            "theta:", theta_0
-          ))
-        }
-      }
-    }
-  }
-}
+comparison_nls <- bind_rows(as.data.frame(model1_coef), 
+                            as.data.frame(model2_coef))
 
-nls_aci1
+comparison_nls$Feature <- c(rownames(model1_coef), rownames(model2_coef))
+comparison_nls$Treatment <- factor(c(rep("A1", nrow(model1_coef)),
+                                 rep("A2", nrow(model2_coef))), 
+                               level = c("A1", "A2"))
+
+comparison_nls_plot <- comparison_nls %>% 
+  mutate(Std_error = `Std. Error`) %>% 
+  select(Estimate, Std_error, Feature, Treatment)
+
+ggplot(comparison_nls_plot, aes(x = Feature, color = Treatment)) +
+  geom_errorbar(aes(ymax = Estimate + Std_error, ymin = Estimate - Std_error),
+                position = "dodge") + 
+  labs(title= "NLS model estimate",
+       y="Value", x = "Parameters")
 
 
+model1_coef %<>%
+  t %>%
+  as.data.frame()
+
+model2_coef %<>%
+  t %>%
+  as.data.frame()
+
+g(Vcmax1, Jmax1, alpha1, theta1, Rd1) %=% model1_coef[1,]
+g(Vcmax2, Jmax2, alpha2, theta2, Rd2) %=% model2_coef[1,]
+
+
+
+# 
+# # Grid search (kind of) for NLS in ACI1 data for each treatment effect
+# nls_aci1 <- NULL
+# for (V_cmax_0 in c(50, 70, 90, 120, 200, 500, 1000)) {
+#   for (J_max_0 in c(50, 100, 120, 200, 500, 800, 1000)) {
+#     for (R_d_0 in c(1:5)) {
+#       for (theta_0 in c(0.5, 1.0, 1.5, 2.0)) {
+#         nls_aci1 <- attempt::try_catch(
+#           expr = nls(y ~
+#           FvCB(
+#             Cc,
+#             PAR,
+#             Gstar,
+#             Kc,
+#             Ko,
+#             O,
+#             Vcmax,
+#             Jmax,
+#             1.0,
+#             theta,
+#             Rd
+#           ),
+#           data = combined_data,
+#           subset = select_A1,
+#           start = list(
+#             Vcmax = V_cmax_0,
+#             Jmax = J_max_0,
+#             Rd = R_d_0,
+#             theta = theta_0 # ,
+#             # alpha = alpha_initial
+#           ),
+#           control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-10)
+#           ),
+#           .e = function(a) return(NULL),
+#           .w = function(a) return(NULL)
+#         )
+#         if (!is.null(nls_aci1)) {
+#           print(paste(
+#             "SUCCESS!!! Vcmax:", V_cmax_0,
+#             "Jmax:", J_max_0,
+#             "Rd:", R_d_0,
+#             "theta:", theta_0
+#           ))
+#           Vc_work <- V_cmax_0
+#           J_work <- J_max_0
+#           break
+#         } else {
+#           print(paste(
+#             "Failed. Vcmax:", V_cmax_0,
+#             "Jmax:", J_max_0,
+#             "Rd:", R_d_0,
+#             "theta:", theta_0
+#           ))
+#         }
+#       }
+#     }
+#   }
+# }
+# 
+# nls_aci2 <- NULL
+# for (V_cmax_0 in c(10, 50, 70, 80, 90, 100, 120, 150, 200, 500, 1000)) {
+#   for (J_max_0 in c(10, 50, 100, 120, 200, 300, 500, 800, 1000, 5000)) {
+#     for (R_d_0 in c(1:5)) {
+#       for (theta_0 in c(0.5, 1.0, 1.5, 2.0)) {
+#         nls_aci2 <- attempt::try_catch(
+#           expr = nls(y ~
+#           FvCB(
+#             Cc,
+#             PAR,
+#             Gstar,
+#             Kc,
+#             Ko,
+#             O,
+#             Vcmax,
+#             Jmax,
+#             1.0,
+#             theta,
+#             Rd
+#           ),
+#           data = ACI1,
+#           subset = A2_ind,
+#           start = list(
+#             Vcmax = V_cmax_0,
+#             Jmax = J_max_0,
+#             Rd = R_d_0,
+#             theta = theta_0 # ,
+#             # alpha = alpha_initial
+#           ),
+#           control = list(maxiter = 250, minFactor = 1e-10, printEval = F, tol = 1e-10)
+#           ),
+#           .e = function(a) return(NULL),
+#           .w = function(a) return(NULL)
+#         )
+#         if (!is.null(nls_aci2)) {
+#           print(paste(
+#             "SUCCESS!!! Vcmax:", V_cmax_0,
+#             "Jmax:", J_max_0,
+#             "Rd:", R_d_0,
+#             "theta:", theta_0
+#           ))
+#           Vc_work <- V_cmax_0
+#           J_work <- J_max_0
+#           break
+#         } else {
+#           print(paste(
+#             "Failed. Vcmax:", V_cmax_0,
+#             "Jmax:", J_max_0,
+#             "Rd:", R_d_0,
+#             "theta:", theta_0
+#           ))
+#         }
+#       }
+#     }
+#   }
+# }
 
 # --- NLME ---------------------------------------------------------------------
 
