@@ -601,7 +601,7 @@ g(Vcmax2, Jmax2, alpha2, theta2, Rd2) %=% model2_coef[1,]
 
 CO2_grouped <- groupedData(Photosynthesis ~ 1 | ID,
   outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
-  inner = ~SIDE,
+  inner = ~Ci + PAR,
   data = combined_data
 )
 
@@ -620,13 +620,13 @@ model_1 <- nlme(Photosynthesis ~ FvCB(
 ),
 data = CO2_grouped,
 fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
-random = pdSymm(list(Vcmax ~ SIDE, Jmax ~ SIDE, Rd ~ 1, alpha ~ 1, theta ~ 1)),
+random = pdSymm(list(Vcmax ~ SIDE, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
 start = c(
   Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
   Jmax = c(Jmax1, Jmax1 - Jmax2),
-  Rd = c(Rd1, Rd1 - Rd2),
-  alpha = c(alpha1, alpha1 - alpha2),
-  theta = c(theta1, theta1 - theta2)
+  Rd = c(Rd1, 0),
+  alpha = c(alpha1, 0),
+  theta = c(theta1, 0)
 ),
 control = list(maxIter = 250, msVerbose = T, tolerance = 1e-2, msMaxIter = 250)
 )
