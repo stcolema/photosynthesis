@@ -620,7 +620,7 @@ model_1 <- nlme(Photosynthesis ~ FvCB(
 ),
 data = CO2_grouped,
 fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
-random = pdSymm(list(Vcmax ~ SIDE, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
+random = pdDiag(list(Vcmax ~ SIDE, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
 start = c(
   Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
   Jmax = c(Jmax1, Jmax1 - Jmax2),
@@ -628,8 +628,65 @@ start = c(
   alpha = c(alpha1, 0),
   theta = c(theta1, 0)
 ),
-control = list(maxIter = 250, msVerbose = T, tolerance = 1e-2, msMaxIter = 250)
+control = list(maxIter = 250, msVerbose = T, tolerance = 1e-5, msMaxIter = 250, 
+               pnlsTol = 1e-10, pnlsMaxIter = 25)
 )
+
+model_2 <- nlme(Photosynthesis ~ FvCB(
+  Ci,
+  PAR,
+  Gstar,
+  Kc,
+  Ko,
+  O,
+  Vcmax,
+  Jmax,
+  alpha,
+  theta,
+  Rd
+),
+data = CO2_grouped,
+fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
+random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
+start = c(
+  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
+  Jmax = c(Jmax1, Jmax1 - Jmax2),
+  Rd = c(Rd1, 0),
+  alpha = c(alpha1, 0),
+  theta = c(theta1, 0)
+),
+control = list(maxIter = 250, msVerbose = T, tolerance = 1e-5, msMaxIter = 250, 
+               pnlsTol = 1e-10, pnlsMaxIter = 25)
+)
+
+
+model_3 <- nlme(Photosynthesis ~ FvCB(
+  Ci,
+  PAR,
+  Gstar,
+  Kc,
+  Ko,
+  O,
+  Vcmax,
+  Jmax,
+  alpha,
+  theta,
+  Rd
+),
+data = CO2_grouped,
+fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
+random = Vcmax + Jmax + Rd + alpha + theta ~ 1,
+start = c(
+  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
+  Jmax = c(Jmax1, Jmax1 - Jmax2),
+  Rd = c(Rd1, 0),
+  alpha = c(alpha1, 0),
+  theta = c(theta1, 0)
+),
+control = list(maxIter = 250, msVerbose = F, tolerance = 1e-5, msMaxIter = 100, 
+               pnlsTol = 1e-10, pnlsMaxIter = 25)
+)
+
 
 
 # Grid search for NLME
