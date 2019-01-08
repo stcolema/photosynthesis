@@ -398,6 +398,90 @@ CO2_grouped <- groupedData(Photosynthesis ~ 1 | ID,
   data = combined_data
 )
 
+# === Transform 2 ==============================================================
+
+LRC2 %>%
+  select(contains("PAR")) %>%
+  glimpse()
+
+LRC2 %>%
+  select(contains("photo")) %>%
+  glimpse()
+
+ACI2 %>%
+  select(contains("PAR")) %>%
+  glimpse()
+
+ACI2 %>%
+  select(contains("photo")) %>%
+  glimpse()
+
+LRC2_new <- update_aci_data(LRC2, Tleaf, Photo, PARabs, Ci,
+                            O_pres = O_2,
+                            reduce = T,
+                            Kelvin = F,
+                            other_vars_to_keep = c(SIDE, TREAT, ID)
+)
+
+ACI2_new <- update_aci_data(ACI2, Tleaf, Photo_corr_diff, PARabs, Ci,
+                            O_pres = O_2,
+                            reduce = T,
+                            Kelvin = F,
+                            other_vars_to_keep = c(SIDE, TREAT, ID)
+)
+names(ACI2_new)
+names(LRC2_new)
+
+summary(ACI2_new)
+summary(LRC2_new)
+
+ACI2_new <- ACI2_new %>%
+  dplyr::mutate(TREATMENT = TREAT) %>%
+  dplyr::select(-TREAT) %>%
+  dplyr::mutate(Response = factor("CO2", labels = c("CO2")))
+
+ACI2_new$SIDE <- add_level(ACI2_new$SIDE, "ADAB")
+ACI2_new$Response <- add_level(ACI2_new$Response, "light")
+
+LRC2_new <- LRC2_new %>%
+  dplyr::mutate(TREATMENT = TREAT) %>%
+  dplyr::select(-TREAT) %>%
+  dplyr::mutate(Response = factor("light", labels = c("light")))
+
+LRC2_new$SIDE <- add_level(LRC2_new$SIDE, "ADAB")
+LRC2_new$Response <- add_level(LRC2_new$Response, "CO2")
+
+combined_data_2 <- dplyr::bind_rows(LRC2_new, ACI2_new)
+
+total_data <- dplyr::bind_rows(combined_data, combined_data_2)
+# total_data$O <- factor(total_data$O)
+summary(total_data)
+
+CO2_grouped_full <- groupedData(Photosynthesis ~ 1 | ID,
+                                outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
+                                inner = ~Ci + PAR + SIDE,
+                                data = total_data
+)
+
+
+# Indices for subgroups
+select_A1_full <- total_data$TREATMENT == "A1"
+select_A2_full <- total_data$TREATMENT == "A2"
+
+select_A1_AD_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AD"))
+select_A1_AB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AB"))
+select_A1_ADAB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "ADAB"))
+
+select_A2_AD_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AD"))
+select_A2_AB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AB"))
+select_A2_ADAB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "ADAB"))
+
+select_CO2_full <- total_data$Response == "CO2"
+select_light_full <- total_data$Response == "light"
+
+select_O_2 <- total_data$O == 20
+select_O_21 <- total_data$O == 210
+
 # --- NLS ----------------------------------------------------------------------
 names(combined_data)
 
@@ -928,6 +1012,43 @@ ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
     title = "NLME model estimate",
     y = "Value", x = "Parameters"
   )
+
+# more precision
+model_2_precision <- nlme(Photosynthesis ~ FvCB(
+  Ci,
+  PAR,
+  Gstar,
+  Kc,
+  Ko,
+  O,
+  Vcmax,
+  Jmax,
+  alpha,
+  theta,
+  Rd
+),
+data = CO2_grouped,
+fixed = list(
+  Vcmax ~ TREATMENT,
+  Jmax ~ TREATMENT,
+  Rd ~ TREATMENT,
+  alpha ~ TREATMENT,
+  theta ~ TREATMENT
+),
+
+random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
+start = c(
+  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
+  Jmax = c(Jmax1, Jmax1 - Jmax2),
+  Rd = c(Rd1, 0),
+  alpha = c(alpha1, 0),
+  theta = c(theta1, 0)
+),
+control = list(
+  maxIter = 250, msVerbose = F, tolerance = 1e-3, msMaxIter = 250,
+  pnlsTol = 1e-10, pnlsMaxIter = 50
+)
+)
 
 # === Back to NLME =============================================================
 
@@ -1511,90 +1632,6 @@ control = list(
 #   ),
 #   control = list(maxiter = 250, minFactor = 0.000001, printEval = T, tol = 1e-04)
 # )
-
-# === Transform 2 ==============================================================
-
-LRC2 %>%
-  select(contains("PAR")) %>%
-  glimpse()
-
-LRC2 %>%
-  select(contains("photo")) %>%
-  glimpse()
-
-ACI2 %>%
-  select(contains("PAR")) %>%
-  glimpse()
-
-ACI2 %>%
-  select(contains("photo")) %>%
-  glimpse()
-
-LRC2_new <- update_aci_data(LRC2, Tleaf, Photo, PARabs, Ci,
-  O_pres = O_2,
-  reduce = T,
-  Kelvin = F,
-  other_vars_to_keep = c(SIDE, TREAT, ID)
-)
-
-ACI2_new <- update_aci_data(ACI2, Tleaf, Photo_corr_diff, PARabs, Ci,
-  O_pres = O_2,
-  reduce = T,
-  Kelvin = F,
-  other_vars_to_keep = c(SIDE, TREAT, ID)
-)
-names(ACI2_new)
-names(LRC2_new)
-
-summary(ACI2_new)
-summary(LRC2_new)
-
-ACI2_new <- ACI2_new %>%
-  dplyr::mutate(TREATMENT = TREAT) %>%
-  dplyr::select(-TREAT) %>%
-  dplyr::mutate(Response = factor("CO2", labels = c("CO2")))
-
-ACI2_new$SIDE <- add_level(ACI2_new$SIDE, "ADAB")
-ACI2_new$Response <- add_level(ACI2_new$Response, "light")
-
-LRC2_new <- LRC2_new %>%
-  dplyr::mutate(TREATMENT = TREAT) %>%
-  dplyr::select(-TREAT) %>%
-  dplyr::mutate(Response = factor("light", labels = c("light")))
-
-LRC2_new$SIDE <- add_level(LRC2_new$SIDE, "ADAB")
-LRC2_new$Response <- add_level(LRC2_new$Response, "CO2")
-
-combined_data_2 <- dplyr::bind_rows(LRC2_new, ACI2_new)
-
-total_data <- dplyr::bind_rows(combined_data, combined_data_2)
-# total_data$O <- factor(total_data$O)
-summary(total_data)
-
-CO2_grouped_full <- groupedData(Photosynthesis ~ 1 | ID,
-  outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
-  inner = ~Ci + PAR + SIDE,
-  data = total_data
-)
-
-
-# Indices for subgroups
-select_A1_full <- total_data$TREATMENT == "A1"
-select_A2_full <- total_data$TREATMENT == "A2"
-
-select_A1_AD_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AD"))
-select_A1_AB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AB"))
-select_A1_ADAB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "ADAB"))
-
-select_A2_AD_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AD"))
-select_A2_AB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AB"))
-select_A2_ADAB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "ADAB"))
-
-select_CO2_full <- total_data$Response == "CO2"
-select_light_full <- total_data$Response == "light"
-
-select_O_2 <- total_data$O == 20
-select_O_21 <- total_data$O == 210
 
 # === NLME with full data ======================================================
 
