@@ -1699,6 +1699,35 @@ ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
     y = "Value", x = "Parameters"
   )
 
+full_model_1_precision <- nlme(Photosynthesis ~ FvCB(
+  Ci,
+  PAR,
+  Gstar,
+  Kc,
+  Ko,
+  O,
+  Vcmax,
+  Jmax,
+  alpha,
+  theta,
+  Rd
+),
+data = CO2_grouped_full,
+fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
+random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
+start = c(
+  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
+  Jmax = c(Jmax1, Jmax1 - Jmax2),
+  Rd = c(Rd1, 0),
+  alpha = c(alpha1, 0),
+  theta = c(theta1, 0)
+),
+control = list(
+  maxIter = 250, msVerbose = F, tolerance = 1e-3, msMaxIter = 250,
+  pnlsTol = 1e-10, pnlsMaxIter = 50
+)
+)
+
 # === Back to NLME =============================================================
 
 # Drop ADAB Side as not enough info
@@ -1877,6 +1906,70 @@ ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
 
 anova(full_model_5, full_model_1)
 summary(full_model_1)
+
+# === Model 5 increased precision ==============================================
+
+full_model_5_precision <- nlme(Photosynthesis ~ FvCB(
+  Ci,
+  PAR,
+  Gstar,
+  Kc,
+  Ko,
+  O,
+  Vcmax,
+  Jmax,
+  alpha,
+  theta,
+  Rd
+),
+data = CO2_grouped_full,
+fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
+random = pdDiag(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
+start = c(
+  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
+  Jmax = c(Jmax1, Jmax1 - Jmax2),
+  Rd = c(Rd1, 0),
+  alpha = c(alpha1, 0),
+  theta = c(theta1, 0)
+),
+control = list(
+  maxIter = 250, msVerbose = F, tolerance = 1e-3, msMaxIter = 250,
+  pnlsTol = 1e-10, pnlsMaxIter = 50
+)
+)
+
+full_model_5_prec_sum <- summary(full_model_5_precision)
+
+
+nlme_full_5_prec_fixed <- full_model_5_prec_sum$tTable
+nlme_full_5_prec_random <- summary(full_model_5_precision)$coefficients$random
+
+# Compare estimates for Treatments
+fixed_comparison <- as.data.frame(nlme_full_5_prec_fixed)
+fixed_comparison$Feature <- rownames(fixed_comparison)
+fixed_comparison$Feature <- c(
+  rep("Vcmax", 2),
+  rep("Jmax", 2),
+  rep("Rd", 2),
+  rep("alpha", 2),
+  rep("theta", 2)
+)
+
+fixed_comparison$Treatment <- rep(c("A1", "A2"), nrow(fixed_comparison) / 2)
+
+
+comparison_nlme_plot <- fixed_comparison %>%
+  mutate(Estimate = ifelse(Treatment == "A1", Value, lag(Value) + Value))
+# select(Estimate, Std_error, Feature, Treatment)
+
+ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
+  geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
+                position = "dodge"
+  ) +
+  labs(
+    title = "NLME model estimate",
+    y = "Value", x = "Parameters"
+  )
 
 # === Back to analysis =========================================================
 
