@@ -2641,3 +2641,29 @@ control = list(
   pnlsTol = 1e-10, pnlsMaxIter = 50
 )
 )
+
+full_model_23 <- nlme(Photosynthesis ~ FvCB(
+  Ci,
+  PAR,
+  Gstar,
+  Kc,
+  Ko,
+  O,
+  Vcmax,
+  Jmax,
+  1.2,
+  2.0,
+  1.5
+),
+data = CO2_grouped_full,
+fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT),
+random = pdDiag(list(Vcmax ~ SIDE, Jmax ~ SIDE)),
+start = c(
+  Vcmax = c(Vcmax1, -(Vcmax1 - Vcmax2)),
+  Jmax = c(Jmax1, -(Jmax1 - Jmax2))
+),
+control = list(
+  maxIter = 500, msVerbose = F, tolerance = 1e-3, msMaxIter = 250,
+  pnlsTol = 1e-10, pnlsMaxIter = 50
+)
+)
