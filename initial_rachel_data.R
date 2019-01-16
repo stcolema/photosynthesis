@@ -20,16 +20,16 @@ library(attempt)
 # Binary Operator
 "%=%.lbunch" <- function(l, r, ...) {
   Envir <- as.environment(-1)
-
+  
   if (length(r) > length(l)) {
     warning("RHS has more args than LHS. Only first", length(l), "used.")
   }
-
+  
   if (length(l) > length(r)) {
     warning("LHS has more args than RHS. RHS will be repeated.")
     r <- extendToMatch(r, l)
   }
-
+  
   for (II in 1:length(l)) {
     do.call("<-", list(l[[II]], r[[II]]), envir = Envir)
   }
@@ -39,12 +39,12 @@ library(attempt)
 extendToMatch <- function(source, destin) {
   s <- length(source)
   d <- length(destin)
-
+  
   # Assume that destin is a length when it is a single number and source is not
   if (d == 1 && s > 1 && !is.null(as.numeric(destin))) {
     d <- destin
   }
-
+  
   dif <- d - s
   if (dif > 0) {
     source <- rep(source, ceiling(d / s))[1:d]
@@ -77,21 +77,21 @@ update_aci_data <- function(data,
                             reduce = FALSE,
                             other_vars_to_keep = NULL) {
   vars_of_interest <- enquos(T_var, response_var, PAR_var, Ci_var)
-
+  
   kept_vars <- enquo(other_vars_to_keep)
   if (!quo_is_null(kept_vars)) {
     vars_of_interest <- c(vars_of_interest, kept_vars)
   }
-
+  
   if (reduce) {
     data <- data %>%
       dplyr::select(!!!vars_of_interest)
   }
-
+  
   T_leaf <- enquo(T_var)
   response <- enquo(response_var)
   PAR <- enquo(PAR_var)
-
+  
   new_data <- data %>%
     dplyr::mutate(
       O = O_pres,
@@ -110,7 +110,7 @@ update_aci_data <- function(data,
       # I2 = PAR * (1 - f) / 2,
       # Cc = Ci - !!response / gm_initial
     )
-
+  
   if (reduce) {
     new_data <- new_data %>%
       dplyr::select(-!!PAR) %>%
@@ -194,7 +194,7 @@ non_rectangular_hyperbola <- function(PAR, J_max, alpha, theta) {
   determ <- b^2 - 4 * a * c
   determ <- pmax(determ, 0)
   x <- (-b - sqrt(determ)) / (2 * a)
-
+  
   # below is what Gerrit compared to Rubisco curve for deciding current limiting
   # factor - possily not part of the NRH function, but a represenation for RuBP
   # (x / 4) * (C_c - G_star) / (C_c  + 2 * G_star)
@@ -349,17 +349,17 @@ LRC1_common <- LRC1 %>%
 # === Data transformation ======================================================
 
 LRC1_new <- update_aci_data(LRC1, Tleaf, Photo, Parin.total.1, Ci,
-  O_pres = O_21,
-  reduce = T,
-  Kelvin = F,
-  other_vars_to_keep = c(SIDE, TREATMENT, ID)
+                            O_pres = O_21,
+                            reduce = T,
+                            Kelvin = F,
+                            other_vars_to_keep = c(SIDE, TREATMENT, ID)
 )
 
 ACI1_new <- update_aci_data(ACI1, Tleaf, Photo_corr_diff, PARabs, Ci,
-  O_pres = O_21,
-  reduce = T,
-  Kelvin = F,
-  other_vars_to_keep = c(SIDE, TREAT, ID)
+                            O_pres = O_21,
+                            reduce = T,
+                            Kelvin = F,
+                            other_vars_to_keep = c(SIDE, TREAT, ID)
 )
 names(ACI1_new)
 names(LRC1_new)
@@ -398,9 +398,9 @@ select_CO2 <- combined_data$Response == "CO2"
 select_light <- combined_data$Response == "light"
 
 CO2_grouped <- groupedData(Photosynthesis ~ 1 | ID,
-  outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
-  inner = ~Ci + PAR + SIDE,
-  data = combined_data
+                           outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
+                           inner = ~Ci + PAR + SIDE,
+                           data = combined_data
 )
 
 unique(CO2_grouped$ID)
@@ -425,17 +425,17 @@ ACI2 %>%
   glimpse()
 
 LRC2_new <- update_aci_data(LRC2, Tleaf, Photo, PARabs, Ci,
-  O_pres = O_2,
-  reduce = T,
-  Kelvin = F,
-  other_vars_to_keep = c(SIDE, TREAT, ID)
+                            O_pres = O_2,
+                            reduce = T,
+                            Kelvin = F,
+                            other_vars_to_keep = c(SIDE, TREAT, ID)
 )
 
 ACI2_new <- update_aci_data(ACI2, Tleaf, Photo_corr_diff, PARabs, Ci,
-  O_pres = O_2,
-  reduce = T,
-  Kelvin = F,
-  other_vars_to_keep = c(SIDE, TREAT, ID)
+                            O_pres = O_2,
+                            reduce = T,
+                            Kelvin = F,
+                            other_vars_to_keep = c(SIDE, TREAT, ID)
 )
 
 LRC2_F_new <- update_aci_data(LRC2_F, Tleaf, Photo, PARabs, Ci,
@@ -483,9 +483,9 @@ total_data <- dplyr::bind_rows(combined_data, combined_data_2)
 summary(total_data)
 
 CO2_grouped_full <- groupedData(Photosynthesis ~ 1 | ID,
-  outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
-  inner = ~Ci + PAR + SIDE,
-  data = total_data
+                                outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
+                                inner = ~Ci + PAR + SIDE,
+                                data = total_data
 )
 
 
@@ -511,55 +511,55 @@ select_O_21 <- total_data$O == 210
 names(combined_data)
 
 nls_aci1 <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A1,
-start = list(
-  Vcmax = Vcmax_initial,
-  Jmax = Jmax_initial,
-  Rd = Rd_initial,
-  theta = theta_initial,
-  alpha = alpha_initial
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                  FvCB(
+                    Ci,
+                    PAR,
+                    Gstar,
+                    Kc,
+                    Ko,
+                    O,
+                    Vcmax,
+                    Jmax,
+                    alpha,
+                    theta,
+                    Rd
+                  ),
+                data = combined_data,
+                subset = select_A1,
+                start = list(
+                  Vcmax = Vcmax_initial,
+                  Jmax = Jmax_initial,
+                  Rd = Rd_initial,
+                  theta = theta_initial,
+                  alpha = alpha_initial
+                ),
+                control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 nls_aci2 <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A2,
-start = list(
-  Vcmax = Vcmax_initial,
-  Jmax = Jmax_initial,
-  Rd = Rd_initial,
-  theta = theta_initial,
-  alpha = alpha_initial
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                  FvCB(
+                    Ci,
+                    PAR,
+                    Gstar,
+                    Kc,
+                    Ko,
+                    O,
+                    Vcmax,
+                    Jmax,
+                    alpha,
+                    theta,
+                    Rd
+                  ),
+                data = combined_data,
+                subset = select_A2,
+                start = list(
+                  Vcmax = Vcmax_initial,
+                  Jmax = Jmax_initial,
+                  Rd = Rd_initial,
+                  theta = theta_initial,
+                  alpha = alpha_initial
+                ),
+                control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 
@@ -585,7 +585,7 @@ comparison_nls_plot <- comparison_nls %>%
 
 ggplot(comparison_nls_plot, aes(x = Feature, color = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std_error, ymin = Estimate - Std_error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLS model estimate",
@@ -669,164 +669,164 @@ g(Vcmax2, Jmax2, alpha2, theta2, Rd2) %=% model2_coef[1, ]
 
 # Does not run
 nls_A1_AB <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A1_AB,
-start = list(
-  Vcmax = Vcmax1, # with initial estimates still hit singular gradient
-  Jmax = Jmax1,
-  Rd = Rd1,
-  theta = theta1,
-  alpha = alpha1
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                   FvCB(
+                     Ci,
+                     PAR,
+                     Gstar,
+                     Kc,
+                     Ko,
+                     O,
+                     Vcmax,
+                     Jmax,
+                     alpha,
+                     theta,
+                     Rd
+                   ),
+                 data = combined_data,
+                 subset = select_A1_AB,
+                 start = list(
+                   Vcmax = Vcmax1, # with initial estimates still hit singular gradient
+                   Jmax = Jmax1,
+                   Rd = Rd1,
+                   theta = theta1,
+                   alpha = alpha1
+                 ),
+                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 # Runs
 nls_A1_AD <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A1_AD,
-start = list(
-  Vcmax = Vcmax_initial,
-  Jmax = Jmax_initial,
-  Rd = Rd_initial,
-  theta = theta_initial,
-  alpha = alpha_initial
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                   FvCB(
+                     Ci,
+                     PAR,
+                     Gstar,
+                     Kc,
+                     Ko,
+                     O,
+                     Vcmax,
+                     Jmax,
+                     alpha,
+                     theta,
+                     Rd
+                   ),
+                 data = combined_data,
+                 subset = select_A1_AD,
+                 start = list(
+                   Vcmax = Vcmax_initial,
+                   Jmax = Jmax_initial,
+                   Rd = Rd_initial,
+                   theta = theta_initial,
+                   alpha = alpha_initial
+                 ),
+                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 # Does not run (A1 ADAB does not exist)
 nls_A1_ADAB <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A1_ADAB,
-start = list(
-  Vcmax = Vcmax_initial,
-  Jmax = Jmax_initial,
-  Rd = Rd_initial,
-  theta = theta_initial,
-  alpha = alpha_initial
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                     FvCB(
+                       Ci,
+                       PAR,
+                       Gstar,
+                       Kc,
+                       Ko,
+                       O,
+                       Vcmax,
+                       Jmax,
+                       alpha,
+                       theta,
+                       Rd
+                     ),
+                   data = combined_data,
+                   subset = select_A1_ADAB,
+                   start = list(
+                     Vcmax = Vcmax_initial,
+                     Jmax = Jmax_initial,
+                     Rd = Rd_initial,
+                     theta = theta_initial,
+                     alpha = alpha_initial
+                   ),
+                   control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 # Runs
 nls_A2_AB <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A2_AB,
-start = list(
-  Vcmax = Vcmax_initial,
-  Jmax = Jmax_initial,
-  Rd = Rd_initial,
-  theta = theta_initial,
-  alpha = alpha_initial
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                   FvCB(
+                     Ci,
+                     PAR,
+                     Gstar,
+                     Kc,
+                     Ko,
+                     O,
+                     Vcmax,
+                     Jmax,
+                     alpha,
+                     theta,
+                     Rd
+                   ),
+                 data = combined_data,
+                 subset = select_A2_AB,
+                 start = list(
+                   Vcmax = Vcmax_initial,
+                   Jmax = Jmax_initial,
+                   Rd = Rd_initial,
+                   theta = theta_initial,
+                   alpha = alpha_initial
+                 ),
+                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 # Runs
 nls_A2_AD <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A2_AD,
-start = list(
-  Vcmax = Vcmax_initial,
-  Jmax = Jmax_initial,
-  Rd = Rd_initial,
-  theta = theta_initial,
-  alpha = alpha_initial
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                   FvCB(
+                     Ci,
+                     PAR,
+                     Gstar,
+                     Kc,
+                     Ko,
+                     O,
+                     Vcmax,
+                     Jmax,
+                     alpha,
+                     theta,
+                     Rd
+                   ),
+                 data = combined_data,
+                 subset = select_A2_AD,
+                 start = list(
+                   Vcmax = Vcmax_initial,
+                   Jmax = Jmax_initial,
+                   Rd = Rd_initial,
+                   theta = theta_initial,
+                   alpha = alpha_initial
+                 ),
+                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 # Does not run
 nls_A2_ADAB <- nls(Photosynthesis ~
-FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = combined_data,
-subset = select_A2_ADAB,
-start = list(
-  Vcmax = Vcmax_initial,
-  Jmax = Jmax_initial,
-  Rd = Rd_initial,
-  theta = theta_initial,
-  alpha = alpha_initial
-),
-control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+                     FvCB(
+                       Ci,
+                       PAR,
+                       Gstar,
+                       Kc,
+                       Ko,
+                       O,
+                       Vcmax,
+                       Jmax,
+                       alpha,
+                       theta,
+                       Rd
+                     ),
+                   data = combined_data,
+                   subset = select_A2_ADAB,
+                   start = list(
+                     Vcmax = Vcmax_initial,
+                     Jmax = Jmax_initial,
+                     Rd = Rd_initial,
+                     theta = theta_initial,
+                     alpha = alpha_initial
+                   ),
+                   control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
 )
 
 
@@ -873,7 +873,7 @@ comparison_nls_side_plot <- comparison_nls_side %>%
 
 ggplot(comparison_nls_side_plot, aes(x = Feature, color = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std_error, ymin = Estimate - Std_error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLS model estimate",
@@ -890,7 +890,7 @@ more_comparison <- bind_rows(more_comparison, comparison_nls_side_plot)
 
 ggplot(more_comparison, aes(x = Feature, color = Side)) +
   geom_errorbar(aes(ymax = Estimate + Std_error, ymin = Estimate - Std_error),
-    position = "dodge"
+                position = "dodge"
   ) +
   facet_wrap(~Treatment, ncol = 2) +
   labs(
@@ -1031,7 +1031,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -1717,7 +1717,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -1922,7 +1922,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -1989,7 +1989,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -2086,7 +2086,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -2397,7 +2397,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -2808,7 +2808,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -2874,7 +2874,7 @@ comparison_nlme_plot <- fixed_comparison %>%
 
 ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
   geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-    position = "dodge"
+                position = "dodge"
   ) +
   labs(
     title = "NLME model estimate",
@@ -3274,159 +3274,3 @@ control = nlmeControl(
   pnlsMaxIter = 50
 )
 )
-
-
-# === Yin step out model =======================================================
-create_LRC2_combined <- function(LRC2, LRC2_F, A_param, phi_param, i_inc_param, id_param) {
-  # enquose the variable names
-  # A <- rlang::enquo(A_param)
-  # phi <- rlang::enquo(phi_param)
-  # I <- rlang::enquo(i_inc_param)
-  # params_of_interest_LRC2 <- rlang::enquos(A_param, i_inc_param)
-  params_of_interest_LRC2 <- c(A_param, i_inc_param, id_param)
-  params_of_interest_LRC2_F <- c(phi_param, id_param)
-
-  # select the relevant subsets of the datasets
-  LRC2_rel <- LRC2 %>%
-    dplyr::select(!!!params_of_interest_LRC2)
-
-  # print("woof")
-  LRC2_F_rel <- LRC2_F %>%
-    dplyr::select(!!!params_of_interest_LRC2_F)
-  
-  # print("whos a good boy")
-  # combine the dataframes and add the variable that the regression is on
-  comb_data <- dplyr::bind_cols(LRC2_rel, LRC2_F_rel) %>%
-    dplyr::mutate(New_var = 0.25 * !!phi_param * !!i_inc_param)
-
-  comb_data
-}
-
-calc_s_rd <- function(LRC2, LRC2_F,
-                      A_param = A,
-                      phi_param = PHI,
-                      i_inc_param = I,
-                      id_var = ID,
-                      ...) {
-  # Enclose the ID variable
-  A <- rlang::enquo(A_param)
-  phi <- rlang::enquo(phi_param)
-  I <- rlang::enquo(i_inc_param)
-  ID <- rlang::enquo(id_var)
-  
-  # print("giragge")
-  # Create the reduced, combined dataframe
-  comb_data <- create_LRC2_combined(LRC2, LRC2_F, A, phi, I, ID)
-  # print("hihihi")
-  # return(comb_data)
-  # Carry out regression using a mixed effects model
-    lme_s_rd <- nlme::lme(formula(substitute(A_param ~ New_var)),
-      data = comb_data,
-      random = formula(substitute(~New_var | id_var)),
-      ...
-    )
-
-  # Return the summary of the above model
-  sum_lm_s_rd <- summary(lme_s_rd)
-  
-  fix <- sum_lm_s_rd$coefficients$fixed
-  rand <- sum_lm_s_rd$coefficients$random[[1]]
-  
-  Rd_ind <- rand[,1] + fix[1]
-  S_ind <- rand[,2] + fix[2]
-  
-  ind_coef <- data.frame(ID = 1:length(Rd_ind), Rd = Rd_ind, S = S_ind)
-  
-  out <- list(data = comb_data, 
-              model = lme_s_rd, 
-              summary = sum_lm_s_rd, 
-              coefficients = ind_coef)
-}
-
-
-
-calc_J <- function(data, lump_var = S, i_inc_var = I, phi_psII_var = phi) {
-  S <- rlang::enquo(lump_var)
-  I <- rlang::enquo(i_inc_var)
-  phi <- rlang::enquo(phi_psII_var)
-  new_data <- data %>%
-    dplyr::mutate(J = !!S * !!I * !!phi)
-  new_data
-}
-
-
-
-# Delete empty lines and any DIV/o errors - also empty column in LRC2
-LRC2 <- read.table("LRC2_clean.csv", sep = ",", header = TRUE, na.strings = "")
-LRC2_F <- na.omit(read.table("LRC2-F.txt", sep = "\t", header = TRUE, na.strings = ""))
-
-LRC2_new <- update_aci_data(LRC2, Tleaf, Photo, PARabs, Ci,
-                            O_pres = O_2,
-                            reduce = T,
-                            Kelvin = F,
-                            other_vars_to_keep = c(SIDE, TREAT, ID)
-)
-
-LRC2_F_new <- update_aci_data(LRC2_F, Tleaf, Photo, PARabs, Ci,
-                              O_pres = O_2,
-                              reduce = T,
-                              Kelvin = F,
-                              other_vars_to_keep = c(SIDE, TREAT, ID, PhiPS2)
-)
-
-LRC2_new <- LRC2_new %>%
-  dplyr::mutate(TREATMENT = TREAT) %>%
-  dplyr::select(-TREAT) %>%
-  dplyr::mutate(Response = factor("light", labels = c("light")))
-
-LRC2_new$SIDE <- add_level(LRC2_new$SIDE, "ADAB")
-LRC2_new$Response <- add_level(LRC2_new$Response, "CO2")
-
-LRC2_F_new <- LRC2_F_new %>%
-  dplyr::mutate(TREATMENT = TREAT) %>%
-  dplyr::select(-TREAT) %>%
-  dplyr::mutate(Response = factor("light", labels = c("light")))
-
-LRC2_F_new$SIDE <- add_level(LRC2_F_new$SIDE, "ADAB")
-LRC2_F_new$Response <- add_level(LRC2_F_new$Response, "CO2")
-
-
-out <- calc_s_rd(LRC2_new, LRC2_F_new,
-                 A_param = Photosynthesis,
-                 phi_param = PhiPS2,
-                 i_inc_param = PAR,
-                 id_var = ID,
-                 control = list(maxIter = 250,
-                                msVerbose = F,
-                                tolerance = 1e-2,
-                                msMaxIter = 250,
-                                pnlsTol = 1e-10,
-                                pnlsMaxIter = 250,
-                                niterEM = 1000))
-
-
-xyplot(Photosynthesis ~ New_var | as.factor(ID),
-               group = as.factor(ID),
-               data = out$data
-       )
-
-
-names(LRC2_F_new)
-
-LRC2_F_newer <- LRC2_F_new %>% 
-  left_join(out$coefficients, by = c("ID"))
-
-ggplot2::ggplot(data = out$data, aes(x = New_var, y = Photosynthesis)) +
-  facet_wrap(~ ID) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  labs(
-    title = "Regression for Rd, S",
-    x = bquote(~frac(1, 4) ~ "I" ~ Phi[PSII]),
-    y = "A"
-  )
-
-
-J_data <- calc_J(LRC2_F_newer, lump_var = S, i_inc_var = PAR, phi_psII_var = PhiPS2)
-
-head(J_data)

@@ -272,17 +272,19 @@ setwd(my_wd)
 # ACI1 @ 21%
 # ACI2 @ 2%
 
-LRC1 <- na.omit(read.table("LRC1.txt", sep = "\t", header = TRUE, na.strings = ""))
+LRC1 <- read.table("LRC1.txt", sep = "\t", header = TRUE, na.strings = "")
 Dark <- read.table("Dark-F.txt", sep = "\t", header = TRUE, na.strings = "")
-LRC2_F <- na.omit(read.table("LRC2-F.txt", sep = "\t", header = TRUE, na.strings = ""))
+LRC2_F <- read.table("LRC2-F.txt", sep = "\t", header = TRUE, na.strings = "")
 # ACI1 <- na.omit(read.table("A-Ci1.txt", sep = "\t", header = TRUE, na.strings = ""))
+ACI2 <- read.table("A-Ci2.txt", sep = "\t", header = TRUE, na.strings = "", fileEncoding="UCS-2LE")
+# LRC2 <- read.table("LRC1.txt", sep = "\t", header = TRUE, na.strings = "")
 
 
 # Delete empty lines and any DIV/o errors - also empty column in LRC2
 # ACI1 <- na.omit(read.table("A-Ci1_clean.csv", sep = ",", header = TRUE, na.strings = ""))
-ACI1 <- read.table("A-Ci1_2.csv", sep = ",", header = TRUE, na.strings = "")
-ACI2 <- read.table("A-Ci2_clean.csv", sep = ",", header = TRUE, na.strings = "")
-LRC2 <- na.omit(read.table("LRC2_clean.csv", sep = ",", header = TRUE, na.strings = ""))
+ACI1 <- read.table("A-Ci1_clean.csv", sep = ",", header = TRUE, na.strings = "")
+LRC2 <- read.table("LRC2_clean.csv", sep = ",", header = TRUE, na.strings = "")
+# ACI2 <- read.table("A-Ci2_clean.csv", sep = ",", header = TRUE, na.strings = "")
 ACI1_F <- na.omit(read.table("A-Ci1-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
 ACI2_F <- na.omit(read.table("A-Ci2-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
 
@@ -492,23 +494,23 @@ CO2_grouped_full <- groupedData(Photosynthesis ~ 1 | ID,
 )
 
 
-# Indices for subgroups
-select_A1_full <- total_data$TREATMENT == "A1"
-select_A2_full <- total_data$TREATMENT == "A2"
-
-select_A1_AD_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AD"))
-select_A1_AB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AB"))
-select_A1_ADAB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "ADAB"))
-
-select_A2_AD_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AD"))
-select_A2_AB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AB"))
-select_A2_ADAB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "ADAB"))
-
-select_CO2_full <- total_data$Response == "CO2"
-select_light_full <- total_data$Response == "light"
-
-select_O_2 <- total_data$O == 20
-select_O_21 <- total_data$O == 210
+# # Indices for subgroups
+# select_A1_full <- total_data$TREATMENT == "A1"
+# select_A2_full <- total_data$TREATMENT == "A2"
+# 
+# select_A1_AD_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AD"))
+# select_A1_AB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "AB"))
+# select_A1_ADAB_full <- as.logical((total_data$TREATMENT == "A1") * (total_data$SIDE == "ADAB"))
+# 
+# select_A2_AD_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AD"))
+# select_A2_AB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "AB"))
+# select_A2_ADAB_full <- as.logical((total_data$TREATMENT == "A2") * (total_data$SIDE == "ADAB"))
+# 
+# select_CO2_full <- total_data$Response == "CO2"
+# select_light_full <- total_data$Response == "light"
+# 
+# select_O_2 <- total_data$O == 20
+# select_O_21 <- total_data$O == 210
 
 # --- NLS ----------------------------------------------------------------------
 names(combined_data)
@@ -607,330 +609,7 @@ model2_coef %<>%
 g(Vcmax1, Jmax1, alpha1, theta1, Rd1) %=% model1_coef[1, ]
 g(Vcmax2, Jmax2, alpha2, theta2, Rd2) %=% model2_coef[1, ]
 
-
-
-#
-# # Grid search (kind of) for NLS in ACI1 data for each treatment effect
-# nls_aci1 <- NULL
-# for (V_cmax_0 in c(50, 70, 90, 120, 200, 500, 1000)) {
-#   for (J_max_0 in c(50, 100, 120, 200, 500, 800, 1000)) {
-#     for (R_d_0 in c(1:5)) {
-#       for (theta_0 in c(0.5, 1.0, 1.5, 2.0)) {
-#         nls_aci1 <- attempt::try_catch(
-#           expr = nls(y ~
-#           FvCB(
-#             Cc,
-#             PAR,
-#             Gstar,
-#             Kc,
-#             Ko,
-#             O,
-#             Vcmax,
-#             Jmax,
-#             1.0,
-#             theta,
-#             Rd
-#           ),
-#           data = combined_data,
-#           subset = select_A1,
-#           start = list(
-#             Vcmax = V_cmax_0,
-#             Jmax = J_max_0,
-#             Rd = R_d_0,
-#             theta = theta_0 # ,
-#             # alpha = alpha_initial
-#           ),
-#           control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-10)
-#           ),
-#           .e = function(a) return(NULL),
-#           .w = function(a) return(NULL)
-#         )
-#         if (!is.null(nls_aci1)) {
-#           print(paste(
-#             "SUCCESS!!! Vcmax:", V_cmax_0,
-#             "Jmax:", J_max_0,
-#             "Rd:", R_d_0,
-#             "theta:", theta_0
-#           ))
-#           Vc_work <- V_cmax_0
-#           J_work <- J_max_0
-#           break
-#         } else {
-#           print(paste(
-#             "Failed. Vcmax:", V_cmax_0,
-#             "Jmax:", J_max_0,
-#             "Rd:", R_d_0,
-#             "theta:", theta_0
-#           ))
-#         }
-#       }
-#     }
-#   }
-# }
-
-# --- NLS SIDE & TREATMENT -----------------------------------------------------
-
-# Does not run
-nls_A1_AB <- nls(Photosynthesis ~
-                   FvCB(
-                     Ci,
-                     PAR,
-                     Gstar,
-                     Kc,
-                     Ko,
-                     O,
-                     Vcmax,
-                     Jmax,
-                     alpha,
-                     theta,
-                     Rd
-                   ),
-                 data = combined_data,
-                 subset = select_A1_AB,
-                 start = list(
-                   Vcmax = Vcmax1, # with initial estimates still hit singular gradient
-                   Jmax = Jmax1,
-                   Rd = Rd1,
-                   theta = theta1,
-                   alpha = alpha1
-                 ),
-                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
-)
-
-# Runs
-nls_A1_AD <- nls(Photosynthesis ~
-                   FvCB(
-                     Ci,
-                     PAR,
-                     Gstar,
-                     Kc,
-                     Ko,
-                     O,
-                     Vcmax,
-                     Jmax,
-                     alpha,
-                     theta,
-                     Rd
-                   ),
-                 data = combined_data,
-                 subset = select_A1_AD,
-                 start = list(
-                   Vcmax = Vcmax_initial,
-                   Jmax = Jmax_initial,
-                   Rd = Rd_initial,
-                   theta = theta_initial,
-                   alpha = alpha_initial
-                 ),
-                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
-)
-
-# Does not run (A1 ADAB does not exist)
-nls_A1_ADAB <- nls(Photosynthesis ~
-                     FvCB(
-                       Ci,
-                       PAR,
-                       Gstar,
-                       Kc,
-                       Ko,
-                       O,
-                       Vcmax,
-                       Jmax,
-                       alpha,
-                       theta,
-                       Rd
-                     ),
-                   data = combined_data,
-                   subset = select_A1_ADAB,
-                   start = list(
-                     Vcmax = Vcmax_initial,
-                     Jmax = Jmax_initial,
-                     Rd = Rd_initial,
-                     theta = theta_initial,
-                     alpha = alpha_initial
-                   ),
-                   control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
-)
-
-# Runs
-nls_A2_AB <- nls(Photosynthesis ~
-                   FvCB(
-                     Ci,
-                     PAR,
-                     Gstar,
-                     Kc,
-                     Ko,
-                     O,
-                     Vcmax,
-                     Jmax,
-                     alpha,
-                     theta,
-                     Rd
-                   ),
-                 data = combined_data,
-                 subset = select_A2_AB,
-                 start = list(
-                   Vcmax = Vcmax_initial,
-                   Jmax = Jmax_initial,
-                   Rd = Rd_initial,
-                   theta = theta_initial,
-                   alpha = alpha_initial
-                 ),
-                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
-)
-
-# Runs
-nls_A2_AD <- nls(Photosynthesis ~
-                   FvCB(
-                     Ci,
-                     PAR,
-                     Gstar,
-                     Kc,
-                     Ko,
-                     O,
-                     Vcmax,
-                     Jmax,
-                     alpha,
-                     theta,
-                     Rd
-                   ),
-                 data = combined_data,
-                 subset = select_A2_AD,
-                 start = list(
-                   Vcmax = Vcmax_initial,
-                   Jmax = Jmax_initial,
-                   Rd = Rd_initial,
-                   theta = theta_initial,
-                   alpha = alpha_initial
-                 ),
-                 control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
-)
-
-# Does not run
-nls_A2_ADAB <- nls(Photosynthesis ~
-                     FvCB(
-                       Ci,
-                       PAR,
-                       Gstar,
-                       Kc,
-                       Ko,
-                       O,
-                       Vcmax,
-                       Jmax,
-                       alpha,
-                       theta,
-                       Rd
-                     ),
-                   data = combined_data,
-                   subset = select_A2_ADAB,
-                   start = list(
-                     Vcmax = Vcmax_initial,
-                     Jmax = Jmax_initial,
-                     Rd = Rd_initial,
-                     theta = theta_initial,
-                     alpha = alpha_initial
-                   ),
-                   control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
-)
-
-
-
-nls_A1_AD
-nls_A2_AB
-nls_A2_AD
-
-nls_A1_AD_coef <- summary(nls_A1_AD)$coefficients
-nls_A2_AB_coef <- summary(nls_A2_AB)$coefficients
-nls_A2_AD_coef <- summary(nls_A2_AD)$coefficients
-
-comparison_nls_side <- bind_rows(
-  as.data.frame(nls_A1_AD_coef),
-  as.data.frame(nls_A2_AB_coef),
-  as.data.frame(nls_A2_AD_coef)
-)
-
-comparison_nls_side$Feature <- c(
-  rownames(nls_A1_AD_coef),
-  rownames(nls_A2_AB_coef),
-  rownames(nls_A2_AD_coef)
-)
-
-comparison_nls_side$Treatment <- factor(c(
-  rep("A1", nrow(nls_A1_AD_coef)),
-  rep("A2", nrow(nls_A2_AB_coef)),
-  rep("A2", nrow(nls_A2_AD_coef))
-),
-level = c("A1", "A2")
-)
-
-comparison_nls_side$Side <- factor(c(
-  rep("AD", nrow(nls_A1_AD_coef)),
-  rep("AB", nrow(nls_A2_AB_coef)),
-  rep("AD", nrow(nls_A2_AD_coef))
-),
-level = c("AB", "AD")
-)
-
-comparison_nls_side_plot <- comparison_nls_side %>%
-  mutate(Std_error = `Std. Error`) %>%
-  select(Estimate, Std_error, Feature, Treatment, Side)
-
-ggplot(comparison_nls_side_plot, aes(x = Feature, color = Treatment)) +
-  geom_errorbar(aes(ymax = Estimate + Std_error, ymin = Estimate - Std_error),
-                position = "dodge"
-  ) +
-  labs(
-    title = "NLS model estimate",
-    y = "Value", x = "Parameters"
-  )
-
-more_comparison <- comparison_nls_plot
-more_comparison$Side <- "All"
-
-more_comparison$Side <- add_level(more_comparison$Side, "AD")
-more_comparison$Side <- add_level(more_comparison$Side, "AB")
-
-more_comparison <- bind_rows(more_comparison, comparison_nls_side_plot)
-
-ggplot(more_comparison, aes(x = Feature, color = Side)) +
-  geom_errorbar(aes(ymax = Estimate + Std_error, ymin = Estimate - Std_error),
-                position = "dodge"
-  ) +
-  facet_wrap(~Treatment, ncol = 2) +
-  labs(
-    title = "NLS model estimate",
-    y = "Value", x = "Parameters"
-  )
-
-# --- NLME ---------------------------------------------------------------------
-
-model_1 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
-random = pdDiag(list(Vcmax ~ SIDE, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
-start = c(
-  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
-  Jmax = c(Jmax1, Jmax1 - Jmax2),
-  Rd = c(Rd1, 0),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 25
-)
-)
+# === NLME example =============================================================
 
 model_2 <- nlme(Photosynthesis ~ FvCB(
   Ci,
@@ -1075,834 +754,6 @@ start = c(
 control = list(
   maxIter = 250, msVerbose = F, tolerance = 1e-3, msMaxIter = 250,
   pnlsTol = 1e-10, pnlsMaxIter = 50
-)
-)
-
-# === Back to NLME =============================================================
-
-
-model_2b <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(
-  Vcmax ~ 1,
-  Jmax ~ 1,
-  Rd ~ 1,
-  alpha ~ 1,
-  theta ~ 1
-),
-random = pdDiag(list(
-  Vcmax ~ TREATMENT / SIDE,
-  Jmax ~ TREATMENT / SIDE,
-  Rd ~ SIDE,
-  alpha ~ TREATMENT / SIDE,
-  theta ~ TREATMENT / SIDE
-)),
-start = c(
-  Vcmax = c(Vcmax1),
-  Jmax = c(Jmax1),
-  Rd = c(Rd1),
-  alpha = c(alpha1),
-  theta = c(theta1)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 50
-)
-)
-
-model_3 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
-random = Vcmax + Jmax + Rd + alpha + theta ~ 1,
-start = c(
-  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
-  Jmax = c(Jmax1, Jmax1 - Jmax2),
-  Rd = c(Rd1, 0),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = F, tolerance = 1e-1, msMaxIter = 100,
-  pnlsTol = 1e-10, pnlsMaxIter = 25
-)
-)
-
-# Try using output from model 2 with Rd independent of treatment
-model_2_fixed_out <- fixed.effects(model_2)
-
-model_4 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ 1, alpha ~ TREATMENT, theta ~ TREATMENT),
-random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
-start = c(
-  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
-  Jmax = c(Jmax1, Jmax1 - Jmax2),
-  Rd = c(Rd1),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 50
-)
-)
-
-# === Try SIDE rather than TREATMENT ===========================================
-
-factorC <- with(CO2_grouped, interaction(TREATMENT, SIDE))
-unique(factorC)
-
-model_5 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(
-  Vcmax ~ TREATMENT / SIDE,
-  Jmax ~ TREATMENT / SIDE,
-  Rd ~ SIDE,
-  alpha ~ TREATMENT / SIDE,
-  theta ~ TREATMENT / SIDE
-),
-random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
-start = c(
-  Vcmax = c(Vcmax1, 0, 0, -30, -30, -30),
-  Jmax = c(Jmax1, 0, 0, -10, -10, -10),
-  Rd = c(Rd1, 0, 0),
-  alpha = c(alpha1, 0, 0, 0, 0, 0),
-  theta = c(theta1, 0, 0, 0, 0, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 50
-)
-)
-
-model_6 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(
-  Vcmax ~ TREATMENT / SIDE,
-  Jmax ~ TREATMENT / SIDE,
-  Rd ~ SIDE,
-  alpha ~ TREATMENT / SIDE,
-  theta ~ TREATMENT / SIDE
-),
-random = pdDiag(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
-start = c(
-  Vcmax = c(Vcmax1, 0, 0, -30, -30, -30),
-  Jmax = c(Jmax1, 0, 0, -10, -10, -10),
-  Rd = c(Rd1, 0, 0),
-  alpha = c(alpha1, 0, 0, 0, 0, 0),
-  theta = c(theta1, 0, 0, 0, 0, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 50
-)
-)
-
-model_7 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(
-  Vcmax ~ TREATMENT / SIDE,
-  Jmax ~ TREATMENT / SIDE,
-  Rd ~ SIDE,
-  alpha ~ TREATMENT / SIDE,
-  theta ~ TREATMENT / SIDE
-),
-random = Vcmax + Jmax + Rd + alpha + theta ~ 1,
-start = c(
-  Vcmax = c(Vcmax1, 0, 0, -30, -30, -30),
-  Jmax = c(Jmax1, 0, 0, -10, -10, -10),
-  Rd = c(Rd1, 0, 0),
-  alpha = c(alpha1, 0, 0, 0, 0, 0),
-  theta = c(theta1, 0, 0, 0, 0, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 150
-)
-)
-
-model_8 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(
-  Vcmax ~ TREATMENT / SIDE,
-  Jmax ~ TREATMENT / SIDE,
-  Rd ~ SIDE,
-  alpha ~ TREATMENT,
-  theta ~ TREATMENT
-),
-random = Vcmax + Jmax + Rd + alpha + theta ~ 1,
-start = c(
-  Vcmax = c(Vcmax1, 0, 0, -30, -30, -30),
-  Jmax = c(Jmax1, 0, 0, -10, -10, -10),
-  Rd = c(Rd1, 0, 0),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 150
-)
-)
-
-model_9 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(
-  Vcmax ~ TREATMENT / SIDE,
-  Jmax ~ TREATMENT / SIDE,
-  Rd ~ 1,
-  alpha ~ TREATMENT,
-  theta ~ TREATMENT
-),
-random = Vcmax + Jmax + Rd + alpha + theta ~ 1,
-start = c(
-  Vcmax = c(Vcmax1, 0, 0, -30, -30, -30),
-  Jmax = c(Jmax1, 0, 0, -10, -10, -10),
-  Rd = c(Rd1),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 150
-)
-)
-
-model_10 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(
-  Vcmax ~ TREATMENT / SIDE,
-  Jmax ~ TREATMENT,
-  Rd ~ SIDE,
-  alpha ~ TREATMENT,
-  theta ~ TREATMENT
-),
-random = Vcmax + Jmax + Rd + alpha + theta ~ 1,
-start = c(
-  Vcmax = c(Vcmax1, 0, 0, -30, -30, -30),
-  Jmax = c(Jmax1, 20),
-  Rd = c(Rd1, 0, 0),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 150
-)
-)
-# === Try subsetting ===========================================================
-
-
-# Try subsetting
-
-model_A1_AD <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1),
-random = Vcmax + Jmax + Rd + alpha + theta ~ 1,
-start = c(
-  Vcmax = c(Vcmax1),
-  Jmax = c(Jmax1),
-  Rd = c(Rd1),
-  alpha = c(alpha1),
-  theta = c(theta1)
-),
-subset = select_A1_AD,
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-5, msMaxIter = 100,
-  pnlsTol = 1e-10, pnlsMaxIter = 25
-)
-)
-
-# Try constant theta and alpha
-
-# Try fixed ~ 1
-model_const_ath <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  0.9654839,
-  -0.213539,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1),
-random = Vcmax + Jmax + Rd ~ 1,
-start = c(
-  Vcmax = c(Vcmax1),
-  Jmax = c(Jmax1),
-  Rd = c(Rd1)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-5, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 25
-)
-)
-
-summary(model_const_ath)
-
-model_const_ath_TREAT <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  0.9654839,
-  -0.213539,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ 1),
-random = Vcmax + Jmax + Rd ~ 1,
-start = c(
-  Vcmax = c(51.42175, 0),
-  Jmax = c(96.39980, 0),
-  Rd = c(2.80716)
-),
-control = list(
-  maxIter = 1000, msVerbose = T, tolerance = 1e-3, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 25
-)
-)
-
-const_ath_Diag <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  0.9654839,
-  -0.213539,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1),
-random = pdDiag(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1)),
-start = c(
-  Vcmax = 51.42175,
-  Jmax = 96.39980,
-  Rd = 2.80716
-),
-# subset = select_A1,
-control = list(
-  maxIter = 1000, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-200, pnlsMaxIter = 50
-)
-)
-
-# # Causes crashing if subsetting used
-const_ath_symm <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  0.9654839,
-  -0.213539,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1),
-random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1)),
-start = c(
-  Vcmax = 51.42175,
-  Jmax = 96.39980,
-  Rd = 2.80716
-),
-# subset = select_A1,
-control = list(
-  maxIter = 1000, msVerbose = F, tolerance = 1e-2, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 150
-)
-)
-
-# Causes crashing on my laptop
-const_ath_symm <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  0.9654839,
-  -0.213539,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ 1),
-random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1)),
-start = c(
-  Vcmax = c(51.421725, 10),
-  Jmax = c(96.399792, 10),
-  Rd = 2.807155
-),
-control = list(
-  maxIter = 1000, msVerbose = T, tolerance = 1e-2, msMaxIter = 250,
-  pnlsTol = 1e-20, pnlsMaxIter = 150
-)
-)
-
-
-# # Grid search for NLME
-# output <- list()
-# num_successes <- 0
-# nlme_aci1 <- NULL
-# for (V_cmax_0 in c(70, 90, 120, 150, 250)) {
-#   for (J_max_0 in c(50, 100, 120, 250, 500)) {
-#     for (R_d_0 in c(1.0, 2.0)) {
-#       for (V_cmax_ratio in c(0, 0.25, 0.50, 0.75, -0.25, -0.5, -0.75)) {
-#         for (J_max_ratio in c(0, 0.25, 0.50, 0.75, -0.25, -0.5, -0.75)) {
-#           nlme_aci1 <- attempt::try_catch(
-#             expr = nlme(Photosynthesis ~ FvCB(
-#               Ci,
-#               PAR,
-#               Gstar,
-#               Kc,
-#               Ko,
-#               O,
-#               Vcmax,
-#               Jmax,
-#               1.0,
-#               0.7,
-#               Rd
-#             ),
-#             data = CO2_grouped,
-#             fixed = list(Vcmax ~ TREAT, Jmax ~ TREAT, Rd ~ TREAT),
-#             random = pdSymm(list(Vcmax ~ SIDE, Jmax ~ 1, Rd ~ 1)),
-#             start = c(
-#               Vcmax = c(V_cmax_0, V_cmax_0 * V_cmax_ratio),
-#               Jmax = c(J_max_0, J_max_0 * J_max_ratio),
-#               Rd = c(R_d_0, 0)
-#             ),
-#             control = list(maxIter = 250, msVerbose = F, tolerance = 1e-4)
-#             ),
-#             .e = function(a) return(NULL),
-#             .w = function(a) return(NULL)
-#           )
-#           if (!is.null(nlme_aci1)) {
-#             print(paste(
-#               "SUCCESS!!! Vcmax:", V_cmax_0,
-#               "Jmax:", J_max_0,
-#               "Rd:", R_d_0
-#             ))
-#             num_successes <- num_successes + 1
-#             level_name <- paste0("model_", num_successes)
-#             output[[level_name]] <- list()
-#             output[[level_name]]$model <- nlme_aci1
-#             output[[level_name]]$V_cmax <- V_cmax_0
-#             output[[level_name]]$J_max <- J_max_0
-#             output[[level_name]]$Rd <- R_d_0
-#             output[[level_name]]$V_ratio <- V_cmax_ratio
-#             output[[level_name]]$J_ratio <- J_max_ratio
-#             # Vc_work <- V_cmax_0
-#             # J_work <- J_max_0
-#             # break
-#           } else {
-#             print(paste(
-#               "Failed. Vcmax:", V_cmax_0,
-#               "Jmax:", J_max_0,
-#               "Rd:", R_d_0
-#             ))
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
-#
-# ggplot(data = LRC_test[LRC_test$ID == 1, ], aes(x = Ci, y = Photosynthesis)) +
-#   geom_point() +
-#   geom_point(aes(x = Cc, y = FvCB), colour = "blue")
-#
-# CO2light
-#
-#
-#
-# nls.all <- nls(y ~ FvCB2(x1, x2, PAR, Vcmax, Jmax, alpha, theta, Rd),
-#   data = LRC1,
-#   start = list(
-#     Vcmax = 76.8, Jmax = 100, alpha = 0.5, theta = -0.8, Rd = 1.4
-#     # Vm.d = 20, Jm.d = 300, al.d = 0, th.d = -1, Rd.d = -0.3
-#   ),
-#   control = list(maxiter = 250, minFactor = 0.000001, printEval = T, tol = 1e-04)
-# )
-
-# === NLME with full data ======================================================
-
-full_model_1 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped_full,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
-random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
-start = c(
-  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
-  Jmax = c(Jmax1, Jmax1 - Jmax2),
-  Rd = c(Rd1, 0),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = T, tolerance = 1e-1, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 50
-)
-)
-
-# === Model 1 investigation ====================================================
-
-full_model_1_sum <- summary(full_model_1)
-
-
-nlme_full_1_fixed <- full_model_1_sum$tTable
-nlme_full_1_random <- summary(full_model_1)$coefficients$random
-
-# Compare estimates for Treatments
-fixed_comparison <- as.data.frame(nlme_full_1_fixed)
-fixed_comparison$Feature <- rownames(fixed_comparison)
-fixed_comparison$Feature <- c(
-  rep("Vcmax", 2),
-  rep("Jmax", 2),
-  rep("Rd", 2),
-  rep("alpha", 2),
-  rep("theta", 2)
-)
-
-fixed_comparison$Treatment <- rep(c("A1", "A2"), nrow(fixed_comparison) / 2)
-
-
-comparison_nlme_plot <- fixed_comparison %>%
-  mutate(Estimate = ifelse(Treatment == "A1", Value, lag(Value) + Value))
-# select(Estimate, Std_error, Feature, Treatment)
-
-ggplot(comparison_nlme_plot, aes(x = Feature, colour = Treatment)) +
-  geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
-                position = "dodge"
-  ) +
-  labs(
-    title = "NLME model estimate",
-    y = "Value", x = "Parameters"
-  )
-
-full_model_1_precision <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped_full,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, Rd ~ TREATMENT, alpha ~ TREATMENT, theta ~ TREATMENT),
-random = pdSymm(list(Vcmax ~ 1, Jmax ~ 1, Rd ~ 1, alpha ~ 1, theta ~ 1)),
-start = c(
-  Vcmax = c(Vcmax1, Vcmax1 - Vcmax2),
-  Jmax = c(Jmax1, Jmax1 - Jmax2),
-  Rd = c(Rd1, 0),
-  alpha = c(alpha1, 0),
-  theta = c(theta1, 0)
-),
-control = list(
-  maxIter = 250, msVerbose = F, tolerance = 1e-3, msMaxIter = 250,
-  pnlsTol = 1e-10, pnlsMaxIter = 50
-)
-)
-
-
-# === Upper and lower bounds ===================================================
-
-model_34 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, alpha ~ 1, theta ~ 1, Rd ~ 1),
-random = pdDiag(list(Vcmax ~ ID, Jmax ~ ID)),
-start = c(
-  Vcmax = c(Vcmax1, -(Vcmax1 - Vcmax2)),
-  Jmax = c(Jmax1, -(Jmax1 - Jmax2)),
-  alpha = 0.8,
-  theta = 1.5,
-  Rd = -0.51
-),
-subset = select_AD,
-control = nlmeControl(
-  opt = "nlminb",
-  upper = c(
-    Vcmax = c(200, 200),
-    Jmax = c(300, 300),
-    alpha = 2,
-    theta = 2,
-    Rd = 3
-  ),
-  lower = c(
-    Vcmax = c(0, 0),
-    Jmax = c(0, 0),
-    alpha = 0,
-    theta = 0,
-    Rd = -2
-  ),
-  maxIter = 250,
-  msVerbose = F,
-  tolerance = 1e-2,
-  msMaxIter = 250,
-  pnlsTol = 1e-10,
-  pnlsMaxIter = 50
-)
-)
-
-model_35 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, alpha ~ 1, theta ~ 1, Rd ~ 1),
-random = pdDiag(list(Vcmax ~ ID, Jmax ~ ID)),
-start = c(
-  Vcmax = c(Vcmax1, -(Vcmax1 - Vcmax2)),
-  Jmax = c(Jmax1, -(Jmax1 - Jmax2)),
-  alpha = 0.8,
-  theta = 1.5,
-  Rd = -0.51
-),
-subset = select_AB,
-control = nlmeControl(
-  opt = "nlminb",
-  upper = c(
-    Vcmax = c(200, 200),
-    Jmax = c(300, 300),
-    alpha = 2,
-    theta = 2,
-    Rd = 3
-  ),
-  lower = c(
-    Vcmax = c(0, 0),
-    Jmax = c(0, 0),
-    alpha = 0,
-    theta = 0,
-    Rd = -2
-  ),
-  maxIter = 250,
-  msVerbose = F,
-  tolerance = 1e-2,
-  msMaxIter = 250,
-  pnlsTol = 1e-10,
-  pnlsMaxIter = 50
-)
-)
-
-model_35 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  Jmax,
-  alpha,
-  theta,
-  Rd
-),
-data = CO2_grouped,
-fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, alpha ~ 1, theta ~ 1, Rd ~ 1),
-random = pdDiag(list(Vcmax ~ ID, Jmax ~ ID)),
-start = c(
-  Vcmax = c(Vcmax1, -(Vcmax1 - Vcmax2)),
-  Jmax = c(Jmax1, -(Jmax1 - Jmax2)),
-  alpha = 0.8,
-  theta = 1.5,
-  Rd = -0.51
-),
-subset = select_AB,
-control = nlmeControl(
-  opt = "nlminb",
-  upper = c(
-    Vcmax = c(200, 200),
-    Jmax = c(300, 300),
-    alpha = 2,
-    theta = 2,
-    Rd = 3
-  ),
-  lower = c(
-    Vcmax = c(0, 0),
-    Jmax = c(0, 0),
-    alpha = 0,
-    theta = 0,
-    Rd = -2
-  ),
-  maxIter = 250,
-  msVerbose = F,
-  tolerance = 1e-2,
-  msMaxIter = 250,
-  pnlsTol = 1e-10,
-  pnlsMaxIter = 50
 )
 )
 
@@ -2255,6 +1106,12 @@ ACI1_RD <- ACI1_new %>%
   filter(ID != 1)
 
 names(ACI1_RD)
+unique(ACI1_RD$ID)
+
+unique(ACI2_new$ID)
+ACI2_2 <-ACI2_new %>% dplyr::filter(ID != 1) %>% na.omit()
+unique(ACI2_2$ID)
+
 new_data_sco <- calc_Sco(ACI1_RD, ACI2_2,
                          Ci_threshold = 200,
                          id_var = ID,
@@ -2270,7 +1127,32 @@ new_data_sco <- calc_Sco(ACI1_RD, ACI2_2,
                          )
 )
 
-elsummary(new_data_sco)
+ggplot2::ggplot(data = new_data_sco, aes(x = S_co)) +
+  geom_density() +
+  facet_wrap(~ID)
+
+sco_data <- new_data_sco %>% 
+  group_by(ID) %>%
+  filter(!(abs(S_co - median(S_co)) > 2*sd(S_co)))
+
+ggplot2::ggplot(data = sco_data, aes(x = S_co)) +
+  geom_density() +
+  facet_wrap(~ID)
+
+ggplot2::ggplot(data = sco_data, aes(y = S_co, group = ID)) +
+  geom_boxplot()
+
+sco_data_2 <- sco_data %>% 
+  group_by(ID) %>%
+  filter(!(abs(S_co - median(S_co)) > 2*sd(S_co)))
+
+ggplot2::ggplot(data = sco_data_2, aes(x = S_co)) +
+  geom_density() +
+  facet_wrap(~ID)
+
+ggplot2::ggplot(data = sco_data_2, aes(y = S_co, group = ID)) +
+  geom_boxplot()
+
 
 new_data_sco$S_co
 
@@ -2295,25 +1177,25 @@ names(ACI1_final)
 
 
 # Indices for subgroups
-select_A1 <- ACI1_final$TREAT == "A1"
-select_A2 <- ACI1_final$TREAT == "A2"
+select_A1 <- ACI1_final$TREATMENT == "A1"
+select_A2 <- ACI1_final$TREATMENT == "A2"
 
 select_AD <- ACI1_final$SIDE == "AD"
 select_AB <- ACI1_final$SIDE == "AB"
 select_ADAB <- ACI1_final$SIDE == "ADAB"
 
-select_A1_AD <- as.logical((ACI1_final$TREAT == "A1") * (ACI1_final$SIDE == "AD"))
-select_A1_AB <- as.logical((ACI1_final$TREAT == "A1") * (ACI1_final$SIDE == "AB"))
-select_A1_ADAB <- as.logical((ACI1_final$TREAT == "A1") * (ACI1_final$SIDE == "ADAB"))
+select_A1_AD <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "AD"))
+select_A1_AB <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "AB"))
+select_A1_ADAB <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "ADAB"))
 
-select_A2_AD <- as.logical((ACI1_final$TREAT == "A2") * (ACI1_final$SIDE == "AD"))
-select_A2_AB <- as.logical((ACI1_final$TREAT == "A2") * (ACI1_final$SIDE == "AB"))
-select_A2_ADAB <- as.logical((ACI1_final$TREAT == "A2") * (ACI1_final$SIDE == "ADAB"))
+select_A2_AD <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "AD"))
+select_A2_AB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "AB"))
+select_A2_ADAB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "ADAB"))
 
 
 grouped_ACI <- groupedData(Photosynthesis ~ 1 | ID,
-                           outer = ~TREAT, # !!random_effects[[n_random_effects]]
-                           inner = ~Ci + PAR + SIDE,
+                           outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
+                           inner = ~SIDE,
                            data = ACI1_final
 )
 
@@ -2329,12 +1211,12 @@ model_1 <- nlme(Photosynthesis ~ FvCB(
   Rd
 ),
 data = grouped_ACI,
-fixed = Vcmax ~ TREAT,
-random = pdSymm(Vcmax ~ ID),
+fixed = Vcmax ~ TREATMENT,
+random = pdSymm(Vcmax ~ ID %in% TREATMENT),
 start = c(
-  Vcmax = c(50, -20)
+  Vcmax = c(55, 20)
 ),
-subset = select_AD,
+# subset = select_AD,
 control = nlmeControl(
   opt = "nlminb",
   upper = c(
@@ -2344,11 +1226,12 @@ control = nlmeControl(
     Vcmax = c(0, 0)
   ),
   maxIter = 250,
-  msVerbose = T,
+  msVerbose = F,
   tolerance = 1e-2,
   msMaxIter = 250,
   pnlsTol = 1e-10,
-  pnlsMaxIter = 250
+  pnlsMaxIter = 250,
+  niterEM = 1000
 )
 )
 
