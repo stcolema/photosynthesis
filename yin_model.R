@@ -1159,14 +1159,6 @@ new_data_sco$S_co
 ACI1_RD <- dplyr::left_join(ACI1_new, out$coefficients, by = "ID")
 ACI1_with_j <- calc_J(ACI1_RD, lump_var = S, i_inc_var = PAR, phi_psII_var = PhiPS2)
 
-FvCB <- function(C_c, PAR, G_star, K_c, K_o, O, V_cmax, J, R_d) {
-  p1 <- Rubisco_limited(V_cmax, C_c, G_star, K_c, O, K_o, R_d)
-  # J <- non_rectangular_hyperbola(PAR, J_max, alpha, theta)
-  # p2 <- J * (C_c - G_star) / (4.5 * C_c  + 10.5 * G_star)
-  p2 <- RuBP_limited(J, C_c, G_star, R_d)
-  ifelse(p1 < p2, p1, p2)
-}
-
 
 ACI1_final <- na.omit(ACI1_with_j)
 ACI1_final %>% 
@@ -1176,6 +1168,7 @@ names(ACI1_final)
 
 
 
+ACI1_final <- ACI1_final %>% filter(ID != 1)
 # Indices for subgroups
 select_A1 <- ACI1_final$TREATMENT == "A1"
 select_A2 <- ACI1_final$TREATMENT == "A2"
@@ -1193,40 +1186,108 @@ select_A2_AB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == 
 select_A2_ADAB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "ADAB"))
 
 
+
 grouped_ACI <- groupedData(Photosynthesis ~ 1 | ID,
                            outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
                            inner = ~SIDE,
                            data = ACI1_final
 )
 
-model_1 <- nlme(Photosynthesis ~ FvCB(
-  Ci,
-  PAR,
-  Gstar,
-  Kc,
-  Ko,
-  O,
-  Vcmax,
-  J,
-  Rd
-),
+non_rectangular_hyperbola <- function(a, b, c){
+  (-b - (b ** 2 - 4 * a * c) ** 0.5) / 2 * a
+}
+
+yin_a <- function(x_2, C_i, G_star, delta){
+  x_2 + G_star + delta * (C_i + x_2)
+}
+
+yin_b <- function(x_1, x_2, C_i, G_star, R_d, g_mo, delta){
+  -((x_2 + G_star) * (x_1 - R_d) + (C_i + x_2)
+    * (g_mo * (x_2 + G_star) + delta * (x_1 - R_d))
+    + delta * (x_1 * (C_i - G_star) - R_d * (C_i +x_2)))
+}
+
+yin_c <- function(x_1, x_2, C_i, G_star, R_d, g_mo, delta){
+  c <- ((g_mo * (x_2 + G_star) + delta * (x_1 - R_d))
+       * (x_1 * (C_i - G_star) - R_d * (C_i + x_2)))
+  c
+}
+
+yin_FvCB_curves <- function(C_i, G_star, R_d, g_mo, delta, 
+                            A_c = TRUE,
+                            V_cmax = NULL, 
+                            K_c = NULL, 
+                            K_o = NULL,
+                            O = NULL,
+                            J = NULL){
+  if(A_c) {
+    if(any(sapply(list(V_cmax, K_c, K_o, O), is.null))) {
+      num_null <- sum(sapply(list(V_cmax, K_c, K_o, O), is.null))
+      stop(paste("Please give values for inputs.", 
+                 num_null, 
+                 " of V_cmax, K_c, K_o, and O are undeclared"
+                 )
+      )
+    }
+    x_1 <- V_cmax
+    x_2 <- K_c * (1 + O / K_o)
+  } else{
+    if(is.null(J)){
+      stop("Please declare J.")
+    }
+    x_1 <- J / 4
+    x_2 <- 2 * G_star
+  }
+  a <- yin_a(x_2, C_i, G_star, delta)
+  b <- yin_b(x_1, x_2, C_i, G_star, R_d, g_mo, delta)
+  c <- yin_c(x_1, x_2, C_i, G_star, R_d, g_mo, delta)
+  
+  non_rectangular_hyperbola(a, b, c)
+}
+
+FvCB <- function(C_i, G_star, R_d, g_mo, delta, K_c, K_o, O, V_cmax, J) {
+  p1 <- yin_FvCB_curves(C_i, G_star, R_d, g_mo, delta, 
+                                    A_c = TRUE,
+                                    V_cmax = V_cmax, 
+                                    K_c = K_c, 
+                                    K_o = K_o,
+                                    O = O)
+  p2 <- yin_FvCB_curves(C_i, G_star, R_d, g_mo, delta, 
+                        A_c = FALSE,
+                        J = J)
+  ifelse(p1 < p2, p1, p2)
+}
+
+nls_aci1 <- nls(Photosynthesis ~
+                  FvCB(Ci, Gstar, Rd, 0, 1.8, Kc, Ko, O, Vcmax, J),
+                data = ACI1_final,
+                subset = select_A1,
+                start = list(
+                  Vcmax = -1000
+                ),
+                control = list(maxiter = 250, minFactor = 1e-10, printEval = T, tol = 1e-6)
+)
+
+
+
+model_1 <- nlme(Photosynthesis ~ FvCB(Ci, Gstar, Rd, 0, 1.4, Kc, Ko, O, Vcmax, J),
 data = grouped_ACI,
 fixed = Vcmax ~ TREATMENT,
-random = pdSymm(Vcmax ~ ID %in% TREATMENT),
+random = pdDiag(Vcmax ~ ID), # add %in% TREATMENT?
 start = c(
-  Vcmax = c(55, 20)
+  Vcmax = c(55, 0)
 ),
-# subset = select_AD,
+subset = select_AD,
 control = nlmeControl(
   opt = "nlminb",
   upper = c(
-    Vcmax = c(200, 200)
+    Vcmax = c(300, 100)
   ),
   lower = c(
     Vcmax = c(0, 0)
   ),
   maxIter = 250,
-  msVerbose = F,
+  msVerbose = T,
   tolerance = 1e-2,
   msMaxIter = 250,
   pnlsTol = 1e-10,
@@ -1235,4 +1296,8 @@ control = nlmeControl(
 )
 )
 
+ggplot(data = ACI1_final[select_AD,], aes(x = Ci, y = Photosynthesis, colour = TREATMENT, shape = SIDE)) +
+  geom_point() +
+  geom_smooth() +
+  facet_wrap(~ID)
 
