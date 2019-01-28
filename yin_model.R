@@ -232,65 +232,63 @@ calc_s_rd <- function(LRC2, LRC2_F,
                       id_var = ID,
                       other_var_to_keep = NULL,
                       ...) {
-  # Enclose the ID variable
+  # Enclose the variables used to avoid use of strings and enable use of dplyr
   A <- rlang::enquo(A_param)
   phi <- rlang::enquo(phi_param)
   I <- rlang::enquo(i_inc_param)
   ID <- rlang::enquo(id_var)
   other_var_kept <- rlang::enquos(other_var_to_keep)
 
-  # print("giragge")
-  # Create the reduced, combined dataframe
-  # comb_data <- create_LRC2_combined(LRC2, LRC2_F,
-  #                                   LRC2_vars = c(A, other_var_kept, I, ID,),
-  #                                   LRC2_F_vars = c(phi, ID, other_var_kept)
-  # )
-  #
   # select the relevant subsets of the datasets
   LRC2_rel <- LRC2 %>%
     dplyr::select(!!!c(A, I, ID, other_var_kept))
-
+  
   LRC2_F_rel <- LRC2_F %>%
     dplyr::select(!!!c(phi, ID, other_var_kept))
-
-  # print("whos a good boy")
+  
   # combine the dataframes and add the variable that the regression is on
   comb_data <- dplyr::bind_cols(LRC2_rel, LRC2_F_rel)
+  
+  # Create the formula for LME
+  formula_to_use <- formula(substitute(~New_var | id_var))
 
-  # print("hihihi")
+  # Create the variable to perform regression upon
   comb_data <- comb_data %>%
     dplyr::mutate(New_var = 0.25 * !!phi * !!I)
-
-  # return(comb_data)
+  
   # Carry out regression using a mixed effects model
+  # Limit the intercept to being positive
   lme_s_rd <- nlme::lme(formula(substitute(A_param ~ New_var)),
     data = comb_data,
-    random = formula(substitute(~New_var | id_var)),
-    # lower=list((Intercept) = 0),
+    random = formula_to_use,
     ...
   )
 
   # Return the summary of the above model
   sum_lm_s_rd <- summary(lme_s_rd)
 
+  # Get the point estimates of the parameters for each individual
   fix <- sum_lm_s_rd$coefficients$fixed
   rand <- sum_lm_s_rd$coefficients$random[[1]]
 
+  # Add the fixed component to the individuals random component to acquire the
+  # parameters of interest
   Rd_ind <- rand[, 1] + fix[1]
   S_ind <- rand[, 2] + fix[2]
 
-  print(as.numeric(row.names(rand)))
-  print(Rd_ind)
+  # Put these parameters with their associated IDs in a dataframe for output
   ind_coef <- data.frame(
     ID = as.numeric(row.names(rand)),
     Rd = Rd_ind,
     S = S_ind
   )
 
+  # Include them in the dataset they were calculated in, assigining the values 
+  # to the associated individuals
   comb_data <- comb_data %>%
     dplyr::left_join(ind_coef, by = c("ID"))
 
-
+  # Return the data used, the model, its summary and the coefficient dataframe
   out <- list(
     data = comb_data,
     model = lme_s_rd,
@@ -905,7 +903,8 @@ out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
   i_inc_param = PAR,
   id_var = ID,
   other_var_to_keep = TREATMENT,
-  control = list(
+  control = lmeControl(
+    opt = "nlminb",
     maxIter = 1000,
     msMaxIter = 1000,
     msVerbose = F,
@@ -914,9 +913,31 @@ out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
     pnlsMaxIter = 500,
     niterEM = 1000,
     msMaxEval = 1000,
-    sing.tol = 1e-20
+    sing.tol = 1e-20,
+    lower = list(Intercept = 0)
   )
 )
+
+small_model <- nlme::lme(Photosynthesis ~ New_var,
+          data = out_AD$data,
+          random = ~New_var | TREATMENT,
+          control = lmeControl(
+            opt = "nlminb",
+            maxIter = 1000,
+            msMaxIter = 1000,
+            msVerbose = F,
+            tolerance = 1e-2,
+            pnlsTol = 1e-10,
+            pnlsMaxIter = 500,
+            niterEM = 1000,
+            msMaxEval = 1000,
+            sing.tol = 1e-20,
+            lower = list(Intercept = 0)
+          )
+)
+
+small_model$coefficients$fixed
+out_AD$model$coefficients$fixed
 
 LRC2_AB <- LRC2_new %>%
   dplyr::filter(SIDE == "AB", TREATMENT == "A1")
@@ -931,7 +952,8 @@ out_AB <- calc_s_rd(LRC2_AB, LRC2_F_AB,
   i_inc_param = PAR,
   id_var = ID,
   other_var_to_keep = TREATMENT,
-  control = list(
+  control = lmeControl(
+    opt = "nlminb",
     maxIter = 1000,
     msMaxIter = 1000,
     msVerbose = F,
@@ -940,19 +962,20 @@ out_AB <- calc_s_rd(LRC2_AB, LRC2_F_AB,
     pnlsMaxIter = 500,
     niterEM = 1000,
     msMaxEval = 1000,
-    sing.tol = 1e-20
+    sing.tol = 1e-20,
+    lower = list(Intercept = 0)
   )
 )
 
 
 LRC2_ADA2 <- LRC2_new %>%
   dplyr::filter(SIDE == "AD", TREATMENT == "A2")
-# dplyr::filter(ID != 1)
-
+# # dplyr::filter(ID != 1)
+# 
 LRC2_F_ADA2 <- LRC2_F_new %>%
   dplyr::filter(SIDE == "AD", TREATMENT == "A2") # %>%
 # dplyr::filter(ID != 1)
-
+# 
 out_ADA2 <- calc_s_rd(LRC2_ADA2, LRC2_F_ADA2,
   A_param = Photosynthesis,
   phi_param = PhiPS2,
@@ -968,10 +991,11 @@ out_ADA2 <- calc_s_rd(LRC2_ADA2, LRC2_F_ADA2,
     pnlsMaxIter = 500,
     niterEM = 1000,
     msMaxEval = 1000,
-    sing.tol = 1e-20
+    sing.tol = 1e-20,
+    lower = list(Intercept = 0)
   )
 )
-
+# 
 LRC2_ABA2 <- LRC2_new %>%
   dplyr::filter(SIDE == "AB", TREATMENT == "A2")
 
@@ -994,16 +1018,14 @@ out_ABA2 <- calc_s_rd(LRC2_ABA2, LRC2_F_ABA2,
     pnlsMaxIter = 500,
     niterEM = 1000,
     msMaxEval = 1000,
-    sing.tol = 1e-20
+    sing.tol = 1e-20,
+    lower = list(Intercept = 0)
   )
 )
 
 
-
-
-
-head(out_AD$data)
-head(out_AB$data)
+# head(out_AD$data)
+# head(out_AB$data)
 out_AB$data$SIDE <- "AB"
 out_AD$data$SIDE <- "AD"
 
@@ -1025,9 +1047,9 @@ ggplot(data = out_full, aes(y = S, x = SIDE, group = SIDE, colour = TREATMENT)) 
   facet_wrap(~ID) +
   geom_boxplot()
 
-ggplot(data = out_full, aes(y = Rd, x = ID, group = ID, colour = SIDE)) +
-  facet_wrap(~TREATMENT) +
-  geom_boxplot()
+# ggplot(data = out, aes(y = Rd, x = ID, group = ID, colour = SIDE)) +
+#   facet_wrap(~TREATMENT) +
+#   geom_boxplot()
 
 ggplot(data = out_full, aes(y = Rd, x = SIDE, group = SIDE, colour = TREATMENT)) +
   facet_wrap(~ID) +
@@ -1038,6 +1060,7 @@ xyplot(Photosynthesis ~ New_var | as.factor(ID),
   data = out
 )
 
+out_full %>% filter(TREATMENT == "A2", ID == 2)
 
 
 lme_lrc2_AD <- out_AD$model
@@ -1082,12 +1105,111 @@ ggplot2::ggplot(data = plot_data_AB, aes(x = New_var, y = Photosynthesis)) +
     y = "A"
   )
 
-# === Calculate J ==============================================================
-
+# Collect the data on the estimates of the parameters
 S_rd_coeff <- out_full %>%
   select(ID, S, Rd, TREATMENT, SIDE) %>%
   group_by(S, ID, Rd, TREATMENT, SIDE) %>%
   distinct(S)
+
+coef_est <- S_rd_coeff %>%
+  group_by(TREATMENT, SIDE) %>%
+  summarise(Rd_est = mean(Rd), S_est = mean(S), var_S = sd(S), var_Rd =sd(Rd))
+
+ggplot(coef_est, aes(x = SIDE, colour = TREATMENT)) +
+  geom_errorbar(aes(ymax = Rd_est + var_Rd, ymin = Rd_est - var_Rd),
+                position = "dodge"
+  ) +
+  labs(
+    title = "Estimate of Rd",
+    y = "Rd", 
+    x = "Side"
+  )
+
+ggplot(coef_est, aes(x = SIDE, colour = TREATMENT)) +
+  geom_errorbar(aes(ymax = S_est + var_S, ymin = S_est - var_S),
+                position = "dodge"
+  ) +
+  labs(
+    title = "Estimate of S",
+    y = "S", 
+    x = "Side"
+  )
+
+
+point_est_AD <- out_AD$model$coefficients$fixed %>% t() %>% as.data.frame()
+point_est_AD$SIDE <- "AD"
+point_est_AD$TREATMENT <- "A1"
+
+point_est_AB <- out_AB$model$coefficients$fixed %>% t() %>% as.data.frame()
+point_est_AB$SIDE <- "AB"
+point_est_AB$TREATMENT <- "A1"
+
+point_est_ADA2 <- out_ADA2$model$coefficients$fixed %>% t() %>% as.data.frame()
+point_est_ADA2$SIDE <- "AD"
+point_est_ADA2$TREATMENT <- "A2"
+
+point_est_ABA2 <- out_ABA2$model$coefficients$fixed %>% t() %>% as.data.frame()
+point_est_ABA2$SIDE <- "AB"
+point_est_ABA2$TREATMENT <- "A2"
+
+std_errors_AD <- diag(sqrt(out_AD$summary$varFix)) %>% t() %>% as.data.frame()
+std_errors_AD$SIDE <- "AD"
+std_errors_AD$TREATMENT <- "A1"
+
+std_errors_AB <- diag(sqrt(out_AB$summary$varFix)) %>% t() %>% as.data.frame()
+std_errors_AB$SIDE <- "AB"
+std_errors_AB$TREATMENT <- "A1"
+
+std_errors_ADA2 <- diag(sqrt(out_ADA2$summary$varFix)) %>% t() %>% as.data.frame()
+std_errors_ADA2$SIDE <- "AD"
+std_errors_ADA2$TREATMENT <- "A2"
+
+std_errors_ABA2 <- diag(sqrt(out_ABA2$summary$varFix)) %>% t() %>% as.data.frame()
+std_errors_ABA2$SIDE <- "AB"
+std_errors_ABA2$TREATMENT <- "A2"
+
+est_df <- bind_rows(point_est_AB, point_est_AD, point_est_ABA2, point_est_ADA2)
+est_df$Rd <- est_df$`(Intercept)`
+est_df$S <- est_df$New_var
+est_df <- est_df %>% 
+  select(SIDE, TREATMENT, Rd, S)
+
+error_df <- bind_rows(std_errors_AD, std_errors_AB, std_errors_ADA2, std_errors_ABA2) %>% 
+  mutate(S_error = New_var)
+error_df$Rd_error <- error_df$`(Intercept)`
+ 
+error_df <- dplyr::select(error_df, SIDE, TREATMENT, Rd_error, S_error)
+
+est_df <- est_df %>%
+  left_join(error_df, by = c("SIDE", "TREATMENT"))
+
+
+ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
+  geom_errorbar(aes(ymax = Rd + Rd_error, ymin = Rd - Rd_error),
+                position = "dodge"
+  ) +
+  labs(
+    title = "LME model estimate of Rd",
+    y = "Rd", x = "Side"
+  )
+
+ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
+  geom_errorbar(aes(ymax = S + S_error, ymin = S - S_error),
+                position = "dodge"
+  ) +
+  labs(
+    title = "LME model estimate of S",
+    y = "S", x = "Side"
+  )
+
+treat_data <- out_AD$data %>% 
+  group_by(ID, TREATMENT) %>% 
+  distinct(ID)
+
+rd_s_group_est <- bind_rows(point_est_AD, point_est_AB, point_est_ADA2, point_est_ABA2)
+
+
+# === Calculate J ==============================================================
 
 LRC2_F_newer <- LRC2_F_new %>%
   filter(SIDE != "ADAB")
@@ -1346,7 +1468,7 @@ ACI1_final <- calc_G_star(ACI1_final, S_co_value = 0.1 * S_co_est)
 
 ACI1_final <- calc_gm(ACI1_final, A_par = Photosynthesis, Ci_par = Ci, Rd_par = Rd)
 summary(ACI1_final)
-
+summary(ACI1_final$gm)
 gm_value_ACI1 <- mean(ACI1_final$gm[(ACI1_final$gm > 0.05) & (ACI1_final$gm < 1.0)])
 
 ACI1_final <- ACI1_final %>%
@@ -1388,16 +1510,16 @@ grouped_ACI <- groupedData(Photosynthesis ~ 1 | ID,
 )
 summary(ACI1_final)
 
-ggplot(data = ACI1_final, aes(y = J_est, x = ID, group = ID)) +
+ggplot(data = ACI1_final, aes(y = J_est, x = SIDE, group = SIDE, colour = TREATMENT)) +
   geom_boxplot() +
-  facet_wrap(~TREATMENT)
+  facet_wrap(~ID)
 
 grouped_ACI_1 <- grouped_ACI[grouped_ACI$ID == 3, ]
 x21 <- model.matrix(ID ~ TREATMENT, grouped_ACI)
 names(ACI1_final)
 
 # === NLS models ===============================================================
-nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, Ko, O, Vcmax, J, Rd),
+nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star, Kc, Ko, O, Vcmax, J, Rd),
                        data = ACI1_final,
                        subset = select_A1_AB,
                        start = c(
