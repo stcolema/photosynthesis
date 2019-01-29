@@ -242,20 +242,20 @@ calc_s_rd <- function(LRC2, LRC2_F,
   # select the relevant subsets of the datasets
   LRC2_rel <- LRC2 %>%
     dplyr::select(!!!c(A, I, ID, other_var_kept))
-  
+
   LRC2_F_rel <- LRC2_F %>%
     dplyr::select(!!!c(phi, ID, other_var_kept))
-  
+
   # combine the dataframes and add the variable that the regression is on
   comb_data <- dplyr::bind_cols(LRC2_rel, LRC2_F_rel)
-  
+
   # Create the formula for LME
   formula_to_use <- formula(substitute(~New_var | id_var))
 
   # Create the variable to perform regression upon
   comb_data <- comb_data %>%
     dplyr::mutate(New_var = 0.25 * !!phi * !!I)
-  
+
   # Carry out regression using a mixed effects model
   # Limit the intercept to being positive
   lme_s_rd <- nlme::lme(formula(substitute(A_param ~ New_var)),
@@ -283,7 +283,7 @@ calc_s_rd <- function(LRC2, LRC2_F,
     S = S_ind
   )
 
-  # Include them in the dataset they were calculated in, assigining the values 
+  # Include them in the dataset they were calculated in, assigining the values
   # to the associated individuals
   comb_data <- comb_data %>%
     dplyr::left_join(ind_coef, by = c("ID"))
@@ -375,11 +375,9 @@ calc_Sco <- function(ACI1, ACI2,
     coef_df <- coef_df %>%
       left_join(key, by = quo_name(ID))
   }
-  print(glimpse(coef_df))
-  print(names(coef_df)[1])
-  print(id_str)
+
   names(coef_df)[1] <- id_str
-  print("woof")
+
   # Want the same number of observations in both high and low
   n_h <- ACI1_lin %>%
     dplyr::group_by(!!ID) %>%
@@ -405,9 +403,6 @@ calc_Sco <- function(ACI1, ACI2,
   comb_data <- as.data.frame(matrix(nrow = 0, ncol = n_col))
   names(comb_data) <- unique(c(names(common_ci_data_h), names(common_ci_data_l)))
 
-  print(names(comb_data))
-  print(names(common_ci_data_h))
-  print(names(common_ci_data_l))
   # Make sure we have the same number of observations for each ID
   for (i in unlist(ind_present_l)) {
     # Find the number of observations for the individual in both datasets
@@ -446,7 +441,7 @@ calc_Sco <- function(ACI1, ACI2,
 
 calc_G_star <- function(data, O_par = O, S_co_value = 3.022) {
   O <- rlang::enquo(O_par)
-  data %>% dplyr::mutate(G_star = 0.5 * !!O * S_co_value)
+  data %>% dplyr::mutate(G_star = 0.5 * !!O / S_co_value)
 }
 
 
@@ -456,8 +451,8 @@ calc_gm <- function(data,
                     G_star_par = G_star,
                     J_par = J,
                     Rd_par = R_d,
-                    num_const = 2,
-                    J_div = 4) {
+                    num_const = 4,
+                    denom_const = 8) {
   A <- enquo(A_par)
   C_i <- enquo(Ci_par)
   G_star <- enquo(G_star_par)
@@ -466,8 +461,8 @@ calc_gm <- function(data,
   new_data <- data %>%
     dplyr::mutate(gm = !!A
     / (!!C_i -
-        (!!G_star * (!!J / J_div + num_const * (!!A + !!R_d))
-          / (!!J / J_div - (!!A + !!R_d)))
+        (!!G_star * (!!J + num_const * (!!A + !!R_d))
+          / (!!J - denom_const * (!!A + !!R_d)))
       ))
   new_data
 }
@@ -848,7 +843,8 @@ CO2_grouped_full <- groupedData(Photosynthesis ~ 1 | ID,
 
 # === Yin step out model =======================================================
 
-
+group_by_vars <- c("ID", "SIDE", "TREATMENT")
+group_by_var <- "ID"
 
 # Delete empty lines and any DIV/o errors - also empty column in LRC2
 LRC2 <- read.table("LRC2_clean.csv", sep = ",", header = TRUE, na.strings = "")
@@ -908,7 +904,7 @@ out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
     maxIter = 1000,
     msMaxIter = 1000,
     msVerbose = F,
-    tolerance = 1e-2,
+    tolerance = 1e-4,
     pnlsTol = 1e-10,
     pnlsMaxIter = 500,
     niterEM = 1000,
@@ -919,21 +915,21 @@ out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
 )
 
 small_model <- nlme::lme(Photosynthesis ~ New_var,
-          data = out_AD$data,
-          random = ~New_var | TREATMENT,
-          control = lmeControl(
-            opt = "nlminb",
-            maxIter = 1000,
-            msMaxIter = 1000,
-            msVerbose = F,
-            tolerance = 1e-2,
-            pnlsTol = 1e-10,
-            pnlsMaxIter = 500,
-            niterEM = 1000,
-            msMaxEval = 1000,
-            sing.tol = 1e-20,
-            lower = list(Intercept = 0)
-          )
+  data = out_AD$data,
+  random = ~New_var | TREATMENT,
+  control = lmeControl(
+    opt = "nlminb",
+    maxIter = 1000,
+    msMaxIter = 1000,
+    msVerbose = F,
+    tolerance = 1e-4,
+    pnlsTol = 1e-10,
+    pnlsMaxIter = 500,
+    niterEM = 1000,
+    msMaxEval = 1000,
+    sing.tol = 1e-20,
+    lower = list(Intercept = 0)
+  )
 )
 
 small_model$coefficients$fixed
@@ -957,7 +953,7 @@ out_AB <- calc_s_rd(LRC2_AB, LRC2_F_AB,
     maxIter = 1000,
     msMaxIter = 1000,
     msVerbose = F,
-    tolerance = 1e-2,
+    tolerance = 1e-4,
     pnlsTol = 1e-10,
     pnlsMaxIter = 500,
     niterEM = 1000,
@@ -971,11 +967,11 @@ out_AB <- calc_s_rd(LRC2_AB, LRC2_F_AB,
 LRC2_ADA2 <- LRC2_new %>%
   dplyr::filter(SIDE == "AD", TREATMENT == "A2")
 # # dplyr::filter(ID != 1)
-# 
+#
 LRC2_F_ADA2 <- LRC2_F_new %>%
   dplyr::filter(SIDE == "AD", TREATMENT == "A2") # %>%
 # dplyr::filter(ID != 1)
-# 
+#
 out_ADA2 <- calc_s_rd(LRC2_ADA2, LRC2_F_ADA2,
   A_param = Photosynthesis,
   phi_param = PhiPS2,
@@ -986,7 +982,7 @@ out_ADA2 <- calc_s_rd(LRC2_ADA2, LRC2_F_ADA2,
     maxIter = 1000,
     msMaxIter = 1000,
     msVerbose = F,
-    tolerance = 1e-2,
+    tolerance = 1e-4,
     pnlsTol = 1e-10,
     pnlsMaxIter = 500,
     niterEM = 1000,
@@ -995,7 +991,7 @@ out_ADA2 <- calc_s_rd(LRC2_ADA2, LRC2_F_ADA2,
     lower = list(Intercept = 0)
   )
 )
-# 
+#
 LRC2_ABA2 <- LRC2_new %>%
   dplyr::filter(SIDE == "AB", TREATMENT == "A2")
 
@@ -1013,7 +1009,7 @@ out_ABA2 <- calc_s_rd(LRC2_ABA2, LRC2_F_ABA2,
     maxIter = 1000,
     msMaxIter = 1000,
     msVerbose = F,
-    tolerance = 1e-2,
+    tolerance = 1e-4,
     pnlsTol = 1e-10,
     pnlsMaxIter = 500,
     niterEM = 1000,
@@ -1059,6 +1055,7 @@ xyplot(Photosynthesis ~ New_var | as.factor(ID),
   group = as.factor(ID),
   data = out
 )
+
 
 out_full %>% filter(TREATMENT == "A2", ID == 2)
 
@@ -1113,25 +1110,25 @@ S_rd_coeff <- out_full %>%
 
 coef_est <- S_rd_coeff %>%
   group_by(TREATMENT, SIDE) %>%
-  summarise(Rd_est = mean(Rd), S_est = mean(S), var_S = sd(S), var_Rd =sd(Rd))
+  summarise(Rd_est = mean(Rd), S_est = mean(S), var_S = sd(S), var_Rd = sd(Rd))
 
 ggplot(coef_est, aes(x = SIDE, colour = TREATMENT)) +
   geom_errorbar(aes(ymax = Rd_est + var_Rd, ymin = Rd_est - var_Rd),
-                position = "dodge"
+    position = "dodge"
   ) +
   labs(
     title = "Estimate of Rd",
-    y = "Rd", 
+    y = "Rd",
     x = "Side"
   )
 
 ggplot(coef_est, aes(x = SIDE, colour = TREATMENT)) +
   geom_errorbar(aes(ymax = S_est + var_S, ymin = S_est - var_S),
-                position = "dodge"
+    position = "dodge"
   ) +
   labs(
     title = "Estimate of S",
-    y = "S", 
+    y = "S",
     x = "Side"
   )
 
@@ -1171,13 +1168,13 @@ std_errors_ABA2$TREATMENT <- "A2"
 est_df <- bind_rows(point_est_AB, point_est_AD, point_est_ABA2, point_est_ADA2)
 est_df$Rd <- est_df$`(Intercept)`
 est_df$S <- est_df$New_var
-est_df <- est_df %>% 
+est_df <- est_df %>%
   select(SIDE, TREATMENT, Rd, S)
 
-error_df <- bind_rows(std_errors_AD, std_errors_AB, std_errors_ADA2, std_errors_ABA2) %>% 
+error_df <- bind_rows(std_errors_AD, std_errors_AB, std_errors_ADA2, std_errors_ABA2) %>%
   mutate(S_error = New_var)
 error_df$Rd_error <- error_df$`(Intercept)`
- 
+
 error_df <- dplyr::select(error_df, SIDE, TREATMENT, Rd_error, S_error)
 
 est_df <- est_df %>%
@@ -1186,7 +1183,7 @@ est_df <- est_df %>%
 
 ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
   geom_errorbar(aes(ymax = Rd + Rd_error, ymin = Rd - Rd_error),
-                position = "dodge"
+    position = "dodge"
   ) +
   labs(
     title = "LME model estimate of Rd",
@@ -1195,15 +1192,15 @@ ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
 
 ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
   geom_errorbar(aes(ymax = S + S_error, ymin = S - S_error),
-                position = "dodge"
+    position = "dodge"
   ) +
   labs(
     title = "LME model estimate of S",
     y = "S", x = "Side"
   )
 
-treat_data <- out_AD$data %>% 
-  group_by(ID, TREATMENT) %>% 
+treat_data <- out_AD$data %>%
+  group_by(ID, TREATMENT) %>%
   distinct(ID)
 
 rd_s_group_est <- bind_rows(point_est_AD, point_est_AB, point_est_ADA2, point_est_ABA2)
@@ -1228,11 +1225,11 @@ out_coefficients <- S_rd_coeff
 total_data <- total_data %>%
   left_join(out_coefficients, by = c("ID"))
 
-CO2_grouped_full <- groupedData(Photosynthesis ~ 1 | ID,
-  outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
-  inner = ~Ci + PAR + SIDE,
-  data = total_data
-)
+# CO2_grouped_full <- groupedData(Photosynthesis ~ 1 | ID,
+#   outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
+#   inner = ~Ci + PAR + SIDE,
+#   data = total_data
+# )
 
 # === Sco ======================================================================
 
@@ -1259,7 +1256,7 @@ ggplot2::ggplot(data = data_h, aes(y = Photo, x = Ci)) +
 #   add_level("ADAB")
 
 
-ID_quo <- ID_quo
+ID_quo <- quo(ID)
 out_coefficients$SIDE <- add_level(out_coefficients$SIDE, "ADAB")
 
 ACI1_RD <- left_join(ACI1_new, out_coefficients,
@@ -1299,15 +1296,18 @@ data_sco_AD <- calc_Sco(ACI1_RD_AD, ACI2_2_AD,
   id_var = ID,
   A_var = Photosynthesis,
   other_var = TREATMENT,
-  control = list(
-    maxIter = 250,
+  control = lmeControl(
+    opt = "nlminb",
+    maxIter = 1000,
+    msMaxIter = 1000,
     msVerbose = F,
-    tolerance = 1e-2,
-    msMaxIter = 250,
+    tolerance = 1e-4,
     pnlsTol = 1e-10,
-    pnlsMaxIter = 250,
+    pnlsMaxIter = 500,
     niterEM = 1000,
-    sing.tol = 1e-20
+    msMaxEval = 1000,
+    sing.tol = 1e-20,
+    lower = list(Intercept = 0)
   )
 )
 
@@ -1322,14 +1322,13 @@ ggplot2::ggplot(data = data_sco_AD, aes(x = S_co)) +
   geom_density() +
   facet_wrap(~ID)
 
-
 ggplot2::ggplot(data = data_sco_AD, aes(y = S_co, x = ID, group = ID, colour = TREATMENT)) +
-  facet_wrap(~ID) +
+  # facet_wrap(~ID) +
   geom_boxplot()
 
-sco_data_AD <- data_sco_AD %>%
-  group_by(ID) %>%
-  filter(!(abs(S_co - median(S_co)) > 2 * sd(S_co)))
+# sco_data_AD <- data_sco_AD %>%
+#   group_by(ID) %>%
+#   filter(!(abs(S_co - median(S_co)) > 2 * sd(S_co)))
 
 # ggplot2::ggplot(data = sco_data_AD, aes(x = S_co)) +
 #   geom_density() +
@@ -1375,15 +1374,18 @@ data_sco_AB <- calc_Sco(ACI1_RD_AB, ACI2_2_AB,
   id_var = ID,
   A_var = Photosynthesis,
   other_var = TREATMENT,
-  control = list(
-    maxIter = 250,
+  control = lmeControl(
+    opt = "nlminb",
+    maxIter = 1000,
+    msMaxIter = 1000,
     msVerbose = F,
-    tolerance = 1e-2,
-    msMaxIter = 250,
+    tolerance = 1e-4,
     pnlsTol = 1e-10,
-    pnlsMaxIter = 250,
+    pnlsMaxIter = 500,
     niterEM = 1000,
-    sing.tol = 1e-20
+    msMaxEval = 1000,
+    sing.tol = 1e-20,
+    lower = list(Intercept = 0)
   )
 )
 data_sco_AB <- data_sco_AB %>%
@@ -1391,12 +1393,12 @@ data_sco_AB <- data_sco_AB %>%
   dplyr::select(-TREATMENT.x, -TREATMENT1, -TREATMENT.y)
 
 ggplot2::ggplot(data = data_sco_AB, aes(y = S_co, x = ID, group = ID, colour = TREATMENT)) +
-  facet_wrap(~ID) +
+  # facet_wrap(~ID) +
   geom_boxplot()
 
-sco_data_2_AB <- data_sco_AB %>%
-  group_by(ID) %>%
-  filter(!(abs(S_co - median(S_co)) > 2 * sd(S_co)))
+# sco_data_2_AB <- data_sco_AB %>%
+#   group_by(ID) %>%
+#   filter(!(abs(S_co - median(S_co)) > 2 * sd(S_co)))
 
 ggplot2::ggplot(data = sco_data_2_AB, aes(y = S_co, x = ID, group = ID, colour = TREATMENT)) +
   facet_wrap(~ID) +
@@ -1404,7 +1406,9 @@ ggplot2::ggplot(data = sco_data_2_AB, aes(y = S_co, x = ID, group = ID, colour =
 
 sco_data <- bind_rows(data_sco_AB, data_sco_AD)
 
-
+S_co_est_df <- sco_data %>%
+  group_by(TREATMENT, SIDE) %>%
+  summarise(S_co_mean = mean(S_co))
 
 S_co_est <- mean(sco_data$S_co)
 names(sco_data)
@@ -1415,7 +1419,14 @@ sco_data_rel <- sco_data %>%
   dplyr::mutate(S_co = mean_sco) %>%
   dplyr::select(-mean_sco)
 
+if (group_by_var == "ID") {
+  out_coefficients_all <- left_join(out_coefficients, sco_data_rel, by = c("ID", "SIDE"))
+} else {
+  out_coefficients_all <- left_join(out_coefficients, S_co_est_df, by = c("TREATMENT", "SIDE"))
+}
 out_coefficients_all <- left_join(out_coefficients, sco_data_rel, by = c("ID", "SIDE"))
+
+
 
 ACI1_RD <- dplyr::left_join(ACI1_new, out_coefficients_all, by = c("ID", "SIDE", "TREATMENT"))
 ACI1_with_j <- calc_J(ACI1_RD, lump_var = S, i_inc_var = PAR, phi_psII_var = PhiPS2)
@@ -1428,48 +1439,37 @@ ACI1_final %>%
 names(ACI1_final)
 
 
-
 ACI1_final <- ACI1_final %>% filter(ID != 1)
-# Indices for subgroups
-select_A1 <- ACI1_final$TREATMENT == "A1"
-select_A2 <- ACI1_final$TREATMENT == "A2"
-
-select_AD <- ACI1_final$SIDE == "AD"
-select_AB <- ACI1_final$SIDE == "AB"
-select_ADAB <- ACI1_final$SIDE == "ADAB"
-
-select_A1_AD <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "AD"))
-select_A1_AB <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "AB"))
-select_A1_ADAB <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "ADAB"))
-
-select_A2_AD <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "AD"))
-select_A2_AB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "AB"))
-select_A2_ADAB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "ADAB"))
-
-names(ACI1_final)
-head(ACI1_final)
-
-grouped_ACI <- groupedData(Photosynthesis ~ 1 | ID,
-  outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
-  inner = ~SIDE,
-  data = ACI1_final
-)
-
-ACI1_final <- ACI1_final %>%
-  dplyr::mutate(S_co = S_co_est)
 
 # === Calculate G_star =========================================================
 
 ACI1_final <- calc_G_star(ACI1_final, S_co_value = S_co_est) %>%
   mutate(G_star1 = G_star)
-ACI1_final <- calc_G_star(ACI1_final, S_co_value = 0.1 * S_co_est)
+ACI1_final <- calc_G_star(ACI1_final)
 
 # === Calculate g_m ============================================================
 
-ACI1_final <- calc_gm(ACI1_final, A_par = Photosynthesis, Ci_par = Ci, Rd_par = Rd)
+ACI1_final %>% select(J) %>% glimpse()
+
+ACI1_final <- calc_gm(ACI1_final,
+  A_par = Photosynthesis,
+  Ci_par = Ci,
+  Rd_par = Rd,
+  G_star_par = G_star,
+  J_par = J
+)
 summary(ACI1_final)
+
+odd_gm <- ACI1_final %>%
+  filter(gm < 0.025 | gm > 0.35)
+# glimpse()
+summary(odd_gm)
+head(odd_gm)
+nrow(odd_gm)
+
+
 summary(ACI1_final$gm)
-gm_value_ACI1 <- mean(ACI1_final$gm[(ACI1_final$gm > 0.05) & (ACI1_final$gm < 1.0)])
+gm_value_ACI1 <- median(ACI1_final$gm[(ACI1_final$gm > 0.05) & (ACI1_final$gm < 1.0)])
 
 ACI1_final <- ACI1_final %>%
   dplyr::mutate(gm_est = gm_value_ACI1) %>%
@@ -1487,6 +1487,7 @@ ggplot(
   geom_point() +
   geom_smooth() +
   facet_wrap(~ID)
+
 
 # ACI1_final <- ACI1_final %>% dplyr::mutate(Kc = 1.8 * Kc )
 
@@ -1515,118 +1516,485 @@ ggplot(data = ACI1_final, aes(y = J_est, x = SIDE, group = SIDE, colour = TREATM
   facet_wrap(~ID)
 
 grouped_ACI_1 <- grouped_ACI[grouped_ACI$ID == 3, ]
-x21 <- model.matrix(ID ~ TREATMENT, grouped_ACI)
+# x21 <- model.matrix(ID ~ TREATMENT, grouped_ACI)
+# names(ACI1_final)
+
+# === Indices for subgroups=====================================================
+select_A1 <- ACI1_final$TREATMENT == "A1"
+select_A2 <- ACI1_final$TREATMENT == "A2"
+
+select_AD <- ACI1_final$SIDE == "AD"
+select_AB <- ACI1_final$SIDE == "AB"
+select_ADAB <- ACI1_final$SIDE == "ADAB"
+
+select_A1_AD <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "AD"))
+select_A1_AB <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "AB"))
+select_A1_ADAB <- as.logical((ACI1_final$TREATMENT == "A1") * (ACI1_final$SIDE == "ADAB"))
+
+select_A2_AD <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "AD"))
+select_A2_AB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "AB"))
+select_A2_ADAB <- as.logical((ACI1_final$TREATMENT == "A2") * (ACI1_final$SIDE == "ADAB"))
+
 names(ACI1_final)
+head(ACI1_final)
+
+grouped_ACI <- groupedData(Photosynthesis ~ 1 | ID,
+  outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
+  inner = ~SIDE,
+  data = ACI1_final
+)
+
+
+
 
 # === NLS models ===============================================================
-nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star, Kc, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A1_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A2_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 
 
 nls_model_A1_AD <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A1_AD,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A1_AD,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 nls_model_A2_AD <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A2_AD,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A2_AD,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 
 # Try different G_star
 
 nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star1, Kc, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A1_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star1, Kc, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A2_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 # Try different K_c
 
 nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star, K_c, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A1_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star, K_c, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A2_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 # Both
 nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star1, K_c, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A1_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star1, K_c, Ko, O, Vcmax, J, Rd),
-                       data = ACI1_final,
-                       subset = select_A2_AB,
-                       start = c(
-                         Vcmax = c(40)
-                       ),
-                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+# Try Ci
+nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star, Kc, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star, Kc, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
 
+
+nls_model_A1_AD <- nls(Photosynthesis ~ FvCB(Ci, G_star, Kc, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A1_AD,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+nls_model_A2_AD <- nls(Photosynthesis ~ FvCB(Ci, G_star, Kc, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A2_AD,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+
+# Try different G_star
+
+nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star1, Kc, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star1, Kc, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+# Try different K_c
+
+nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star, K_c, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star, K_c, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+# Both
+nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star1, K_c, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A1_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Ci, G_star1, K_c, Ko, O, Vcmax, J, Rd),
+  data = ACI1_final,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(40)
+  ),
+  control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
 # === NLME model ===============================================================
 
+grouped_ACI$SIDE <- as.factor(grouped_ACI$SIDE)
+summary(grouped_ACI)
+grouped_ACI$K_o <- grouped_ACI$Ko * 0.8
 
-model_2 <- nlme(Photosynthesis ~ FvCB(Cc, G_star, K_c, Ko, O, Vcmax, J, Rd),
+model_1 <- nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+  data = grouped_ACI,
+  fixed = Vcmax ~ 1,
+  random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+  start = c(
+    Vcmax = c(40)
+  ),
+  subset = select_A1_AB,
+  control = nlmeControl(
+    opt = "nlminb",
+    # upper = c(
+    #   Vcmax = c(500, 500)
+    # ),
+
+    maxIter = 500,
+    msMaxIter = 500,
+    msVerbose = T,
+    msTol = 1e-2,
+    pnlsTol = 1e-30,
+    pnlsMaxIter = 500,
+    niterEM = 500,
+    msMaxEval = 500,
+    minScale = 1e-20,
+    returnObject = T,
+    lower = c(
+      Vcmax = c(0, 0)
+    ),
+    sing.tol = 1e-45
+  )
+)
+
+
+model_2 <- nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+  data = grouped_ACI,
+  fixed = Vcmax ~ 1,
+  random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+  start = c(
+    Vcmax = c(40)
+  ),
+  subset = select_A1_AD,
+  control = nlmeControl(
+    opt = "nlminb",
+    # upper = c(
+    #   Vcmax = c(500, 500)
+    # ),
+
+    maxIter = 500,
+    msMaxIter = 500,
+    msVerbose = T,
+    msTol = 1e-2,
+    pnlsTol = 1e-30,
+    pnlsMaxIter = 500,
+    niterEM = 500,
+    msMaxEval = 500,
+    minScale = 1e-20,
+    returnObject = T,
+    lower = c(
+      Vcmax = c(0, 0)
+    ),
+    sing.tol = 1e-45
+  )
+)
+
+for (i in 10:90) {
+  model_3 <- attempt::try_catch(
+    expr = nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+      data = grouped_ACI,
+      fixed = Vcmax ~ 1,
+      random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+      start = c(
+        Vcmax = c(i)
+      ),
+      subset = select_A2_AB,
+      control = nlmeControl(
+        opt = "nlminb",
+        # upper = c(
+        #   Vcmax = c(500, 500)
+        # ),
+
+        maxIter = 500,
+        msMaxIter = 500,
+        msVerbose = F,
+        msTol = 1e-2,
+        pnlsTol = 1e-30,
+        pnlsMaxIter = 500,
+        niterEM = 500,
+        msMaxEval = 500,
+        minScale = 1e-20,
+        returnObject = T,
+        lower = c(
+          Vcmax = c(0)
+        ),
+        sing.tol = 1e-50
+      )
+    ),
+    .e = function(a) return(NULL),
+    .w = function(a) return(NULL)
+  )
+  if (!is.null(model_3)) {
+    print(paste("works for", i))
+  }
+}
+
+model_4 <- nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+  data = grouped_ACI,
+  fixed = Vcmax ~ 1,
+  random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+  start = c(
+    Vcmax = c(40)
+  ),
+  subset = select_A2_AD,
+  control = nlmeControl(
+    opt = "nlminb",
+    # upper = c(
+    #   Vcmax = c(500, 500)
+    # ),
+
+    maxIter = 500,
+    msMaxIter = 500,
+    msVerbose = T,
+    msTol = 1e-2,
+    pnlsTol = 1e-30,
+    pnlsMaxIter = 500,
+    niterEM = 500,
+    msMaxEval = 500,
+    minScale = 1e-20,
+    returnObject = T,
+    lower = c(
+      Vcmax = c(0, 0)
+    ),
+    iter.max = 500,
+    sing.tol = 1e-45
+  )
+)
+
+model_1$coefficients # A1 AB
+model_2$coefficients # A1 AD
+model_3$coefficients # A2 AB
+model_4$coefficients # A2 AD
+
+# ===  Nlme model for Side == AD ===============================================
+model_5 <- nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
   data = grouped_ACI,
   fixed = Vcmax ~ TREATMENT,
   random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
   start = c(
-    Vcmax = c(50, 0)
+    Vcmax = c(47, -4)
+  ),
+  subset = select_AD,
+  control = nlmeControl(
+    opt = "nlminb",
+    # upper = c(
+    #   Vcmax = c(500, 500)
+    # ),
+
+    maxIter = 500,
+    msMaxIter = 500,
+    msVerbose = T,
+    msTol = 1e-2,
+    pnlsTol = 1e-30,
+    pnlsMaxIter = 500,
+    niterEM = 500,
+    msMaxEval = 500,
+    minScale = 1e-20,
+    returnObject = T,
+    lower = c(
+      Vcmax = c(0, 0)
+    ),
+    iter.max = 500,
+    sing.tol = 1e-45
+  )
+)
+
+model_5a <- nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+                data = grouped_ACI,
+                fixed = Vcmax ~ 1,
+                random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+                start = c(
+                  Vcmax = c(49)
+                ),
+                subset = select_AD,
+                control = nlmeControl(
+                  opt = "nlminb",
+                  # upper = c(
+                  #   Vcmax = c(500, 500)
+                  # ),
+                  
+                  maxIter = 500,
+                  msMaxIter = 500,
+                  msVerbose = T,
+                  msTol = 1e-2,
+                  pnlsTol = 1e-30,
+                  pnlsMaxIter = 500,
+                  niterEM = 500,
+                  msMaxEval = 500,
+                  minScale = 1e-20,
+                  returnObject = T,
+                  lower = c(
+                    Vcmax = c(0, 0)
+                  ),
+                  iter.max = 500,
+                  sing.tol = 1e-45
+                )
+)
+summary(model_5)
+summary(model_5a)
+
+nlme_5_fixed <- summary(model_5)$tTable
+nlme_5_random <- summary(model_5)$coefficients$random
+
+# Compare estimates for Treatments
+fixed_comparison <- as.data.frame(nlme_5_fixed)
+fixed_comparison$Feature <- rownames(fixed_comparison)
+fixed_comparison$Feature <- c(
+  rep("Vcmax", 2)
+)
+# head(grouped_ACI)
+fixed_comparison$Treatment <- rep(c("A1", "A2"), nrow(fixed_comparison) / 2)
+
+
+comparison_nlme_plot <- fixed_comparison %>%
+  mutate(Estimate = ifelse(Treatment == "A1", Value, lag(Value) + Value))
+# select(Estimate, Std_error, Feature, Treatment)
+
+ggplot(comparison_nlme_plot, aes(x = Treatment, colour = Treatment)) +
+  geom_errorbar(aes(ymax = Estimate + Std.Error, ymin = Estimate - Std.Error),
+                position = "dodge"
+  ) +
+  labs(
+    title = "NLME model estimate for Side AD",
+    y = "Vcmax", x = "Treatment"
+  )
+
+# === NLME model for SIde == AB ================================================
+
+
+
+
+model_6 <- nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+  data = grouped_ACI,
+  fixed = Vcmax ~ TREATMENT,
+  random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+  start = c(
+    Vcmax = c(55, -16)
   ),
   subset = select_AB,
   control = nlmeControl(
@@ -1634,17 +2002,164 @@ model_2 <- nlme(Photosynthesis ~ FvCB(Cc, G_star, K_c, Ko, O, Vcmax, J, Rd),
     # upper = c(
     #   Vcmax = c(500, 500)
     # ),
+
+    maxIter = 500,
+    msMaxIter = 500,
+    msVerbose = F,
+    msTol = 1e-2,
+    pnlsTol = 1e-30,
+    pnlsMaxIter = 500,
+    niterEM = 500,
+    msMaxEval = 500,
+    minScale = 1e-20,
+    returnObject = T,
     lower = c(
       Vcmax = c(0, 0)
     ),
-    maxIter = 500,
-    msMaxIter = 150,
-    msVerbose = T,
-    tolerance = 1e-1,
-    pnlsTol = 1e-20,
-    pnlsMaxIter = 150,
-    niterEM = 500,
-    msMaxEval = 500,
-    sing.tol = 1e-35
+    iter.max = 500,
+    sing.tol = 1e-45
   )
+)
+
+for (i in 10:90) {
+  model_7 <- attempt::try_catch(
+    expr = nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+      data = grouped_ACI,
+      fixed = Vcmax ~ TREATMENT,
+      random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+      start = c(
+        Vcmax = c(i, -(i - 43))
+      ),
+      subset = select_AB,
+      control = nlmeControl(
+        opt = "nlminb",
+        # upper = c(
+        #   Vcmax = c(500, 500)
+        # ),
+
+        maxIter = 500,
+        msMaxIter = 500,
+        msVerbose = F,
+        msTol = 1e-2,
+        pnlsTol = 1e-30,
+        pnlsMaxIter = 500,
+        niterEM = 500,
+        msMaxEval = 500,
+        minScale = 1e-20,
+        returnObject = T,
+        lower = c(
+          Vcmax = c(0, 0)
+        ),
+        iter.max = 500,
+        sing.tol = 1e-45
+      )
+    ),
+    .e = function(a) return(NULL),
+    .w = function(a) return(NULL)
+  )
+  if (!is.null(model_7)) {
+    print(paste("works for", i))
+    break
+  }
+}
+
+summary(ACI1_final[select_A2_AB, ])
+
+ACI1_gm_out <- ACI1_final[ACI1_final$gm > 0, ]
+
+# === Indices for subgroups=====================================================
+
+select_AD_gm <- ACI1_gm_out$SIDE == "AD"
+select_AB_gm <- ACI1_gm_out$SIDE == "AB"
+
+select_A1_AD_gm <- as.logical((ACI1_gm_out$TREATMENT == "A1") * (ACI1_gm_out$SIDE == "AD"))
+select_A1_AB_gm <- as.logical((ACI1_gm_out$TREATMENT == "A1") * (ACI1_gm_out$SIDE == "AB"))
+
+select_A2_AD_gm <- as.logical((ACI1_gm_out$TREATMENT == "A2") * (ACI1_gm_out$SIDE == "AD"))
+select_A2_AB_gm <- as.logical((ACI1_gm_out$TREATMENT == "A2") * (ACI1_gm_out$SIDE == "AB"))
+
+grouped_ACI_gm <- groupedData(Photosynthesis ~ 1 | ID,
+  outer = ~TREATMENT, # !!random_effects[[n_random_effects]]
+  inner = ~SIDE,
+  data = ACI1_gm_out
+)
+
+grouped_ACI_gm$K_o <- grouped_ACI_gm$Ko * 0.8
+
+for (i in 10:90) {
+  model_8 <- attempt::try_catch(
+    expr = nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+      data = grouped_ACI_gm,
+      fixed = Vcmax ~ 1,
+      random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+      start = c(
+        Vcmax = c(i)
+      ),
+      subset = select_A2_AB_gm,
+      control = nlmeControl(
+        opt = "nlminb",
+        # upper = c(
+        #   Vcmax = c(500, 500)
+        # ),
+
+        maxIter = 500,
+        msMaxIter = 500,
+        msVerbose = F,
+        msTol = 1e-2,
+        pnlsTol = 1e-30,
+        pnlsMaxIter = 500,
+        niterEM = 500,
+        msMaxEval = 500,
+        minScale = 1e-20,
+        returnObject = T,
+        lower = c(
+          Vcmax = c(0)
+        ),
+        sing.tol = 1e-50
+      )
+    ),
+    .e = function(a) return(NULL),
+    .w = function(a) return(NULL)
+  )
+  if (!is.null(model_8)) {
+    print(paste("works for", i))
+    break
+  }
+}
+
+model_8 <- nlme(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+  data = grouped_ACI_gm,
+  fixed = Vcmax ~ 1,
+  random = pdDiag(Vcmax ~ ID), #  %in% TREATMENT
+  start = c(
+    Vcmax = c(48)
+  ),
+  subset = select_A2_AB_gm,
+  control = nlmeControl(
+    maxIter = 500,
+    pnlsMaxIter = 500,
+    msMaxIter = 500,
+    minScale = 1e-02,
+    tolerance = 1e-01,
+    msVerbose = T,
+    niterEM = 500,
+    pnlsTol = 1e-03,
+    msTol = 1e-01,
+    returnObject = T,
+    opt = "nlminb",
+    msMaxEval = 500,
+    lower = c(
+      Vcmax = c(0)
+    ),
+    sing.tol = 1e-20
+  )
+)
+
+nls_model_A2_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star1, Kc, K_o, O, Vcmax, J, Rd),
+  data = grouped_ACI_gm,
+  subset = select_A2_AB,
+  start = c(
+    Vcmax = c(50)
+  ),
+  control = list(maxiter = 25000, minFactor = 1e-20, printEval = F, tol = 1e-02)
 )
