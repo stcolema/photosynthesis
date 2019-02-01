@@ -818,25 +818,25 @@ out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
   )
 )
 
-small_model <- nlme::lme(Photosynthesis ~ New_var,
-  data = out_AD$data,
-  random = ~New_var | TREATMENT,
-  control = lmeControl(
-    opt = "nlminb",
-    maxIter = 1000,
-    msMaxIter = 1000,
-    msVerbose = F,
-    tolerance = 1e-4,
-    pnlsTol = 1e-10,
-    pnlsMaxIter = 500,
-    niterEM = 1000,
-    msMaxEval = 1000,
-    sing.tol = 1e-20,
-    lower = list(Intercept = 0)
-  )
-)
+# small_model <- nlme::lme(Photosynthesis ~ New_var,
+#   data = out_AD$data,
+#   random = ~New_var | TREATMENT,
+#   control = lmeControl(
+#     opt = "nlminb",
+#     maxIter = 1000,
+#     msMaxIter = 1000,
+#     msVerbose = F,
+#     tolerance = 1e-4,
+#     pnlsTol = 1e-10,
+#     pnlsMaxIter = 500,
+#     niterEM = 1000,
+#     msMaxEval = 1000,
+#     sing.tol = 1e-20,
+#     lower = list(Intercept = 0)
+#   )
+# )
 
-small_model$coefficients$fixed
+# small_model$coefficients$fixed
 out_AD$model$coefficients$fixed
 
 LRC2_AB <- LRC2_new %>%
@@ -1383,20 +1383,27 @@ ACI1_final <- calc_G_star(ACI1_final, S_co_value = S_co_est) %>%
 
 ACI1_final <- calc_G_star(ACI1_final)
 
+# LRC1_g_star <- calc_G_star(LRC1_RD, S_co_value = S_co_est)
+# calc_J(LRC1_g_star, lump_var = S, i_inc_var = PAR, phi_psII_var = PhiPS2)
+
+
 # === Calculate g_m ============================================================
 
 ACI1_final %>% select(J) %>% glimpse()
 
-ACI1_final <- calc_gm(ACI1_final,
+
+# gm estimate using specific values of Ci
+ACI1_final_gm <- calc_gm(ACI1_final %>% filter(Ci > 250 & Ci < 300),
   A_par = Photosynthesis,
   Ci_par = Ci,
   Rd_par = Rd,
   G_star_par = G_star,
   J_par = J
 )
-summary(ACI1_final)
 
-odd_gm <- ACI1_final %>%
+summary(ACI1_final_gm)
+
+odd_gm <- ACI1_final_gm %>%
   filter(gm < 0.025 | gm > 0.35)
 # glimpse()
 summary(odd_gm)
