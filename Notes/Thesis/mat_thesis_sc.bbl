@@ -1,0 +1,94 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bates and Pinheiro()]{BatesComputationalMethodsMultilevel}
+Douglas~M Bates and Jose~C Pinheiro.
+\newblock Computational {{Methods}} for {{Multilevel Modelling}}.
+\newblock page~30.
+
+\bibitem[Bellasio et~al.(2016)Bellasio, Beerling, and
+  Griffiths]{BellasioExceltoolderiving2016}
+Chandra Bellasio, David~J Beerling, and Howard Griffiths.
+\newblock An {{Excel}} tool for deriving key photosynthetic parameters from
+  combined gas exchange and chlorophyll fluorescence: Theory and practice:
+  {{Descriptive}} modelling of gas exchange data.
+\newblock \emph{Plant, Cell \& Environment}, 39\penalty0 (6):\penalty0
+  1180--1197, June 2016.
+\newblock ISSN 01407791.
+\newblock \doi{10.1111/pce.12560}.
+
+\bibitem[Davidian and Giltinan(2003)]{DavidianNonlinearmodelsrepeated2003}
+Marie Davidian and David~M. Giltinan.
+\newblock Nonlinear models for repeated measurement data: {{An}} overview and
+  update.
+\newblock \emph{Journal of Agricultural, Biological, and Environmental
+  Statistics}, 8\penalty0 (4):\penalty0 387--419, December 2003.
+\newblock ISSN 1085-7117, 1537-2693.
+\newblock \doi{10.1198/1085711032697}.
+
+\bibitem[Duursma(2015)]{DuursmaPlantecophysPackageAnalysing2015}
+Remko~A. Duursma.
+\newblock Plantecophys - {{An R Package}} for {{Analysing}} and {{Modelling
+  Leaf Gas Exchange Data}}.
+\newblock \emph{PLOS ONE}, 10\penalty0 (11):\penalty0 e0143346, November 2015.
+\newblock ISSN 1932-6203.
+\newblock \doi{10.1371/journal.pone.0143346}.
+
+\bibitem[Farquhar et~al.(1980)Farquhar, {von Caemmerer}, and
+  Berry]{Farquharbiochemicalmodelphotosynthetic1980}
+G.~D. Farquhar, S.~{von Caemmerer}, and J.~A. Berry.
+\newblock A biochemical model of photosynthetic {{CO2}} assimilation in leaves
+  of {{C3}} species.
+\newblock \emph{Planta}, 149\penalty0 (1):\penalty0 78--90, June 1980.
+\newblock ISSN 0032-0935, 1432-2048.
+\newblock \doi{10.1007/BF00386231}.
+
+\bibitem[{Moualeu-Ngangue} et~al.(2017){Moualeu-Ngangue}, Chen, and
+  St{\"u}tzel]{Moualeu-Nganguenewmethodestimate2017}
+Dany~P. {Moualeu-Ngangue}, Tsu-Wei Chen, and Hartmut St{\"u}tzel.
+\newblock A new method to estimate photosynthetic parameters through net
+  assimilation rate-intercellular space {{CO}} {\textsubscript{2}}
+  concentration ( {{{\emph{A}}}} - {{{\emph{C}}}} {\textsubscript{i}} ) curve
+  and chlorophyll fluorescence measurements.
+\newblock \emph{New Phytologist}, 213\penalty0 (3):\penalty0 1543--1554,
+  February 2017.
+\newblock ISSN 0028646X.
+\newblock \doi{10.1111/nph.14260}.
+
+\bibitem[Qian et~al.(2012)Qian, Elings, Dieleman, Gort, and
+  Marcelis]{QianEstimationphotosynthesisparameters2012}
+T.~Qian, A.~Elings, J.A. Dieleman, G.~Gort, and L.F.M. Marcelis.
+\newblock Estimation of photosynthesis parameters for a modified
+  {{Farquhar}}\textendash{}von {{Caemmerer}}\textendash{}{{Berry}} model using
+  simultaneous estimation method and nonlinear mixed effects model.
+\newblock \emph{Environmental and Experimental Botany}, 82:\penalty0 66--73,
+  October 2012.
+\newblock ISSN 00988472.
+\newblock \doi{10.1016/j.envexpbot.2012.03.014}.
+
+\bibitem[Sharkey et~al.(2007)Sharkey, Bernacchi, Farquhar, and
+  Singsaas]{SharkeyFittingphotosyntheticcarbon2007}
+Thomas~D. Sharkey, Carl~J. Bernacchi, Graham~D. Farquhar, and Eric~L. Singsaas.
+\newblock Fitting photosynthetic carbon dioxide response curves for {{C}}
+  {\textsubscript{3}} leaves.
+\newblock \emph{Plant, Cell \& Environment}, 30\penalty0 (9):\penalty0
+  1035--1040, September 2007.
+\newblock ISSN 01407791, 13653040.
+\newblock \doi{10.1111/j.1365-3040.2007.01710.x}.
+
+\bibitem[Yin and Struik(2009)]{YinTheoreticalreconsiderationswhen2009}
+Xinyou Yin and Paul~C. Struik.
+\newblock Theoretical reconsiderations when estimating the mesophyll
+  conductance to {{CO}} {\textsubscript{2}} diffusion in leaves of {{C}}
+  {\textsubscript{3}} plants by analysis of combined gas exchange and
+  chlorophyll fluorescence measurements.
+\newblock \emph{Plant, Cell \& Environment}, 32\penalty0 (11):\penalty0
+  1513--1524, November 2009.
+\newblock ISSN 01407791, 13653040.
+\newblock \doi{10.1111/j.1365-3040.2009.02016.x}.
+
+\end{thebibliography}

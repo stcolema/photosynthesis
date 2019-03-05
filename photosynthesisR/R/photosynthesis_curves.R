@@ -33,9 +33,9 @@
 #' Rubisco_limited(<examples>)
 #' More examples and whatnot
 Rubisco_limited <- function(V_cmax, C_c, G_star, K_c, O, K_o, R_d) {
-  numerator <- C_c - G_star
+  numerator <- V_cmax * (C_c - G_star)
   denom <- C_c + K_c * (1 + O / K_o)
-  return(V_cmax * (numerator / denom) - R_d)
+  Rubisco_curve <- (numerator / denom) - R_d
 }
 
 # Check Rubisco_limited function
@@ -114,9 +114,9 @@ non_rectangular_hyperbola <- function(PAR, J_max, alpha, theta) {
 #'
 FvCB <- function(C_c, PAR, G_star, K_c, K_o, O, V_cmax, J_max, alpha, theta, R_d) {
   p1 <- Rubisco_limited(V_cmax, C_c, G_star, K_c, O, K_o, R_d) + R_d
-  p2 <- ((non_rectangular_hyperbola(PAR, J_max, alpha, theta) / 4) * (C_c - G_star)
-         / (C_c  + 2 * G_star)
-  )
+  J <- non_rectangular_hyperbola(PAR, J_max, alpha, theta)
+  # p2 <- J * (C_c - G_star) / (4.5 * C_c  + 10.5 * G_star)
+  p2 <- RuBP_limited(J, C_c, G_star, R_d)
   ifelse(p1 < p2, p1, p2) - R_d
 }
 
@@ -138,173 +138,173 @@ FvCB <- function(C_c, PAR, G_star, K_c, K_o, O, V_cmax, J_max, alpha, theta, R_d
 TPU_limited <- function(TPU, R_d) {
   return(3 * TPU - R_d)
 }
-
-# Pseudo code for fitting aci curve - use in nlme?
-#' @title ACI Curve
-#' @description Fits the ACI curve using FvCB model with the option to include
-#' the TPU limiting curve. Currently not working, merely a placeholder.
-#' @param data A dataframe containing all the relevant parameters.
-#' @param TPU Boolean indicating the inclusion of the TPU limiting curve
-#' (default is FALSE)
-aci_curve <- function(data,
-                      include_TPU_curve = FALSE,
-                      C_c_denom_multiplier = 4,
-                      G_star_denom_multiplier = 8,
-                      V_cmax_var = V_cmax,
-                      C_c_var = C_c,
-                      G_star_var = G_star,
-                      K_c_var = K_c,
-                      O_var = O,
-                      K_o_var = K_o,
-                      R_d_var = R_d,
-                      J_var = J,
-                      TPU_var = TPU) {
-
-  # This isn't right.
-
-  # Need to check if the inputs are numbers maube?
-  # As in, J = 4 rather than a column
-  rubisco_params <- enquos(
-    V_cmax_var,
-    C_c_var,
-    G_star_var,
-    K_c_var,
-    O_var,
-    K_o_var,
-    R_d_var
-  )
-
-  rubp_params <- enquos(J_var, C_c_var, G_star_var, R_d_var)
-
-  data %<>%
-    mutate(
-      Rubisco_curve = Rubisco_limited(!!!rubisco_params),
-      RuBP_curve = RuBP_limited(!!!rubp_params)
-    )
-
-  # rubisco_curve <- Rubisco_limited(!!! rubisco_params)
-  # rubp_curve <- RuBP_limited(!!! rubp_params)
-
-  if (include_TPU_curve) {
-    tpu_params <- enquos(TPU_var, R_d_var)
-
-    data %<>%
-      mutate(TPU_curve = TPU_limited(!!!tpu_params))
-  } else {
-    data %<>%
-      mutate(TPU_curve = rep(Inf, nrow(data)))
-  }
-
-  data %<>%
-    mutate(fitted_values = pmin(Rubisco_curve, RuBP_curve, TPU_curve))
-
-  # fitted_values <- pmin(rubisco_curve, rubp_curve, tpu_curve)
-
-  # return(fitted_values)
-}
-
-# Pseudo code for fitting aci curve in nlme
-#' @title ACI Formula
-#' @description Fits the ACI curve using FvCB model with the option to include
-#' the TPU limiting curve. Currently not working, merely a placeholder.
-#' @param TPU Boolean indicating the inclusion of the TPU limiting curve
-#' (default is FALSE)
-aci_formula <- function(V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
-                        TPU_var = NA,
-                        C_c_denom_multiplier = 4,
-                        G_star_denom_multiplier = 8
-                        ) {
-
-  Rubisco_curve <- Rubisco_limited(V_cmax, C_c, G_star, K_c, O, K_o, R_d)
-  RuBP_curve <- RuBP_limited(J, C_c, G_star, R_d,
-                             C_c_denom_multiplier = C_c_denom_multiplier,
-                             G_star_denom_multiplier = G_star_denom_multiplier
-                             )
-
-  if (! is.na(TPU_var)) {
-    TPU_curve <- TPU_limited(TPU, R_d)
-
-  } else {
-    TPU_curve <- rep(Inf, nrow(data))
-  }
-
-  fitted_values <- pmin(Rubisco_curve, RuBP_curve, TPU_curve)
-
-}
-
-
-
-
-# This is Gerrit's model pretty much, placeholder
-# Consider scaling option (Bates and Pinheiro reccomend it)
-# Add options for covariance matrix, other nlme parameters (maybe as ...)
-#' @title Non-Linear Mixed Effects ACI model
-#' @description Fits a non-linear mixed effects model using \code{nlme} package.
-#' Currently not working, decent placeholder for final version.
-#' @param data The dataframe containing photosynthesis data
-#' @return An nlme model
-nlme_aci <- function(data, fixed, random,
-                     V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
-                     TPU_var = NA,
-                     C_c_denom_multiplier = 4,
-                     G_star_denom_multiplier = 8,
-                     starting_values = NA,
-                     cov_matrix = pdSymm,
-                     C_c_denom_multiplier = 4,
-                     G_star_denom_multiplier = 8,
-                     ...) {
-
-  if (is.na(starting_values)){
-    # Something to find starting values: ols?
-    # some sub-function
-    y <- T # to avoid throwing an error before I add this
-  }
-
-
-  model <- nlme(y ~ aci_formula(V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
-                                TPU_var = NA,
-                                C_c_denom_multiplier = C_c_denom_multiplier,
-                                G_star_denom_multiplier = G_star_denom_multiplier
-                                ),
-    data = data,
-    fixed = fixed,
-    random = cov_matrix(random),
-    start = starting_values,
-    ...
-  )
-  return(model)
-}
-
-
-find_optimal_start <- function(data, fixed, random,
-                               V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
-                               TPU_var = NA,
-                               C_c_denom_multiplier = 4,
-                               G_star_denom_multiplier = 8,
-                               starting_values = NA,
-                               cov_matrix = pdSymm,
-                               ...){
-  num_starts <-length(random)
-
-  if (is.na(starting_values)){
-    starting_values = list(V_cmax = 100, R_d = 2.0, J = 100)
-  }
-
-  # use the nls model as a starting point
-  nls_model <- nls(y ~ FvCB(x, PAR, c1, c2, Vcmax, Jmax, alpha, theta, Rd),
-      data = CO2light,
-      subset = select.high,
-      start = starting_values
-  )
-
-
-  coef <- summary(nls_model)$coefficients
-  coef_names <- rownames(coef)
-  coef <- as.tibble(coef) %>%
-    add_column(Coefficient = coef_names) %>%
-    dplyr::select(Coefficient, Estimate)
-
-  # use this as the starting values for for NLME?
-
-
-}
+#' 
+#' # Pseudo code for fitting aci curve - use in nlme?
+#' #' @title ACI Curve
+#' #' @description Fits the ACI curve using FvCB model with the option to include
+#' #' the TPU limiting curve. Currently not working, merely a placeholder.
+#' #' @param data A dataframe containing all the relevant parameters.
+#' #' @param TPU Boolean indicating the inclusion of the TPU limiting curve
+#' #' (default is FALSE)
+#' aci_curve <- function(data,
+#'                       include_TPU_curve = FALSE,
+#'                       C_c_denom_multiplier = 4,
+#'                       G_star_denom_multiplier = 8,
+#'                       V_cmax_var = V_cmax,
+#'                       C_c_var = C_c,
+#'                       G_star_var = G_star,
+#'                       K_c_var = K_c,
+#'                       O_var = O,
+#'                       K_o_var = K_o,
+#'                       R_d_var = R_d,
+#'                       J_var = J,
+#'                       TPU_var = TPU) {
+#' 
+#'   # This isn't right.
+#' 
+#'   # Need to check if the inputs are numbers maube?
+#'   # As in, J = 4 rather than a column
+#'   rubisco_params <- enquos(
+#'     V_cmax_var,
+#'     C_c_var,
+#'     G_star_var,
+#'     K_c_var,
+#'     O_var,
+#'     K_o_var,
+#'     R_d_var
+#'   )
+#' 
+#'   rubp_params <- enquos(J_var, C_c_var, G_star_var, R_d_var)
+#' 
+#'   data %<>%
+#'     mutate(
+#'       Rubisco_curve = Rubisco_limited(!!!rubisco_params),
+#'       RuBP_curve = RuBP_limited(!!!rubp_params)
+#'     )
+#' 
+#'   # rubisco_curve <- Rubisco_limited(!!! rubisco_params)
+#'   # rubp_curve <- RuBP_limited(!!! rubp_params)
+#' 
+#'   if (include_TPU_curve) {
+#'     tpu_params <- enquos(TPU_var, R_d_var)
+#' 
+#'     data %<>%
+#'       mutate(TPU_curve = TPU_limited(!!!tpu_params))
+#'   } else {
+#'     data %<>%
+#'       mutate(TPU_curve = rep(Inf, nrow(data)))
+#'   }
+#' 
+#'   data %<>%
+#'     mutate(fitted_values = pmin(Rubisco_curve, RuBP_curve, TPU_curve))
+#' 
+#'   # fitted_values <- pmin(rubisco_curve, rubp_curve, tpu_curve)
+#' 
+#'   # return(fitted_values)
+#' }
+#' 
+#' # Pseudo code for fitting aci curve in nlme
+#' #' @title ACI Formula
+#' #' @description Fits the ACI curve using FvCB model with the option to include
+#' #' the TPU limiting curve. Currently not working, merely a placeholder.
+#' #' @param TPU Boolean indicating the inclusion of the TPU limiting curve
+#' #' (default is FALSE)
+#' aci_formula <- function(V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
+#'                         TPU_var = NA,
+#'                         C_c_denom_multiplier = 4,
+#'                         G_star_denom_multiplier = 8
+#'                         ) {
+#' 
+#'   Rubisco_curve <- Rubisco_limited(V_cmax, C_c, G_star, K_c, O, K_o, R_d)
+#'   RuBP_curve <- RuBP_limited(J, C_c, G_star, R_d,
+#'                              C_c_denom_multiplier = C_c_denom_multiplier,
+#'                              G_star_denom_multiplier = G_star_denom_multiplier
+#'                              )
+#' 
+#'   if (! is.na(TPU_var)) {
+#'     TPU_curve <- TPU_limited(TPU, R_d)
+#' 
+#'   } else {
+#'     TPU_curve <- rep(Inf, nrow(data))
+#'   }
+#' 
+#'   fitted_values <- pmin(Rubisco_curve, RuBP_curve, TPU_curve)
+#' 
+#' }
+#' 
+#' 
+#' 
+#' 
+#' # This is Gerrit's model pretty much, placeholder
+#' # Consider scaling option (Bates and Pinheiro reccomend it)
+#' # Add options for covariance matrix, other nlme parameters (maybe as ...)
+#' #' @title Non-Linear Mixed Effects ACI model
+#' #' @description Fits a non-linear mixed effects model using \code{nlme} package.
+#' #' Currently not working, decent placeholder for final version.
+#' #' @param data The dataframe containing photosynthesis data
+#' #' @return An nlme model
+#' nlme_aci <- function(data, fixed, random,
+#'                      V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
+#'                      TPU_var = NA,
+#'                      C_c_denom_multiplier = 4,
+#'                      G_star_denom_multiplier = 8,
+#'                      starting_values = NA,
+#'                      cov_matrix = pdSymm,
+#'                      C_c_denom_multiplier = 4,
+#'                      G_star_denom_multiplier = 8,
+#'                      ...) {
+#' 
+#'   if (is.na(starting_values)){
+#'     # Something to find starting values: ols?
+#'     # some sub-function
+#'     y <- T # to avoid throwing an error before I add this
+#'   }
+#' 
+#' 
+#'   model <- nlme(y ~ aci_formula(V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
+#'                                 TPU_var = NA,
+#'                                 C_c_denom_multiplier = C_c_denom_multiplier,
+#'                                 G_star_denom_multiplier = G_star_denom_multiplier
+#'                                 ),
+#'     data = data,
+#'     fixed = fixed,
+#'     random = cov_matrix(random),
+#'     start = starting_values,
+#'     ...
+#'   )
+#'   return(model)
+#' }
+#' 
+#' 
+#' find_optimal_start <- function(data, fixed, random,
+#'                                V_cmax, C_c, G_star, K_c, O, K_o, R_d, J,
+#'                                TPU_var = NA,
+#'                                C_c_denom_multiplier = 4,
+#'                                G_star_denom_multiplier = 8,
+#'                                starting_values = NA,
+#'                                cov_matrix = pdSymm,
+#'                                ...){
+#'   num_starts <-length(random)
+#' 
+#'   if (is.na(starting_values)){
+#'     starting_values = list(V_cmax = 100, R_d = 2.0, J = 100)
+#'   }
+#' 
+#'   # use the nls model as a starting point
+#'   nls_model <- nls(y ~ FvCB(x, PAR, c1, c2, Vcmax, Jmax, alpha, theta, Rd),
+#'       data = CO2light,
+#'       subset = select.high,
+#'       start = starting_values
+#'   )
+#' 
+#' 
+#'   coef <- summary(nls_model)$coefficients
+#'   coef_names <- rownames(coef)
+#'   coef <- as.tibble(coef) %>%
+#'     add_column(Coefficient = coef_names) %>%
+#'     dplyr::select(Coefficient, Estimate)
+#' 
+#'   # use this as the starting values for for NLME?
+#' 
+#' 
+#' }

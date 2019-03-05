@@ -1,0 +1,303 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+%\geometry{margin=2in} % for example, change the margins to 2 inches all round
+\geometry{left=2.75cm, right=2.75cm, top=3.5cm, bottom=4.5cm}
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% BibTex packages (url for website references)
+\usepackage[english]{babel}
+\usepackage[numbers]{natbib}
+% \usepackage{url}
+% \usepackage{Biblatex}
+
+%For inclusion of hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+%BibTex stuff and referencing sections by name 
+\urlstyle{same}
+\usepackage{nameref} 
+
+%%% END Article customizations
+
+%%% Change distance between bullet points
+\usepackage{enumitem}
+%\setlist{noitemsep}
+\setlist{itemsep=0.2pt, topsep=6pt, partopsep=0pt}
+%\setlist{nosep} % or \setlist{noitemsep} to leave space around whole list
+
+%%% For aside comments
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{caption}
+
+%%% AMS math
+\usepackage{amsmath}
+
+%%% For differential notation
+\usepackage{physics}
+
+%%% For SI unit notation
+% Dependencies for siunitx
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{cleveref}
+\usepackage{colortbl}
+\usepackage{csquotes}
+\usepackage{helvet}
+\usepackage{mathpazo}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+%%% User commands
+% theorem box
+\newcounter{aside}[section]\setcounter{aside}{0}
+\renewcommand{\theaside}{\arabic{section}.\arabic{aside}}
+\newenvironment{aside}[1][]{%
+\refstepcounter{aside}%
+\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=blue!20]
+{\strut Aside~\theaside};}}
+\mdfsetup{innertopmargin=10pt,linecolor=blue!20,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#1}}{\end{mdframed}}
+
+% For titification of tables
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
+\usepackage{ctable} % for footnoting tables
+
+% Aside environment for personal comments / ideas
+%\newcounter{asidectr}
+
+%\newenvironment{aside} 
+%  {\begin{mdframed}[style=0,%
+%      leftline=false,rightline=false,leftmargin=2em,rightmargin=2em,%
+%          innerleftmargin=0pt,innerrightmargin=0pt,linewidth=0.75pt,%
+%      skipabove=7pt,skipbelow=7pt]
+%  \refstepcounter{asidectr}% increment the environment's counter
+%  \small 
+%  \textit{Aside \theasidectr:}
+%  \newline
+%  \relax}
+%  {\end{mdframed}
+%}
+%\numberwithin{asidectr}{section}
+
+% Keywords command
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+}
+
+% command for oversetting distributed sign with text
+\makeatletter % changes the catcode of @ to 11 (i.e. letter)
+
+\newcommand{\distas}[1]{\mathbin{\overset{#1}{\kern\z@\sim}}}%
+\newsavebox{\mybox}\newsavebox{\mysim}
+
+\newcommand{\distras}[1]{%
+  \savebox{\mybox}{\hbox{\kern3pt$\scriptstyle#1$\kern3pt}}%
+  \savebox{\mysim}{\hbox{$\sim$}}%
+  \mathbin{\overset{#1}{\kern\z@\resizebox{\wd\mybox}{\ht\mysim}{$\sim$}}}%
+}
+\makeatother % changes the catcode of @ to 12 (i.e. back to default, other)
+
+
+%%% The "real" document content comes below...
+
+\title{Modelling photosynthetic parameters via mixed effects models and the Farquhar-van Cammerer-Berry model}
+\author{Stephen D. Coleman}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document} \pgfplotsset{compat=1.16}
+\maketitle
+
+\begin{abstract}
+The study of the photosynthetic process frequently involves analysis of net assimilation - intercellular CO$_2$ concentration (ACI) curves. These are used in the estimation of key parameters associated with the Farquhar-van Caemmerer-Berry (FvCB) \cite{Farquharbiochemicalmodelphotosynthetic1980} model:
+\begin{itemize}
+ \item $V_{c_{max}}$: the rate of maximum Rubisco carboxylation;
+ \item $J$: electron transport rate;
+ \item $R_d$: daytime respiration; and
+ \item $g_m$: mesophyll conductance.
+\end{itemize}
+Accurate, unbiased estimation of these parameters is a non-trivial exercise with the optimal method still a matter of debate within the field \cite{Moualeu-Nganguenewmethodestimate2017}, \cite{YinTheoreticalreconsiderationswhen2009}, \cite{QianEstimationphotosynthesisparameters2012}. The problem of selecting suitable starting values for a non-linear model is thus complicated by the lack of unanimity on what is a ``good'' estimate of these. The core model we are using to estimate the parameters is based on \citet{SharkeyFittingphotosyntheticcarbon2007}. % and Laisk (NEED REFERENCE - think 1977 paper).
+
+The data collected for the purpose of modelling steady-state photosynthesis is inevitably repeated measurements on individual plants. This leads to correlation between measurements, a fact that violates the assumptions in the fixed effects models used in estimating the parameters of interest (\cite{DuursmaPlantecophysPackageAnalysing2015}, \cite{BellasioExceltoolderiving2016}). We introduce the use of non-linear mixed effects models in keeping with \citet{QianEstimationphotosynthesisparameters2012} to overcome this issue, and extend on their work by considering more modern versions of the FvCB model.
+\end{abstract}
+\keywords{ACI curves, parameter estimation, FvCB model, non-linear mixed effects models}
+
+\section{Mixed-effects models}
+\subsection{Linear mixed-effects models}
+Traditional parametric models incorporate only \emph{fixed effects}. That is, they have a set of parameters describing with the entire population. For example, consider a system of $n \in \mathbb{N}$ observations of dependent variable, $Y=(y_1,\ldots,y_n)$, and the $n \times p$ matrix of associated independent variable measurements, $X=\left\{x_{i,j}\right\}$ for $i \in [1,n], j \in [1,p]$ for some $p \in \mathbb{N}$, and a $p$-vector of weights, $\beta$, represented:
+\begin{equation} \label{linear_model}
+Y = X \beta  + \epsilon
+\end{equation}
+Here $X$ is assumed to contain a column of $1$'s in the first position (hence the +1 in the description of its dimensionality) and $\epsilon$ is the $n$-vector of associated errors. We assume that $\epsilon_i \distras{iid} \mathcal{N}(0,\sigma^2)$ for $i = (1,\ldots,n)$.  If we consider the intuitive case of \emph{biological} and \emph{technical replicates}, where we have $n$ biological replicates and for the $i^{th}$ sample $m_i$ associated technical replicates. As each of the $m_i$ measurements is on the same sample we expect there to be a non-negligible correlation between the $m_i$ technical replicates for each $i$. The model in \eqref{linear_model} does not allow for the within group effects due to the correlation between technical replicates. Consider the simplest possible model for the fixed effects model including only the intercept:
+\begin{equation}
+y_{ij} = \beta + \epsilon_{ij}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
+\end{equation}
+Some of this model's limitations become apparent if one considers the case of unbalanced data. Continuing the previous example of biological and technical replicates, consider the case that $m_i \neq m_j$ for any $i, j \in (1,\ldots,n)$. In this case the model is skewed by the within sample data rather than by the true observations, the biological replicates. A possible solution is the inclusion of a individual intercept for each group of technical replicates, accommodating the within-sample variability, or \emph{random effects}:
+\begin{equation}
+y_{ij} = \beta_i + \epsilon_{ij}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
+\end{equation}
+While this better describes the observed data, it has certain inherent flaws; most  notably the number of parameters scales linearly with the number of observations and the model only describes the measurements included in the sample. Consider as a solution a combination of these models, containing both a sample mean, $\beta$, and a random variable for each group representing the deviation from the population mean, $b_i$, i.e. a \emph{mixed effects} model:
+\begin{equation} \label{lme_model}
+y_{ij} = \beta + b_i + \epsilon_{ij}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
+\end{equation}
+The linear mixed effects model described in \eqref{lme_model} contains information at both a population level (in the fixed effects) but also at the individual level (in the random effects).
+
+For now we assume $b_i \distras{iid} \mathcal{N}(0,\sigma_b^2) $ for $i = 1,\ldots,n$. This means that the variance of the observations is divided into two parts, $\sigma_b^2$ for the biological variability and $\sigma^2$ for the technical variability:
+\begin{equation} \label{hierarchical_model}
+b_i \distras{iid} \mathcal{N}(0,\sigma_b^2), \hspace{4mm} \epsilon_{ij} \distras{iid} \mathcal{N}(0,\sigma^2)
+\end{equation}
+The assumption of normality can be modified if deemed inappropriate and it is possible to generalise the model to allow for heteroscedasticity.
+
+The $b_i$ are called \emph{random effects} as they are associated with the experimental unit and selected at random from the population of interest (at least in theory, obviously there are limitations on this particularly in the area of medicine) They represent that the effect of choosing the sample $i$ is to shift the mean expression of $Y$ from $\beta$ to $\beta + b_i$ - i.e. they effect a deviation from an overall mean. Technical replicates share the same random effect $b_i$ and are correlated. The covariance between technical replicates on the same experimental unit is $\sigma^2_b$; this corresponds to a correlation of $\frac{\sigma^2_b}{\left(\sigma^2_b + \sigma^2\right)}$.
+
+\subsection{Non-linear mixed effects models}
+Non-linear mixed effects models, also known as \emph{non-linear hierarchical models}, are an extension to the more traditional linear mixed effects models. They are used in scenarios where all of the following features are present \cite{DavidianNonlinearmodelsrepeated2003}:
+\begin{enumerate}  \label{when_nlme}
+ \item Repeated observations of a continuous variable on each of several \emph{experimental units} (in our case these are individuals, thus individual is considered equivalent to empircial unit in the following section) over time or another condition (e.g. measurements at given heights on a tree) (the \emph{condition variable});
+ \item We expect the relationship between the response variable and the condition variable to vary across individuals; and
+ \item Availability of a scientifically relevant model characterising the behaviour of the individual response in terms of meaningful parameters that vary across individuals and dictate variation in patterns of condition-response (for us this will be the Farquhar-van Cammerer-Berry model).
+\end{enumerate}
+The final point from the list in \ref{when_nlme} is where the non-linear aspect is introduced. This is often a mechanistic function describing a physical or chemical system (for example in toxicokineitcs physiologically-based pharmacokinetics models are used or HIV dynamics in ``precision medicine''); that is the model is described by by meaningful, interpretable parameters rather than being an empirical best fit. It is expected that the mechanistic model will better describe data beyond the range of the measurements used here (whereas an empirical fit might describe the data over the range captured in the measurement data but then misbehave woefully beyond these boundaries).
+
+The analysis tends to have the goal of understanding one or more of the following:
+\begin{enumerate}
+ \item The ``typical'' behaviour of the phenomena (i.e. mean or median values) represented by the model parameters;
+ \item The variation of these parameters, and hence the phenomena, between individuals; and
+ \item If some of the variation is inherently associated with individual characteristics.
+\end{enumerate}
+Individual level prediction can also be of interest (e.g. in medical treatment with highly individual reaction), but is less relevant to this project. From the individual level we are interested in investigating the level of variation between individuals and questioning if this is sufficiently small to allow the ``all-purpose'' models generally used in photosynthesis describing the parameters and systems of interest.
+
+Consider an experiment involving repeated measurements of some response variable, $Y$, across a condition variable $T$ for $n$ individuals. Each individual's characteristics are recorded in $A$ (this is assumed to be time-independent measurements, like an individual's height over the course of a drugs trial) and possible additional initial conditions in $U$ (for example the dose of a drug the individual was receiving at time $t=0$). Let $y_{i,j}$ denote the $j$th measurement of the response under condition $t_{i,j}$, $j = 1,\ldots,n_i$, for individual $i$, $i = 1,\ldots,n$ with additional initial conditions $u_i$. Thus:
+\begin{equation}
+\begin{array}{ll}
+Y &= \left(y_1,\ldots,y_n\right) \\
+y_i &= \left(y_{i,1},\ldots,y_{i,n_i}\right) \\
+T &= \left(t_1,\ldots,t_n\right) \\
+t_i &= \left(t_{i,1},\ldots,t_{i,n_i}\right) \\
+A &= \left(a_1,\ldots,a_n\right) \\
+U &= \left(u_1,\ldots,u_n\right)
+\end{array}
+\end{equation}
+We denote $x_{i,j} = \left(t_{i,j}, u_i\right)$. Often $T$ is time and $U=\emptyset$, but it might be the case that each $t_{i,j}$ is a $p_1$-vector of measurements and $u_i$ is a $p_2$-vector such that $p_1 + p_2 = p$, returning to the notation of \eqref{lme_model}. The assumption that the triplets $(y_i,u_i,a_i)$ are independent across $i$ is often included to reflect the belief that individuals are unrelated (this will hold for us, but might require more thought in other situations). For some function $f$ regulating the within-individual behaviour defined by a vector of parameters $\beta_i$ unique to individual $i$, we have:
+\begin{equation} \label{stage1_individual_model}
+y_{i,j} = f\left(x_{i,j}, \beta_i\right) + \epsilon_{i,j}, \hspace{4mm} j = 1,\ldots,n_i
+\end{equation}
+For us this will be the Farquhar-van Cammerer-Berry model of steady-state photosynthesis. We assume that $\mathbb{E}\left(\epsilon_{i,j}|u_i,\beta_i\right)=0$ and $\epsilon_{i,j} \distras{iid} \mathcal{N}(0,\sigma^2)$ for all $i, j$ (the assumption of normality can be relaxed, but this extension exceeds the reach of this project). This model in \eqref{stage1_individual_model} is called the \emph{individual level model}. To model the population parameters we consider $d$, a $p$-dimensional function depending on an $r$-vector of fixed parameters, or \emph{fixed effects}, $\beta$, and a $k$-vector of \emph{random effects}, $b_i$, associated with individual $i$:
+\begin{equation} \label{stage1_population_model}
+\beta_i = d\left(a_i,\beta,b_i\right), \hspace{4mm} i = 1,\ldots,n
+\end{equation}
+Here, the \emph{population model} in \eqref{stage1_population_model} describes how $\beta_i$ varies among individuals due to both individual attributes $a_i$ and biological variation in $b_i$. We assume that the $b_i$ are independent of the $a_i$, i.e.:
+\begin{equation}
+\begin{array}{l}
+\mathbb{E}(b_i|a_i) = \mathbb{E}(b_i) = 0 \\
+\mathbb{V}ar(b_i|a_i) = \mathbb{V}ar(b_i) = D
+\end{array}
+\end{equation}
+Here, $D$ is an unstructured covariance matrix and is common to all $i$. It characterises the degree of unexplained variation in the elements of $\beta_i$ and associations among them; the ubiquitous assumption is $b_i \sim \mathcal{N}(0,D)$. However, if this set of assumptions regarding the conditional distribution of $b_i$ on $a_i$ is found to be insufficient, then $b_i \sim \mathcal{N}\left(0,D(a_i)\right)$ is frequently used.
+
+In \eqref{stage1_population_model}, $\beta_i$ is considered to have an associated random effect, reflecting the belief that each component varies non-negligibly in the population even after systematic relationships with subject characteristics are accounted for. It may happen that ``unexplained'' variance in a component of $\beta_i$ may be very small in magnitude relative to that in the remaining elements. In this situation it is common to drop the negligible quantity entirely. This lacks biological sense as each parameter is part of the ``scientifically relevant model'' and thus is unlikely to have no associated unexplained variation. Hence, one must recognise that this omission of an element of $\beta_i$ is adopted to achieve numerical stability in fitting rather than to reflect belief in perfect biological consistency across individuals and analyses in the literature to determine whether elements of $\beta_i$ are fixed or random effects should be interpreted so.
+
+\subsection{Our model}
+Much of the preceding concepts and theory make for very pleasant reading, but we consider it useful to explicitly state our model and it's assumptions in one place.
+
+First, recall the FvCB model:
+\begin{align}
+A &= \min \left \{A_c, A_j\right \} \\
+ &= FvCB(C_c, \Gamma_*, I, K_c, K_o, O_{i,j}, J_{max}, V_{c_{max}}, \alpha, \theta, R_{d_i})
+\end{align}
+Where $A_c$ and $A_j$ are two curves describing separate biochemical limits on the rate of photosynthesis:
+\begin{align}
+A_c &= V_{c_{max}} \frac{C_c - \Gamma_*}{C_c+K_c(1+O/K_o)}-R_d \\
+A_j &= J\frac{C_c - \Gamma_*}{4C_c + 8\Gamma_*}-R_d
+\end{align}
+Furthermore:
+\begin{equation}
+J = \frac{\alpha \cdot I + J_{max} - \sqrt{\left (\alpha \cdot I + J_{max}\right )^2 - 4\theta \cdot \alpha \cdot I \cdot J_{max}}}{2 \theta}
+\end{equation}
+We plug this into \eqref{stage1_individual_model} for each of our experimental effects (in Rachel Schipper's data, SIDE and TREATMENT) in line with \citet{BatesComputationalMethodsMultilevel}. Thus, we have:
+\begin{itemize}
+ \item Our response variable, $Y$, is net photosynthesis rate, $A$; 
+ \item Our individual level function, $f(\cdot)$, is $FvCB(\cdot)$;
+ \item Our measured condition variables, $X$, are $C_c, \Gamma_*, I, K_c, K_o$, and $O$; and
+ \item Our fixed effects, $\beta$, are $J_{max}, V_{c_{max}}, \alpha, \theta$ and $R_d$.
+\end{itemize}
+Notice that $U=\emptyset$. Therefore our individual-level model is:
+\begin{equation} \label{nlme_fvcb_model}
+\begin{array}{ll}
+&A_{i,j} = FvCB(C_{c_{i,j}}, \Gamma_{*_{i,j}}, I_{i,j}, K_c, K_o, O_{i,j}, J_{max_i}, V_{c_{max_i}}, \alpha_i, \theta_i, R_{d_i}) + \epsilon_{i,j} \\
+&\epsilon_{i,j} \distras{iid} \mathcal{N}(0,\sigma^2) \\
+&\mathbb{E}\left(\epsilon_{i,j}|  J_{max_i}, V_{c_{max_i}}, \alpha_i, \theta_i, R_{d_i}\right) = 0
+\end{array}
+\end{equation}
+For our specific version of \eqref{stage1_population_model}, we cannot know in advance what kind of model we will use. This will be based on the ability of different models to converge. We expect, given the paucity of data that we will have a diagonal covariance structure with 0's in the non-diagonal entries imposed on our mixed effects model (as we expect that there is not enough data for more flexible formats to converge). This corresponds to a statement of independence between random effects which may not be the ideal assumption, and with this in mind we will attempt other formats. However we do know that our photosynthetic parameters of interest ($J_{max}, V_{c_{max}}, \alpha, \theta$ and $R_d$) will all be represented in this aspect of the model to consider each individual plant with unique photosynthetic parameters.
+%\newpage
+
+\bibliographystyle{plainnat}
+\bibliography{thesis_references}
+
+\end{document}

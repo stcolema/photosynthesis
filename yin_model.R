@@ -456,8 +456,8 @@ ACI2 <- read.table("A-Ci2.txt", sep = "\t", header = TRUE, na.strings = "", file
 ACI1 <- read.table("A-Ci1_clean.csv", sep = ",", header = TRUE, na.strings = "")
 LRC2 <- read.table("LRC2_clean.csv", sep = ",", header = TRUE, na.strings = "")
 # ACI2 <- read.table("A-Ci2_clean.csv", sep = ",", header = TRUE, na.strings = "")
-ACI1_F <- na.omit(read.table("A-Ci1-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
-ACI2_F <- na.omit(read.table("A-Ci2-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
+# ACI1_F <- na.omit(read.table("A-Ci1-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
+# ACI2_F <- na.omit(read.table("A-Ci2-F_clean.csv", sep = ",", header = TRUE, na.strings = ""))
 
 # Light from above (AD), below (AB) and both (ADAB (not present in ACI))
 # Treatments A1 (from above) and A2 (from above and below)

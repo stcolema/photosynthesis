@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Davidian and Giltinan(2003)]{DavidianNonlinearmodelsrepeated2003}
+Marie Davidian and David~M. Giltinan.
+\newblock Nonlinear models for repeated measurement data: {{An}} overview and
+  update.
+\newblock \emph{Journal of Agricultural, Biological, and Environmental
+  Statistics}, 8\penalty0 (4):\penalty0 387--419, December 2003.
+\newblock ISSN 1085-7117, 1537-2693.
+\newblock \doi{10.1198/1085711032697}.
+
+\end{thebibliography}
