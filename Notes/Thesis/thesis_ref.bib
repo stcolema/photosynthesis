@@ -1,5 +1,5 @@
 
-@misc{AustcitrRStudioAddin2018,
+@misc{AustcitrRStudioAddin2018a,
   title = {Citr: {{RStudio Addin}} to {{Insert Markdown Citations}}},
   shorttitle = {Citr},
   author = {Aust, Frederik},
@@ -413,6 +413,22 @@ strengths and weaknesses of each.},
   file = {C:\\Users\\steph\\Zotero\\storage\\U45YEBWS\\Bellasio et al. - 2016 - An Excel tool for deriving key photosynthetic para.pdf}
 }
 
+@article{KirkBayesiancorrelatedclustering2012,
+  title = {Bayesian Correlated Clustering to Integrate Multiple Datasets},
+  volume = {28},
+  issn = {1460-2059, 1367-4803},
+  doi = {10.1093/bioinformatics/bts595},
+  abstract = {Motivation: The integration of multiple datasets remains a key challenge in systems biology and genomic medicine. Modern highthroughput technologies generate a broad array of different data types, providing distinct\textemdash{}but often complementary\textemdash{}information. We present a Bayesian method for the unsupervised integrative modelling of multiple datasets, which we refer to as MDI (Multiple Dataset Integration). MDI can integrate information from a wide range of different datasets and data types simultaneously (including the ability to model time series data explicitly using Gaussian processes). Each dataset is modelled using a Dirichlet-multinomial allocation (DMA) mixture model, with dependencies between these models captured through parameters that describe the agreement among the datasets. Results: Using a set of six artificially constructed time series datasets, we show that MDI is able to integrate a significant number of datasets simultaneously, and that it successfully captures the underlying structural similarity between the datasets. We also analyse a variety of real Saccharomyces cerevisiae datasets. In the two-dataset case, we show that MDI's performance is comparable with the present state-of-the-art. We then move beyond the capabilities of current approaches and integrate gene expression, chromatin immunoprecipitation\textendash{}chip and protein\textendash{}protein interaction data, to identify a set of protein complexes for which genes are co-regulated during the cell cycle. Comparisons to other unsupervised data integration techniques\textemdash{}as well as to non-integrative approaches\textemdash{}demonstrate that MDI is competitive, while also providing information that would be difficult or impossible to extract using other methods.},
+  language = {en},
+  number = {24},
+  journal = {Bioinformatics},
+  author = {Kirk, Paul and Griffin, Jim E. and Savage, Richard S. and Ghahramani, Zoubin and Wild, David L.},
+  month = dec,
+  year = {2012},
+  pages = {3290-3297},
+  file = {C:\\Users\\steph\\Zotero\\storage\\QQXYS2RM\\Kirk et al. - 2012 - Bayesian correlated clustering to integrate multip.pdf}
+}
+
 @article{YinC3C4photosynthesis2009,
   title = {C3 and {{C4}} Photosynthesis Models: {{An}} Overview from the Perspective of Crop Modelling},
   volume = {57},
@@ -426,8 +442,139 @@ strengths and weaknesses of each.},
   author = {Yin, X. and Struik, P.C.},
   month = dec,
   year = {2009},
-  pages = {27-38},
-  file = {C:\\Users\\steph\\Zotero\\storage\\3PH5TM8B\\Yin and Struik - 2009 - C3 and C4 photosynthesis models An overview from .pdf}
+  pages = {27-38}
+}
+
+@article{BardenetMarkovchainMonte2017,
+  title = {On {{Markov}} Chain {{Monte Carlo}} Methods for Tall Data},
+  volume = {18},
+  abstract = {Markov chain Monte Carlo methods are often deemed too computationally intensive to be of any practical use for big data applications, and in particular for inference on datasets containing a large number n of individual data points, also known as tall datasets. In scenarios where data are assumed independent, various approaches to scale up the MetropolisHastings algorithm in a Bayesian inference context have been recently proposed in machine learning and computational statistics. These approaches can be grouped into two categories: divide-and-conquer approaches and, subsampling-based algorithms. The aims of this article are as follows. First, we present a comprehensive review of the existing literature, commenting on the underlying assumptions and theoretical guarantees of each method. Second, by leveraging our understanding of these limitations, we propose an original subsampling-based approach relying on a control variate method which samples under regularity conditions from a distribution provably close to the posterior distribution of interest, yet can require less than O(n) data point likelihood evaluations at each iteration for certain statistical models in favourable scenarios. Finally, we emphasize that we have only been able so far to propose subsampling-based methods which display good performance in scenarios where the Bernstein-von Mises approximation of the target posterior distribution is excellent. It remains an open challenge to develop such methods in scenarios where the Bernstein-von Mises approximation is poor.},
+  language = {en},
+  journal = {The Journal of Machine Learning Research},
+  author = {Bardenet, Remi and Doucet, Arnaud and Holmes, Chris},
+  year = {2017},
+  pages = {1515-1557},
+  file = {C:\\Users\\steph\\Zotero\\storage\\53IXJVLZ\\Bardenet et al. - On Markov chain Monte Carlo methods for tall data.pdf}
+}
+
+@article{SavageBHCfastBayesian2009,
+  title = {R/{{BHC}}: Fast {{Bayesian}} Hierarchical Clustering for Microarray Data},
+  volume = {10},
+  issn = {1471-2105},
+  shorttitle = {R/{{BHC}}},
+  doi = {10.1186/1471-2105-10-242},
+  abstract = {Background: Although the use of clustering methods has rapidly become one of the standard computational approaches in the literature of microarray gene expression data analysis, little attention has been paid to uncertainty in the results obtained.
+Results: We present an R/Bioconductor port of a fast novel algorithm for Bayesian agglomerative hierarchical clustering and demonstrate its use in clustering gene expression microarray data. The method performs bottom-up hierarchical clustering, using a Dirichlet Process (infinite mixture) to model uncertainty in the data and Bayesian model selection to decide at each step which clusters to merge.
+Conclusion: Biologically plausible results are presented from a well studied data set: expression profiles of A. thaliana subjected to a variety of biotic and abiotic stresses. Our method avoids several limitations of traditional methods, for example how many clusters there should be and how to choose a principled distance metric.},
+  language = {en},
+  number = {1},
+  journal = {BMC Bioinformatics},
+  author = {Savage, Richard S and Heller, Katherine and Xu, Yang and Ghahramani, Zoubin and Truman, William M and Grant, Murray and Denby, Katherine J and Wild, David L},
+  year = {2009},
+  pages = {242},
+  file = {C:\\Users\\steph\\Zotero\\storage\\PZJQZ35G\\Savage et al. - 2009 - RBHC fast Bayesian hierarchical clustering for m.pdf}
+}
+
+@article{RaykovSimpleapproximateMAP2016,
+  title = {Simple Approximate {{MAP}} Inference for {{Dirichlet}} Processes Mixtures},
+  volume = {10},
+  issn = {1935-7524},
+  doi = {10.1214/16-EJS1196},
+  abstract = {The Dirichlet process mixture model (DPMM) is a ubiquitous, flexible Bayesian nonparametric statistical model. However, full probabilistic inference in this model is analytically intractable, so that computationally intensive techniques such as Gibbs sampling are required. As a result, DPMM-based methods, which have considerable potential, are restricted to applications in which computational resources and time for inference is plentiful. For example, they would not be practical for digital signal processing on embedded hardware, where computational resources are at a serious premium. Here, we develop a simplified yet statistically rigorous approximate maximum a-posteriori (MAP) inference algorithm for DPMMs. This algorithm is as simple as DP-means clustering, solves the MAP problem as well as Gibbs sampling, while requiring only a fraction of the computational effort.\textdagger{} Unlike related small variance asymptotics (SVA), our method is non-degenerate and so inherits the ``rich get richer'' property of the Dirichlet process. It also retains a non-degenerate closedform likelihood which enables out-of-sample calculations and the use of standard tools such as cross-validation. We illustrate the benefits of our algorithm on a range of examples and contrast it to variational, SVA and sampling approaches from both a computational complexity perspective as well as in terms of clustering performance. We demonstrate the wide applicabiity of our approach by presenting an approximate MAP inference method for the infinite hidden Markov model whose performance contrasts favorably with a recently proposed hybrid SVA approach. Similarly, we show how our algorithm can applied to a semiparametric mixed-effects regression model where the random effects distribution is modelled using an infinite mixture model, as used in longitudinal progression modelling in population health science. Finally, we propose directions for future research on approximate MAP inference in Bayesian nonparametrics.},
+  language = {en},
+  number = {2},
+  journal = {Electronic Journal of Statistics},
+  author = {Raykov, Yordan P. and Boukouvalas, Alexis and Little, Max A.},
+  year = {2016},
+  pages = {3548-3578},
+  file = {C:\\Users\\steph\\Zotero\\storage\\YW35PQM6\\Raykov et al. - 2016 - Simple approximate MAP inference for Dirichlet pro.pdf}
+}
+
+@inproceedings{HellerBayesianhierarchicalclustering2005,
+  address = {Bonn, Germany},
+  title = {Bayesian Hierarchical Clustering},
+  isbn = {978-1-59593-180-1},
+  doi = {10.1145/1102351.1102389},
+  abstract = {We present a novel algorithm for agglomerative hierarchical clustering based on evaluating marginal likelihoods of a probabilistic model. This algorithm has several advantages over traditional distance-based agglomerative clustering algorithms. (1) It defines a probabilistic model of the data which can be used to compute the predictive distribution of a test point and the probability of it belonging to any of the existing clusters in the tree. (2) It uses a model-based criterion to decide on merging clusters rather than an ad-hoc distance metric. (3) Bayesian hypothesis testing is used to decide which merges are advantageous and to output the recommended depth of the tree. (4) The algorithm can be interpreted as a novel fast bottom-up approximate inference method for a Dirichlet process (i.e. countably infinite) mixture model (DPM). It provides a new lower bound on the marginal likelihood of a DPM by summing over exponentially many clusterings of the data in polynomial time. We describe procedures for learning the model hyperparameters, computing the predictive distribution, and extensions to the algorithm. Experimental results on synthetic and real-world data sets demonstrate useful properties of the algorithm.},
+  language = {en},
+  booktitle = {Proceedings of the 22nd International Conference on {{Machine}} Learning  - {{ICML}} '05},
+  publisher = {{ACM Press}},
+  author = {Heller, Katherine A. and Ghahramani, Zoubin},
+  year = {2005},
+  pages = {297-304},
+  file = {C:\\Users\\steph\\Zotero\\storage\\QK3INGVI\\Heller and Ghahramani - 2005 - Bayesian hierarchical clustering.pdf}
+}
+
+@article{SnelsonVariablenoisedimensionality,
+  title = {Variable Noise and Dimensionality Reduction for Sparse {{Gaussian}} Processes},
+  abstract = {The sparse pseudo-input Gaussian process (SPGP) is a new approximation method for speeding up GP regression in the case of a large number of data points N . The approximation is controlled by the gradient optimization of a small set of M `pseudoinputs', thereby reducing complexity from O(N 3) to O(M 2N ). One limitation of the SPGP is that this optimization space becomes impractically big for high dimensional data sets. This paper addresses this limitation by performing automatic dimensionality reduction. A projection of the input space to a low dimensional space is learned in a supervised manner, alongside the pseudoinputs, which now live in this reduced space. The paper also investigates the suitability of the SPGP for modeling data with inputdependent noise. A further extension of the model is made to make it even more powerful in this regard \textendash{} we learn an uncertainty parameter for each pseudo-input. The combination of sparsity, reduced dimension, and input-dependent noise makes it possible to apply GPs to much larger and more complex data sets than was previously practical. We demonstrate the benefits of these methods on several synthetic and real world problems.},
+  language = {en},
+  author = {Snelson, Edward and Ghahramani, Zoubin},
+  pages = {8},
+  file = {C:\\Users\\steph\\Zotero\\storage\\968F6AT3\\Snelson and Ghahramani - Variable noise and dimensionality reduction for sp.pdf}
+}
+
+@article{WadeImprovingPredictionDirichlet,
+  title = {Improving {{Prediction}} from {{Dirichlet Process Mixtures}} via {{Enrichment}}${_\ast}$},
+  abstract = {Flexible covariate-dependent density estimation can be achieved by modelling the joint density of the response and covariates as a Dirichlet process mixture. An appealing aspect of this approach is that computations are relatively easy. In this paper, we examine the predictive performance of these models with an increasing number of covariates. Even for a moderate number of covariates, we find that the likelihood for x tends to dominate the posterior of the latent random partition, degrading the predictive performance of the model. To overcome this, we suggest using a different nonparametric prior, namely an enriched Dirichlet process. Our proposal maintains a simple allocation rule, so that computations remain relatively simple. Advantages are shown through both predictive equations and examples, including an application to diagnosis Alzheimer's disease.},
+  language = {en},
+  author = {Wade, Sara and Dunson, David B and Petrone, Sonia and Trippa, Lorenzo},
+  pages = {31},
+  file = {C:\\Users\\steph\\Zotero\\storage\\4GQJZ3SI\\Wade et al. - Improving Prediction from Dirichlet Process Mixtur.pdf}
+}
+
+@article{NiScalableBayesianNonparametric2018,
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1806.02670},
+  primaryClass = {stat},
+  title = {Scalable {{Bayesian Nonparametric Clustering}} and {{Classification}}},
+  abstract = {We develop a scalable multi-step Monte Carlo algorithm for inference under a large class of nonparametric Bayesian models for clustering and classification. Each step is ``embarrassingly parallel'' and can be implemented using the same Markov chain Monte Carlo sampler. The simplicity and generality of our approach makes inference for a wide range of Bayesian nonparametric mixture models applicable to large datasets. Specifically, we apply the approach to inference under a product partition model with regression on covariates. We show results for inference with two motivating data sets: a large set of electronic health records (EHR) and a bank telemarketing dataset. We find interesting clusters and favorable classification performance relative to other widely used competing classifiers.},
+  language = {en},
+  journal = {arXiv:1806.02670 [stat]},
+  author = {Ni, Yang and M\"uller, Peter and Diesendruck, Maurice and Williamson, Sinead and Zhu, Yitan and Ji, Yuan},
+  month = jun,
+  year = {2018},
+  keywords = {Statistics - Methodology,Statistics - Computation},
+  file = {C:\\Users\\steph\\Zotero\\storage\\2IBD5Q2V\\Ni et al. - 2018 - Scalable Bayesian Nonparametric Clustering and Cla.pdf},
+  annote = {Comment: 29 pages, 3 figures, 2 tables}
+}
+
+@article{Barcellacomparativereviewvariable2015,
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1508.00129},
+  primaryClass = {stat},
+  title = {A Comparative Review of Variable Selection Techniques for Covariate Dependent {{Dirichlet}} Process Mixture Models},
+  abstract = {Dirichlet Process Mixture (DPM) models have been increasingly employed to specify random partition models that take into account possible patterns within the covariates. Furthermore, to deal with large numbers of covariates, methods for selecting the most important covariates have been proposed. Commonly, the covariates are chosen either for their importance in determining the clustering of the observations or for their effect on the level of a response variable (when a regression model is specified). Typically both strategies involve the specification of latent indicators that regulate the inclusion of the covariates in the model. Common examples involve the use of spike and slab prior distributions. In this work we review the most relevant DPM models that include covariate information in the induced partition of the observations and we focus on available variable selection techniques for these models. We highlight the main features of each model and demonstrate them in simulations and in a real data application.},
+  language = {en},
+  journal = {arXiv:1508.00129 [stat]},
+  author = {Barcella, William and De Iorio, Maria and Baio, Gianluca},
+  month = aug,
+  year = {2015},
+  keywords = {Statistics - Applications},
+  file = {C:\\Users\\steph\\Zotero\\storage\\Y7JBHTD7\\Barcella et al. - 2015 - A comparative review of variable selection techniq.pdf},
+  annote = {Comment: 26 pages, 5 figures}
+}
+
+@article{OlejnikElectricaldetectionmagnetization2015,
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1506.00400},
+  title = {Electrical Detection of Magnetization Reversal without Auxiliary Magnets},
+  volume = {91},
+  issn = {1098-0121, 1550-235X},
+  doi = {10.1103/PhysRevB.91.180402},
+  abstract = {First-generation magnetic random access memories based on anisotropic magnetoresistance required magnetic fields for both writing and reading. Modern all-electrical read/write memories use instead non-relativistic spin-transport connecting the storing magnetic layer with a reference ferromagnet. Recent studies have focused on electrical manipulation of magnetic moments by relativistic spin-torques requiring no reference ferromagnet. Here we report the observation of a counterpart magnetoresistance effect in such a relativistic system which allows us to electrically detect the sign of the magnetization without an auxiliary magnetic field or ferromagnet. We observe the effect in a geometry in which the magnetization of a uniaxial (Ga,Mn)As epilayer is set either parallel or antiparallel to a current-induced non-equilibrium spin polarization of carriers. In our structure, this linear-in-current magnetoresistance reaches 0.2$\backslash$\% at current density of \$10\^6\$ A cm\$\^\{-2\}\$.},
+  language = {en},
+  number = {18},
+  journal = {Physical Review B},
+  author = {Olejn\'ik, K. and Nov\'ak, V. and Wunderlich, J. and Jungwirth, T.},
+  month = may,
+  year = {2015},
+  keywords = {Condensed Matter - Materials Science,Condensed Matter - Mesoscale and Nanoscale Physics},
+  file = {C:\\Users\\steph\\Zotero\\storage\\532UVGUL\\Olejník et al. - 2015 - Electrical detection of magnetization reversal wit.pdf},
+  annote = {Comment: 5 pages, 4 figures}
 }
 
 @article{YinUsingcombinedmeasurements2009,

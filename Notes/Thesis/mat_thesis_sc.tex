@@ -514,6 +514,28 @@ Notice that $U=\emptyset$. Therefore our individual-level model is:
 \end{array}
 \end{equation}
 For our specific version of \eqref{stage1_population_model}, we cannot know in advance what kind of model we will use. This will be based on the ability of different models to converge. We expect, given the paucity of data that we will have a diagonal covariance structure with 0's in the non-diagonal entries imposed on our mixed effects model (as we expect that there is not enough data for more flexible formats to converge). This corresponds to a statement of independence between random effects which may not be the ideal assumption, and with this in mind we will attempt other formats. However we do know that our photosynthetic parameters of interest ($J_{max}, V_{c_{max}}, \alpha, \theta$ and $R_d$) will all be represented in this aspect of the model to consider each individual plant with unique photosynthetic parameters.
+
+\section{Methods}
+The methods entailed hereafter are based upon those described by \citet{YinUsingcombinedmeasurements2009} except for the inclusion of mixed-effects models which is, insofar as the authors are aware, unly previously used in \cite{QianEstimationphotosynthesisparameters2012}. The method described in \cite{YinUsingcombinedmeasurements2009} uses several different datasets to estimate the parameters of interest over several steps. We acknowledge the flaw of this disjoint model which does not accumulate error but instead uses the point estimates in each succeeding step with no error accumulation. If this work is extended upon this is probably the area which most requires improvement, i.e. conversion to a full joint model. We suspect that this should also enable ease of convergence as the point estimates used in any given step might be wrong and restrict the current estimate from moving to the correct subspace of the possible solution space.
+
+We have five datasets available for this method. For each dataset we have the same 12 individual plants present.
+\begin{enumerate}
+ \item \emph{LRC1}: Repeated measurements for plants acclimatised to increasing values of light intensity ($I$) at constant intercellular CO$_2$ ($C_i$) and atmospheric (i.e. $\SI{210}{\micro \mol}$) O$_2$;
+ \item \emph{LRC2}: Repeated measurements for plants acclimatised to increasing values of $I$ at constant CO$_2$ and low (i.e. $\SI{20}{\micro \mol}$) O$_2$;
+ \item \emph{LRC2-F}: as LRC2 with the addition of measurements taken using fluorescence;
+ \item \emph{ACI1}: Repeated measurements for plants acclimatised to increasing values of $C_i$ at constant $I$ and atmospheric O$_2$; and
+ \item \emph{ACI2}: Repeated measurements for plants acclimatised to increasing values of $C_i$ at constant $I$ and low O$_2$.
+\end{enumerate}
+The method uses 5 separate steps.
+\begin{enumerate}
+ \item Calculate lump parameter $S$ and $R_d$ using the datasets LRC2 and LRC2-F;
+ \item Using the results of the previous step and LRC2-F, estimate J for the low light data;
+ \item Calculate $S_{c/o}$, the specificity of something or other using the ACI1 and ACI2 datasets;
+ \item Using the value of $S_{c/o}$ from the previous step, calculate $\Gamma_*$ in the ACI1 data; and
+ \item Using all of the values previously estimated, estimate $V_{c_{max}}$ and $J_{max}$ using the ACI1 and LRC1 datasets.
+\end{enumerate}
+
+
 \newpage
 
 \bibliographystyle{plainnat}
