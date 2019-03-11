@@ -183,7 +183,7 @@ The study of the photosynthetic process frequently involves analysis of net assi
 \end{itemize}
 Accurate, unbiased estimation of these parameters is a non-trivial exercise with the optimal method still a matter of debate within the field \cite{Moualeu-Nganguenewmethodestimate2017}\cite{YinTheoreticalreconsiderationswhen2009}\cite{QianEstimationphotosynthesisparameters2012}. The problem of selecting suitable starting values for a non-linear model is thus complicated by the lack of unanimity on what is a ``good'' estimate of these. The core model we are using to estimate the parameters is based on \citet{YinUsingcombinedmeasurements2009}. This method offers several steps to estimate various parameters rather than attempting estimation in a single step. % and Laisk (NEED REFERENCE - think 1977 paper).
 
-The data collected for the purpose of modelling steady-state photosynthesis is inevitably repeated measurements on individual plants. This leads to correlation between measurements, a fact that violates the assumptions in the fixed effects models used in estimating the parameters of interest (\cite{DuursmaPlantecophysPackageAnalysing2015}\cite{BellasioExceltoolderiving2016}). We introduce the use of non-linear mixed effects models in keeping with \citet{QianEstimationphotosynthesisparameters2012} to overcome this issue, and extend on their work by considering more modern versions of the FvCB model.
+The data collected for the purpose of modelling steady-state photosynthesis is inevitably repeated measurements on individual plants. This leads to correlation between measurements, a fact that violates the assumptions in the fixed effects models used in estimating the parameters of interest \cite{DuursmaPlantecophysPackageAnalysing2015}\cite{BellasioExceltoolderiving2016}. We introduce the use of non-linear mixed effects models in keeping with \citet{QianEstimationphotosynthesisparameters2012} to overcome this issue, and extend on their work by considering more modern versions of the FvCB model.
 \end{abstract}
 \keywords{ACI curves, parameter estimation, FvCB model, non-linear mixed effects models}
 
@@ -232,20 +232,20 @@ We also have that the velocity of carboxylation, at saturating levels of RuBP, (
 W_c = V_{c_{max}} \frac{C_c}{C_c + K_c (1 + O / K_o)}
 \end{equation}
 Note that this arises from setting the RuBP component of \eqref{V_c} to 1.
-The compensation point for $C_c$ at which there is no net assimilation, $\Gamma^*$, is given by \cite{Farquharbiochemicalmodelphotosynthetic1980}:
+The compensation point for $C_c$ at which there is no net assimilation, $\Gamma_*$, is given by \cite{Farquharbiochemicalmodelphotosynthetic1980}:
 \begin{equation} \label{gamma_star}
-\Gamma^* = \frac{K_c O}{2 K_o}\cdot \frac{V_{o_{max}}}{V_{c_{max}}}
+\Gamma_* = \frac{K_c O}{2 K_o}\cdot \frac{V_{o_{max}}}{V_{c_{max}}}
 \end{equation}
 Relating \eqref{net_assimilation_raw}, \eqref{ratio_oxygenation_carboxylation}, \eqref{RuBP_satuarted_carboxylation_rate} and \eqref{gamma_star} we have:
 \begin{equation} \label{rubisco_limited_photosynthesis}
-A_c = V_{c_{max}} \frac{C_c - \Gamma^*}{C_c+K_c(1+O/K_o)}-R_d
+A_c = V_{c_{max}} \frac{C_c - \Gamma_*}{C_c+K_c(1+O/K_o)}-R_d
 \end{equation}
 This is the Rubisco-limited rate of assimilation, assuming saturation of RuBP.
 
 \subsubsection{Electron transport limited net photosynthesis rate}
 The physiology of this model is somewhat more complex, involving analysis of the cycle for the production of NADPH \cite{Farquharbiochemicalmodelphotosynthetic1980}. A thorough understanding of this is beyond the scope of this project, but we recommend the reader to the original paper \cite{Farquharbiochemicalmodelphotosynthetic1980} and \citet{CaemmererBiochemicalmodelsleaf2000}. We are content to state that when $A$ is limited by RuBP regeneration:
 \begin{equation} \label{RuBP_photosynthesis}
-A_j = J\frac{C_c - \Gamma^*}{4C_c + 8\Gamma^*}-R_d
+A_j = J\frac{C_c - \Gamma_*}{4C_c + 8\Gamma^*}-R_d
 \end{equation}
 Where $J$ is the rate of electron transport (and hence electron transport limited net photosynthesis rate). This equation arises using assumptions that RuBP regeneration is limited because of insufficient NADPH and implicitly assumes $100\%$  linear e$^-$ transport. \citet{SharkeyFittingphotosyntheticcarbon2007} recommend the use of $4$ and $8$ in the denominator based on the number of electrons required for NADP$^+$ reduction; however this is not always the case; values of 4.5 and 10.5 also occur in the literature and less frequently we see 4 and 9.33 (see \cite{SharkeyFittingphotosyntheticcarbon2007}\cite{YinUsingcombinedmeasurements2009}\cite{YinC3C4photosynthesis2009}). These different values arise from different assumptions about the complexity of linear electron (e$^-$) rate. The disagreement over pairs $\{4.5, 10.5\}$ or $\{4, 9.33\}$ arise due to further disagreement about deeper levels of this system that are a source of some discussion in the literature (\cite{CaemmererBiochemicalmodelsleaf2000}\cite{YinUsingcombinedmeasurements2009}) but are less of interest to us. To allow for this disagreement we use default values of 4 and 8 in our R model, but the functions incorporating this aspect of the model allow the user to input their own version of these coefficients.
 
@@ -312,6 +312,7 @@ $I_2$ is related to total incident irradiance $I$ (sometimes referred to as the 
 \begin{equation}
 I_2 = I \times \textrm{abs}(1-f)/2
 \end{equation}
+The coefficient of $I$ here is often collapsed into a lump term, $\alpha$ which is estimated. 
 Where:
 \begin{itemize}
  \item abs is the absorptance of leaves (commonly around 0.85 \cite{CaemmererBiochemicalmodelsleaf2000});
@@ -320,7 +321,7 @@ Where:
 \end{itemize}
 We can thus solve for $J$ in the usual way (\cite{QianEstimationphotosynthesisparameters2012} \cite{YinC3C4photosynthesis2009}):
 \begin{equation} \label{nonrectangular_hyperbola}
-J = \frac{I_2 + J_{max} - \sqrt{\left ( I_2 + J_{max}\right )^2 - 4\theta \cdot I_2 \cdot J_{max}}}{2 \theta}
+J = \frac{\alpha \cdot I + J_{max} - \sqrt{\left (\alpha \cdot I + J_{max}\right )^2 - 4 \cdot \alpha \cdot \theta \cdot I \cdot J_{max}}}{2  \cdot\theta}
 \end{equation}
 Equations of this form are referred to as \emph{non-rectangular hyperbola functions}.
 
@@ -350,9 +351,9 @@ Q_{10} = \left ( \frac{R(T_2)}{R(T_1)} \right )^{\SI{10}{\celsius}/(T_2 - T_1)}
 \end{equation}
 Where:
 \begin{itemize}
- \item $Q_{10}$: the factor by which the reaction rate increases when temperature is raised by $\SI{10}{\celsius}$;
- \item $T_i$: the temperature for the $i^{th}$ measurement; and
- \item $R(T_i)$: the rate of the reaction at temperature $T_i$.
+ \item $Q_{10}$ is the factor by which the reaction rate increases when temperature is raised by $\SI{10}{\celsius}$;
+ \item $T_i$ is the temperature for the $i^{th}$ measurement; and
+ \item $R(T_i)$ is the rate of the reaction at temperature $T_i$.
 \end{itemize}
 Alternatively we can write this in the form:
 \begin{equation}
@@ -365,7 +366,7 @@ R(T) = R(\SI{25}{\celsius})Q_{10}^{(T-25)/10}
 This function allows us to relate values given at the temperature $T = \SI{25}{\celsius}$ to more general temperatures.
 
 \subsubsection{Model parameters}
-Many parameters can be assigned \emph{a priori}, leaving only the estimation of a small number of key variables. The kinetic constants of rubisco vary very little among C$_3$ species such that one can use the same $K_c$, $K_o$ and $\Gamma^*$ across all members of this category \cite{CaemmererBiochemicalmodelsleaf2000}. This means that the only parameter requiring estimation for Rubisco is the maximal Rubisco activity, $V_{c_{max}}$. 
+Many parameters can be assigned \emph{a priori}, leaving only the estimation of a small number of key variables. The kinetic constants of rubisco vary very little among C$_3$ species such that one can use the same $K_c$, $K_o$ and $\Gamma_*$ across all members of this category \cite{CaemmererBiochemicalmodelsleaf2000}. This means that the only parameter requiring estimation for Rubisco is the maximal Rubisco activity, $V_{c_{max}}$. 
 %For this parameter:
 %\begin{displayquote}
 %``Rubisco has a molecular weight of $\SI{550}{\kilo \dalton}$ and eight catalytic sites per molecule.  Thus, with a catalytic turnover rate of $\SI{3.5}{\per \second}$ per site, $\SI{1}{\gram \per \metre \squared}$ of Rubisco has a $V_{c_{max}}$ of $\SI{51}{\micro \mol \per \metre \squared \per \second}$ when Rubisco sites are fully carbamylated.'' \cite{CaemmererBiochemicalmodelsleaf2000}
@@ -393,7 +394,7 @@ label = photosynthesis_params_T25
 Parameter & \emph{unit} & Value & E $(\SI{}{\kilo \J \per \mol})$ & $Q_{10} (T = \SI{25}{\celsius})$ \ML
 $K_c$ & $\SI{}{\micro \bar}$ & $260$ or $404$\tmark[a] & $59.36$\tmark[b] & $2.24$ \NN
 $K_o$ & $\SI{}{\milli \bar}$ & 179 or $248$\tmark[a] & 35.94 & 1.63 \NN
-$\Gamma^*$ & $\SI{}{\micro \bar}$ & 38.6 or 37\tmark[a] & 23.4 & 1.37 \NN
+$\Gamma_*$ & $\SI{}{\micro \bar}$ & 38.6 or 37\tmark[a] & 23.4 & 1.37 \NN
 $V_{c_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & 80 & 58.52 & 2.21 \NN
 $V_{o_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.25 \times V_{c_{max}}$  & 58.52 & 2.21 \NN
 $R_d$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.01 - 0.02 \times V_{c_{max}}$ & 66.4 & 2.46 \NN
@@ -481,21 +482,21 @@ Here, $D$ is an unstructured covariance matrix and is common to all $i$. It char
 In \eqref{stage1_population_model}, $\beta_i$ is considered to have an associated random effect, reflecting the belief that each component varies non-negligibly in the population even after systematic relationships with subject characteristics are accounted for. It may happen that ``unexplained'' variance in a component of $\beta_i$ may be very small in magnitude relative to that in the remaining elements. In this situation it is common to drop the negligible quantity entirely. This lacks biological sense as each parameter is part of the ``scientifically relevant model'' and thus is unlikely to have no associated unexplained variation. Hence, one must recognise that this omission of an element of $\beta_i$ is adopted to achieve numerical stability in fitting rather than to reflect belief in perfect biological consistency across individuals and analyses in the literature to determine whether elements of $\beta_i$ are fixed or random effects should be interpreted so.
 
 \subsection{Our model}
-Much of the preceding concepts and theory make for very pleasant reading, but we consider it useful to explicitly state our model and it's assumptions in one place.
+Much of the preceding concepts and theory make for very pleasant reading, but we consider it useful to explicitly state our mixed-effects model and it's assumptions in one place.
 
 First, recall the FvCB model \eqref{FvCB_equation}:
 \begin{align}
 A &= \min \left \{A_c, A_j\right \} \\
  &= FvCB(C_c, \Gamma_*, I, K_c, K_o, O_{i,j}, J_{max}, V_{c_{max}}, \alpha, \theta, R_{d_i})
 \end{align}
-Where $A_c$ and $A_j$ are two curves describing separate biochemical limits on the rate of photosynthesis:
+Where $A_c$ and $A_j$ are two curves describing separate biochemical limits on the rate of photosynthesis, from \eqref{rubisco_limited_photosynthesis} and \eqref{RuBP_photosynthesis} respectively:
 \begin{align}
 A_c &= V_{c_{max}} \frac{C_c - \Gamma_*}{C_c+K_c(1+O/K_o)}-R_d \\
 A_j &= J\frac{C_c - \Gamma_*}{4C_c + 8\Gamma_*}-R_d
 \end{align}
-Furthermore:
+Furthermore, from \eqref{nonrectangular_hyperbola}:
 \begin{equation}
-J = \frac{\alpha \cdot I + J_{max} - \sqrt{\left (\alpha \cdot I + J_{max}\right )^2 - 4\theta \cdot \alpha \cdot I \cdot J_{max}}}{2 \theta}
+J = \frac{\alpha \cdot I + J_{max} - \sqrt{\left (\alpha \cdot I + J_{max}\right )^2 - 4 \cdot \alpha \cdot \theta \cdot I \cdot J_{max}}}{2  \cdot\theta}
 \end{equation}
 We plug this into \eqref{stage1_individual_model} for each of our experimental effects (in Rachel Schipper's data, SIDE and TREATMENT) in line with \citet{BatesComputationalMethodsMultilevel}. Thus, we have:
 \begin{itemize}
