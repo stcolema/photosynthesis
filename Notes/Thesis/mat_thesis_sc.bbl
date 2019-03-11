@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{26}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -95,6 +95,15 @@ Peter~C Harley and Thomas~D Sharkey.
 \newblock 27\penalty0 (169):\penalty0 10, 1991.
 \newblock \doi{https://doi-org.ezproxy.library.wur.nl/10.1007/BF00035838}.
 
+\bibitem[Heskel et~al.(2013)Heskel, Atkin, Turnbull, and
+  Griffin]{HeskelBringingKokeffect2013}
+Mary~A. Heskel, Owen~K. Atkin, Matthew~H. Turnbull, and Kevin~L. Griffin.
+\newblock Bringing the {{Kok}} effect to light: {{A}} review on the integration
+  of daytime respiration and net ecosystem exchange.
+\newblock \emph{Ecosphere}, 4\penalty0 (8):\penalty0 art98, August 2013.
+\newblock ISSN 2150-8925.
+\newblock \doi{10.1890/ES13-00120.1}.
+
 \bibitem[{Moualeu-Ngangue} et~al.(2017){Moualeu-Ngangue}, Chen, and
   St\"utzel]{Moualeu-Nganguenewmethodestimate2017}
 Dany~P. {Moualeu-Ngangue}, Tsu-Wei Chen, and Hartmut St\"utzel.
@@ -144,6 +153,29 @@ Thomas~D. Sharkey, Carl~J. Bernacchi, Graham~D. Farquhar, and Eric~L. Singsaas.
   1035--1040, September 2007.
 \newblock ISSN 01407791, 13653040.
 \newblock \doi{10.1111/j.1365-3040.2007.01710.x}.
+
+\bibitem[Sharp et~al.(1984)Sharp, Matthews, and
+  Boyer]{SharpKokEffectQuantum1984}
+R.~E. Sharp, M.~A. Matthews, and J.~S. Boyer.
+\newblock Kok {{Effect}} and the {{Quantum Yield}} of {{Photosynthesis}} :
+  {{Light Partially Inhibits Dark Respiration}}.
+\newblock \emph{PLANT PHYSIOLOGY}, 75\penalty0 (1):\penalty0 95--101, May 1984.
+\newblock ISSN 0032-0889, 1532-2548.
+\newblock \doi{10.1104/pp.75.1.95}.
+
+\bibitem[Tcherkez et~al.(2017)Tcherkez, Gauthier, Buckley, Busch, Barbour,
+  Bruhn, Heskel, Gong, Crous, Griffin, Way, Turnbull, Adams, Atkin, Bender,
+  Farquhar, and Cornic]{TcherkezTrackingoriginsKok2017}
+Guillaume Tcherkez, Paul Gauthier, Thomas~N. Buckley, Florian~A. Busch,
+  Margaret~M. Barbour, Dan Bruhn, Mary~A. Heskel, Xiao~Ying Gong, Kristine
+  Crous, Kevin~L. Griffin, Danielle~A. Way, Matthew~H. Turnbull, Mark~A. Adams,
+  Owen~K. Atkin, Michael Bender, Graham~D. Farquhar, and Gabriel Cornic.
+\newblock Tracking the origins of the {{Kok}} effect, 70 years after its
+  discovery.
+\newblock \emph{New Phytologist}, 214\penalty0 (2):\penalty0 506--510, April
+  2017.
+\newblock ISSN 0028646X.
+\newblock \doi{10.1111/nph.14527}.
 
 \bibitem[Terashima(1992)]{TerashimaAnatomynonuniformleaf1992}
 Ichiro Terashima.

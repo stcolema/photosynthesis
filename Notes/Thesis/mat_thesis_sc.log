@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  11 MAR 2019 12:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  11 MAR 2019 14:32
 entering extended mode
 **./mat_thesis_sc.tex
 (mat_thesis_sc.tex
@@ -2646,7 +2646,13 @@ LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10.95> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 194.
  [1
 
-{C:/Users/steph/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] [3]
+{C:/Users/steph/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+LaTeX Font Info:    Try loading font information for TS1+ppl on input line 197.
+
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ts1ppl.fd"
+File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
+) [2] [3]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 273.
@@ -2672,17 +2678,12 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 273.
 
 [4] [5]
-LaTeX Font Info:    Try loading font information for TS1+ppl on input line 405.
-
- ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ts1ppl.fd"
-File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
-)
 LaTeX Font Info:    Try loading font information for U+fplmbb on input line 410
 .
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ufplmbb.fd"
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ufplmbb.fd"
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
-) [6] [7]
+) [6]
+[7]
 Overfull \hbox (3.94629pt too wide) in paragraph at lines 443--444
 \OT1/ppl/m/n/10 nis-tic func-tion de-scrib-ing a phys-i-cal or chem-i-cal sys-t
 em (for ex-am-ple in tox-i-cokineitcs physiologically-
@@ -2704,10 +2705,10 @@ LaTeX Font Warning: Size substitutions with differences
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 521.
  ) 
 Here is how much of TeX's memory you used:
- 46503 strings out of 492973
- 1031099 string characters out of 3135932
+ 46515 strings out of 492973
+ 1031514 string characters out of 3135932
  1209177 words of memory out of 3000000
- 49599 multiletter control sequences out of 15000+200000
+ 49608 multiletter control sequences out of 15000+200000
  605533 words of font info for 211 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  73i,21n,127p,1357b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -2722,9 +2723,9 @@ les/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
 urw/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/u
 plri8a.pfb>
-Output written on mat_thesis_sc.pdf (12 pages, 194070 bytes).
+Output written on mat_thesis_sc.pdf (12 pages, 196987 bytes).
 PDF statistics:
- 331 PDF objects out of 1000 (max. 8388607)
- 96 named destinations out of 1000 (max. 500000)
+ 339 PDF objects out of 1000 (max. 8388607)
+ 99 named destinations out of 1000 (max. 500000)
  141 words of extra memory for PDF output out of 10000 (max. 10000000)
 
