@@ -303,7 +303,7 @@ We can relate $J_{max}$ to the incident irradiance by empirical equation:
 \end{equation}
 Where:
 \begin{itemize}
- \item $I_2$ is the useful light absorbed by PS II;
+ \item $I_2$ is the useful light absorbed by PSII (photosystem two);
  \item $J$ is the electron transport;
  \item $J_{max}$ is the maximum electron transport; and
  \item $\theta$ is an empirical curvature factor (often around 0.7 \cite{EvansPhotosynthesisnitrogenrelationships1989}).
@@ -317,7 +317,7 @@ Where:
 \begin{itemize}
  \item abs is the absorptance of leaves (commonly around 0.85 \cite{CaemmererBiochemicalmodelsleaf2000});
  \item $f$ is the correction for the spectral quality of light (approximately 0.15 \cite{EvansDependenceQuantumYield1987}); and
- \item The 2 in the denominator is due to the split of light between photosystems I and II.
+ \item The 2 in the denominator is due to the split of light between photosystems I and II (PSI and PSII respectively).
 \end{itemize}
 We can thus solve for $J$ in the usual way (\cite{QianEstimationphotosynthesisparameters2012} \cite{YinC3C4photosynthesis2009}):
 \begin{equation} \label{nonrectangular_hyperbola}
@@ -414,21 +414,21 @@ Y = X \beta  + \epsilon
 \end{equation}
 Here $X$ is assumed to contain a column of $1$'s in the first position (hence the +1 in the description of its dimensionality) and $\epsilon$ is the $n$-vector of associated errors. We assume that $\epsilon_i \distras{iid} \mathcal{N}(0,\sigma^2)$ for $i = (1,\ldots,n)$.  If we consider the intuitive case of \emph{biological} and \emph{technical replicates}, where we have $n$ biological replicates and for the $i^{th}$ sample $m_i$ associated technical replicates. As each of the $m_i$ measurements is on the same sample we expect there to be a non-negligible correlation between the $m_i$ technical replicates for each $i$. The model in \eqref{linear_model} does not allow for the within group effects due to the correlation between technical replicates. Consider the simplest possible model for the fixed effects model including only the intercept:
 \begin{equation}
-y_{ij} = \beta + \epsilon_{ij}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
+y_{i,j} = \beta + \epsilon_{i,j}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
 \end{equation}
 Some of this model's limitations become apparent if one considers the case of unbalanced data. Continuing the previous example of biological and technical replicates, consider the case that $m_i \neq m_j$ for any $i, j \in (1,\ldots,n)$. In this case the model is skewed by the within sample data rather than by the true observations, the biological replicates. A possible solution is the inclusion of a individual intercept for each group of technical replicates, accommodating the within-sample variability, or \emph{random effects}:
 \begin{equation}
-y_{ij} = \beta_i + \epsilon_{ij}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
+y_{i,j} = \beta_i + \epsilon_{i,j}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
 \end{equation}
 While this better describes the observed data, it has certain inherent flaws; most  notably the number of parameters scales linearly with the number of observations and the model only describes the measurements included in the sample. Consider as a solution a combination of these models, containing both a sample mean, $\beta$, and a random variable for each group representing the deviation from the population mean, $b_i$, i.e. a \emph{mixed effects} model:
 \begin{equation} \label{lme_model}
-y_{ij} = \beta + b_i + \epsilon_{ij}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
+y_{i,j} = \beta + b_i + \epsilon_{i,j}, \hspace{4mm} i = 1,\ldots,n, \hspace{4mm} j = 1,\ldots,m_i
 \end{equation}
 The linear mixed effects model described in \eqref{lme_model} contains information at both a population level (in the fixed effects) but also at the individual level (in the random effects).
 
 For now we assume $b_i \distras{iid} \mathcal{N}(0,\sigma_b^2) $ for $i = 1,\ldots,n$. This means that the variance of the observations is divided into two parts, $\sigma_b^2$ for the biological variability and $\sigma^2$ for the technical variability:
 \begin{equation} \label{hierarchical_model}
-b_i \distras{iid} \mathcal{N}(0,\sigma_b^2), \hspace{4mm} \epsilon_{ij} \distras{iid} \mathcal{N}(0,\sigma^2)
+b_i \distras{iid} \mathcal{N}(0,\sigma_b^2), \hspace{4mm} \epsilon_{i,j} \distras{iid} \mathcal{N}(0,\sigma^2)
 \end{equation}
 The assumption of normality can be modified if deemed inappropriate and it is possible to generalise the model to allow for heteroscedasticity.
 
@@ -487,7 +487,7 @@ Much of the preceding concepts and theory make for very pleasant reading, but we
 First, recall the FvCB model \eqref{FvCB_equation}:
 \begin{align}
 A &= \min \left \{A_c, A_j\right \} \\
- &= FvCB(C_c, \Gamma_*, I, K_c, K_o, O_{i,j}, J_{max}, V_{c_{max}}, \alpha, \theta, R_{d_i})
+ &= FvCB(C_c, \Gamma_*, I, K_c, K_o, O, J_{max}, V_{c_{max}}, \alpha, \theta, R_{d_i})
 \end{align}
 Where $A_c$ and $A_j$ are two curves describing separate biochemical limits on the rate of photosynthesis, from \eqref{rubisco_limited_photosynthesis} and \eqref{RuBP_photosynthesis} respectively:
 \begin{align}
