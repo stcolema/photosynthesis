@@ -1,5 +1,16 @@
-\BOOKMARK [1][-]{section.1}{Mixed-effects models}{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{Linear mixed-effects models}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{Non-linear mixed effects models}{section.1}% 3
-\BOOKMARK [2][-]{subsection.1.3}{Our model}{section.1}% 4
-\BOOKMARK [1][-]{section*.1}{References}{}% 5
+\BOOKMARK [1][-]{section.1}{Theory}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{FvCB model}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Some assumptions}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Rubisco activity limited net photosynthesis rate}{subsection.1.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.1.3}{Electron transport limited net photosynthesis rate}{subsection.1.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.1.4}{TPU limited net photosynthesis rate}{subsection.1.1}% 6
+\BOOKMARK [3][-]{subsubsection.1.1.5}{FvCB summary}{subsection.1.1}% 7
+\BOOKMARK [3][-]{subsubsection.1.1.6}{Relating Ci to Cc}{subsection.1.1}% 8
+\BOOKMARK [3][-]{subsubsection.1.1.7}{Light dependence of electron transport rate}{subsection.1.1}% 9
+\BOOKMARK [3][-]{subsubsection.1.1.8}{Temperature dependency}{subsection.1.1}% 10
+\BOOKMARK [3][-]{subsubsection.1.1.9}{Model parameters}{subsection.1.1}% 11
+\BOOKMARK [2][-]{subsection.1.2}{Mixed-effects models}{section.1}% 12
+\BOOKMARK [3][-]{subsubsection.1.2.1}{Linear mixed-effects models}{subsection.1.2}% 13
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Non-linear mixed effects models}{subsection.1.2}% 14
+\BOOKMARK [2][-]{subsection.1.3}{Our model}{section.1}% 15
+\BOOKMARK [1][-]{section*.2}{References}{}% 16

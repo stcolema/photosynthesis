@@ -181,14 +181,232 @@ The study of the photosynthetic process frequently involves analysis of net assi
  \item $R_d$: daytime respiration; and
  \item $g_m$: mesophyll conductance.
 \end{itemize}
-Accurate, unbiased estimation of these parameters is a non-trivial exercise with the optimal method still a matter of debate within the field \cite{Moualeu-Nganguenewmethodestimate2017}, \cite{YinTheoreticalreconsiderationswhen2009}, \cite{QianEstimationphotosynthesisparameters2012}. The problem of selecting suitable starting values for a non-linear model is thus complicated by the lack of unanimity on what is a ``good'' estimate of these. The core model we are using to estimate the parameters is based on \citet{SharkeyFittingphotosyntheticcarbon2007}. % and Laisk (NEED REFERENCE - think 1977 paper).
+Accurate, unbiased estimation of these parameters is a non-trivial exercise with the optimal method still a matter of debate within the field \cite{Moualeu-Nganguenewmethodestimate2017}\cite{YinTheoreticalreconsiderationswhen2009}\cite{QianEstimationphotosynthesisparameters2012}. The problem of selecting suitable starting values for a non-linear model is thus complicated by the lack of unanimity on what is a ``good'' estimate of these. The core model we are using to estimate the parameters is based on \citet{YinUsingcombinedmeasurements2009}. This method offers several steps to estimate various parameters rather than attempting estimation in a single step. % and Laisk (NEED REFERENCE - think 1977 paper).
 
-The data collected for the purpose of modelling steady-state photosynthesis is inevitably repeated measurements on individual plants. This leads to correlation between measurements, a fact that violates the assumptions in the fixed effects models used in estimating the parameters of interest (\cite{DuursmaPlantecophysPackageAnalysing2015}, \cite{BellasioExceltoolderiving2016}). We introduce the use of non-linear mixed effects models in keeping with \citet{QianEstimationphotosynthesisparameters2012} to overcome this issue, and extend on their work by considering more modern versions of the FvCB model.
+The data collected for the purpose of modelling steady-state photosynthesis is inevitably repeated measurements on individual plants. This leads to correlation between measurements, a fact that violates the assumptions in the fixed effects models used in estimating the parameters of interest (\cite{DuursmaPlantecophysPackageAnalysing2015}\cite{BellasioExceltoolderiving2016}). We introduce the use of non-linear mixed effects models in keeping with \citet{QianEstimationphotosynthesisparameters2012} to overcome this issue, and extend on their work by considering more modern versions of the FvCB model.
 \end{abstract}
 \keywords{ACI curves, parameter estimation, FvCB model, non-linear mixed effects models}
 
-\section{Mixed-effects models}
-\subsection{Linear mixed-effects models}
+\section{Theory}
+\subsection{FvCB model}
+The brilliant realisation of \citet{Farquharbiochemicalmodelphotosynthetic1980} was that the net photosynthesis rate, $A$, of C$_3$ plants could be accurately modeled at the leaf level as being in one of two steady-state systems. In \emph{Rubisco activity limited net photosynthesis rate} ($A_c$), the net rate of photosynthesis is limited by the properties of the enzyme ribulose 1.5 biphosphate carboxylase/oxygenase (Rubisco) (we assume saturating levels of the substrate, RuBP). In the second we assume that it is the substrate that determines the rate of assimilation; specifically its regeneration rate. Hence the second state is referred to as RuBP-regeneration limited or \emph{electron transport limited net photosynthesis rate} ($A_j$)\cite{YinUsingcombinedmeasurements2009}. We prefer the latter name for being a more clear difference for readers unfamiliar with the biochemical constituents of the photosynthesis cycle.
+
+\subsubsection{Some assumptions} \label{Assumptions}
+For parsimony's sake, we make several simplifying assumptions regarding the homogeneity of conditions within the leaf. We disregard any gradient of temperature ($T$) or O$_2$ within the leaf. According to \citet{CaemmererBiochemicalmodelsleaf2000}, these, specifically within C$_3$ species, are unlikely to be important. Due to the thinness of leaves we also assume an equal distribution of light to all chloroplasts within the leaf; however, it has been shown that under certain conditions these assumptions and their corollary, that photosynthesis itself is homogeneous across the leaf, do not hold. Non-uniform photosynthesis can occur and this will affect the gas-exchange measurements and their interpretation \cite{TerashimaAnatomynonuniformleaf1992}.
+
+We account for the \emph{Kok effect} in our modelling. This is a physiological effect where in extremely adverse conditions for photosynthesis (i.e. low light or low CO$_2$) the data recorded tends to escape description by our model. This is a well documented effect and hence in some datasets the first point (we will often consider increasing intercellular carbon dioxide ($C_i$) or light intensity ($I$) as pseudo-time in our descriptions) will be ignored in our models.
+
+Several parameters require estimation, and some measurements are not feasible for the majority of experiments. For these we need either a starting value that is our initial best guess (feasible in C$_3$ species, less so in C$_4$) or a correction to some related measurement. We will  show the reasoning behind our choices below.
+
+\subsubsection{Rubisco activity limited net photosynthesis rate}
+The photosynthetic carbon reduction (PCR) and photorespiratory carbon oxidation (PCO) cycles are linked by an enzyme common to both, RuBP \cite{Farquharbiochemicalmodelphotosynthetic1980}. In the PCO cycle, $0.5$ mol of CO$_2$ is released, thus:
+\begin{equation} \label{net_assimilation_raw}
+A = V_c - 0.5 V_o - R_d
+\end{equation}
+Where:
+\begin{itemize}
+ \item $V_c$ is the rate of carboxylation; and
+ \item $V_o$ is the rate of oxygenation.
+\end{itemize}
+We have from \citet{FarquharModelsdescribingkinetics1979} (assuming RuBP binding first in the reaction):
+\begin{align} \label{V_c}
+V_c &= V_{c_{max}}\frac{C_c}{C_c+K_c\left(1 + O/K_o\right)}\cdot\frac{R}{R + K^\prime_r} \\
+V_o &= V_{o_{max}}\frac{O}{O+K_o\left(1 + C_c/K_c\right)}\cdot\frac{R}{R + K^\prime_r}
+\end{align}
+Where:
+\begin{itemize}
+ \item $V_{c_{max}}$ is the maximum velocity of the carboxylase;
+ \item $V_{o_{max}}$ is the maximum velocity of the oxygenase;
+ \item $O$ is the partial pressure of oxygen in the chloroplast;
+ \item $K_c$ is the Michaelis-Menten constant for CO$_2$;
+ \item $K_o$ is the Michaelis-Menten constant for O;
+ \item $R$ is the concentration of free RuBP; and
+ \item $K^\prime_r$ is the effective Michaelis-Menten constant for RuBP.
+\end{itemize}
+This leads to the ratio of oxygenation to carboxylation:
+\begin{equation} \label{ratio_oxygenation_carboxylation}
+\phi = \frac{V_o}{V_c} = \frac{V_{o_{max}}}{V_{c_{max}}}\cdot\frac{O/K_o}{C_c/K_c}
+\end{equation}
+We also have that the velocity of carboxylation, at saturating levels of RuBP, ($W_c$) is given by \cite{GrantTestsimplebiochemical1989}:
+\begin{equation} \label{RuBP_satuarted_carboxylation_rate}
+W_c = V_{c_{max}} \frac{C_c}{C_c + K_c (1 + O / K_o)}
+\end{equation}
+Note that this arises from setting the RuBP component of \eqref{V_c} to 1.
+The compensation point for $C_c$ at which there is no net assimilation, $\Gamma^*$, is given by \cite{Farquharbiochemicalmodelphotosynthetic1980}:
+\begin{equation} \label{gamma_star}
+\Gamma^* = \frac{K_c O}{2 K_o}\cdot \frac{V_{o_{max}}}{V_{c_{max}}}
+\end{equation}
+Relating \eqref{net_assimilation_raw}, \eqref{ratio_oxygenation_carboxylation}, \eqref{RuBP_satuarted_carboxylation_rate} and \eqref{gamma_star} we have:
+\begin{equation} \label{rubisco_limited_photosynthesis}
+A_c = V_{c_{max}} \frac{C_c - \Gamma^*}{C_c+K_c(1+O/K_o)}-R_d
+\end{equation}
+This is the Rubisco-limited rate of assimilation, assuming saturation of RuBP.
+
+\subsubsection{Electron transport limited net photosynthesis rate}
+The physiology of this model is somewhat more complex, involving analysis of the cycle for the production of NADPH \cite{Farquharbiochemicalmodelphotosynthetic1980}. A thorough understanding of this is beyond the scope of this project, but we recommend the reader to the original paper \cite{Farquharbiochemicalmodelphotosynthetic1980} and \citet{CaemmererBiochemicalmodelsleaf2000}. We are content to state that when $A$ is limited by RuBP regeneration:
+\begin{equation} \label{RuBP_photosynthesis}
+A_j = J\frac{C_c - \Gamma^*}{4C_c + 8\Gamma^*}-R_d
+\end{equation}
+Where $J$ is the rate of electron transport (and hence electron transport limited net photosynthesis rate). This equation arises using assumptions that RuBP regeneration is limited because of insufficient NADPH and implicitly assumes $100\%$  linear e$^-$ transport. \citet{SharkeyFittingphotosyntheticcarbon2007} recommend the use of $4$ and $8$ in the denominator based on the number of electrons required for NADP$^+$ reduction; however this is not always the case; values of 4.5 and 10.5 also occur in the literature and less frequently we see 4 and 9.33 (see \cite{SharkeyFittingphotosyntheticcarbon2007}\cite{YinUsingcombinedmeasurements2009}\cite{YinC3C4photosynthesis2009}). These different values arise from different assumptions about the complexity of linear electron (e$^-$) rate. The disagreement over pairs $\{4.5, 10.5\}$ or $\{4, 9.33\}$ arise due to further disagreement about deeper levels of this system that are a source of some discussion in the literature (\cite{CaemmererBiochemicalmodelsleaf2000}\cite{YinUsingcombinedmeasurements2009}) but are less of interest to us. To allow for this disagreement we use default values of 4 and 8 in our R model, but the functions incorporating this aspect of the model allow the user to input their own version of these coefficients.
+
+\subsubsection{TPU limited net photosynthesis rate} \label{TPU_limited_photosynthesis}
+Other models extend to different cases (such as C$_4$ species) or to encompass more physiologically limiting factors (such as triose phosphate utilization (\emph{TPU}) in the synthesis of starch and sucrose). TPU is required at one third the rate of CO$_2$ fixation. If this is not acquired, the level of free phosphate declines and the rate of photosynthesis is limited. When this is limit is imposed, it can be seen that photosynthesis becomes independent of the ratio of oxygenation to carboxylation \cite{ThomasD.SharkeyPhotosynthesisIntactLeaves1985}. \citet{SharkeyFittingphotosyntheticcarbon2007} model this \emph{TPU limited net photosynthesis rate} ($A_p$) using the following equation:
+\begin{equation} \label{TPU_photosynthesis}
+A_p = 3TPU - R_d
+\end{equation}
+Where $TPU$ is the rate of triose phosphate utilization. This extension is only relevant under high $C_i$ and $I$ environments and is normally modeled as a upper bound on $A$. We do not include this in our model, but recommend extending the model to this scenario in later versions. From \citet{CaemmererBiochemicalmodelsleaf2000} we know that this model is too simple for the reality, please see section 2.4.3 for an extension as formulated by \citet{HarleyimprovedmodelC31991}. As \eqref{TPU_photosynthesis} is only apparent in extreme cases and we ignore it for now but recommend inclusion of this additional case in any extensions to our work.
+
+\subsubsection{FvCB summary}
+For the final model, our actual assimilation rate is calculated by combining these individual curves. The curve fitted is:
+\begin{equation} \label{FvCB_equation}
+A = \min \left \{A_c, A_j\right \}
+\end{equation}
+Where:
+\begin{itemize}
+ \item $A_c$ is the Rubisco activity limited net photosynthesis rate calculated from \eqref{rubisco_limited_photosynthesis}; and
+ \item $A_j$ is the electron transport limited net photosynthesis rate calculated from \eqref{RuBP_photosynthesis}.
+% \item $A_p$ is the TPU limited net photosynthesis rate calculated from \eqref{TPU_photosynthesis}.
+\end{itemize}
+%\section{FvCB model}
+%The ubiquitous model in the field is the FvCB model, a steady-state biochemical description of the net assimilation rate. It is based on the realisation of a number of limiting factors,
+
+\subsubsection{Relating $C_i$ to $C_c$}
+One of the driving factors in net assimilation rate ($A$) is the level of CO$_2$ present at the Rubisco site of carboxylation in the chloroplasts ($C_c$) \cite{VonCaemmererSteadystatemodelsphotosynthesis2013}. Estimation of the intercellular CO$_2$ partial pressure ($C_i$) is based on gas exchange measurements and is not a matter of controversy. Less well established is estimation of $C_c$ \cite{YinTheoreticalreconsiderationswhen2009}.  We can relate $C_i$ to $C_c$ using Flick's first law relating the diffusive flux to the concentration  under steady-state assumptions. We have:
+\begin{equation} \label{Flicks_law}
+J = -D\dv{\phi}{x}
+\end{equation}
+Where:
+\begin{itemize}
+ \item $J$ is the diffusion flux;
+ \item $D$ is the diffusion coefficient;
+ \item $\phi$ is the concentration; and
+ \item $x$ is position.
+\end{itemize}
+Please note that the notation used in \eqref{Flicks_law} is the generic notation used normally in describing Flick's Law and will not be referring to these terms after this subsection. From this we can consider $A$ as our flux, and the difference between $C_c$ and $C_i$ as our gradient in concentration:
+\begin{equation} \label{Flicks_law_step_2}
+A = -D(C_c - C_i)
+\end{equation}
+The diffusion conductance between the substomatal cavities and the chloroplasts is $g_m$, the mesophyll conductance \cite{NiinemetsImportancemesophylldiffusion2009}. Hence we can write \eqref{Flicks_law_step_2} as:
+\begin{equation} \label{Flicks_law_photosynthesis_form}
+A = g_m(C_i - C_c)
+\end{equation}
+Or equivalently:
+\begin{equation} \label{Ci_Cc_relationship}
+C_c = C_i - \frac{A}{g_m}
+\end{equation}
+Thus we can calculate $C_c$, the variable relevant to our models, using $C_i$.
+
+\subsubsection{Light dependence of electron transport rate}
+We can relate $J_{max}$ to the incident irradiance by empirical equation:
+\begin{equation} \label{J_J_max_relationship}
+ \theta J^2 - J\left (I_2 + J_{max}\right ) + I_2J_{max} = 0
+\end{equation}
+Where:
+\begin{itemize}
+ \item $I_2$ is the useful light absorbed by PS II;
+ \item $J$ is the electron transport;
+ \item $J_{max}$ is the maximum electron transport; and
+ \item $\theta$ is an empirical curvature factor (often around 0.7 \cite{EvansPhotosynthesisnitrogenrelationships1989}).
+\end{itemize}
+$I_2$ is related to total incident irradiance $I$ (sometimes referred to as the Photosynthetically Active Radiation, $PAR$, in the literature) by:
+\begin{equation}
+I_2 = I \times \textrm{abs}(1-f)/2
+\end{equation}
+Where:
+\begin{itemize}
+ \item abs is the absorptance of leaves (commonly around 0.85 \cite{CaemmererBiochemicalmodelsleaf2000});
+ \item $f$ is the correction for the spectral quality of light (approximately 0.15 \cite{EvansDependenceQuantumYield1987}); and
+ \item The 2 in the denominator is due to the split of light between photosystems I and II.
+\end{itemize}
+We can thus solve for $J$ in the usual way (\cite{QianEstimationphotosynthesisparameters2012} \cite{YinC3C4photosynthesis2009}):
+\begin{equation} \label{nonrectangular_hyperbola}
+J = \frac{I_2 + J_{max} - \sqrt{\left ( I_2 + J_{max}\right )^2 - 4\theta \cdot I_2 \cdot J_{max}}}{2 \theta}
+\end{equation}
+Equations of this form are referred to as \emph{non-rectangular hyperbola functions}.
+
+\subsubsection{Temperature dependency}
+The dependency of the rate of carboxylation and oxygenation of Rubisco is reflected in the temperature dependency of $A$. As a rate dependent upon temperature, we will be using Arrhenius functions, equations of the form:
+\begin{equation} \label{arrhenius_eqn_kelvin}
+x(T) = k \cdot \exp \left(-\frac{E_a}{R \cdot T}\right)
+\end{equation}
+Where:
+\begin{itemize}
+ \item $x(T)$: the temperature dependent rate we are interested in;
+ \item $k$: the rate coefficient;
+ \item $E_a$: the activation energy, the kinetic energy of substrate required for the reaction to occur;
+ \item $R$: the universal gas constant ($\SI{8.314}{\J \per \K \per \mol}$); and
+ \item $T$: temperature (in Kelvin).
+\end{itemize}
+As most photosynthesis measurement are recorded in $\SI{}{\celsius}$, and specifically use a default value of $\SI{25}{\celsius}$, we transform the equation to this scale. In this case we have:
+\begin{equation} \label{arrhenius_eqn}
+x(T^\prime) = k' \cdot \exp \left(-\frac{(25 - T')E_a}{298.15 R \cdot (273.15 + T')}\right)
+\end{equation}
+Where $T'$, $k'$ are the relevant form of $T$, $k$ for a scale centred on $T = \SI{25}{\celsius}$. As we will not be using the Kelvin scale again, we denote $T = T'$, $k = k'$.
+Many reactions in photosynthesis are reversible, with differing activation energies depending on the direction of the reaction. Thus the net activation energy may vary depending on the ratio of forward to backward reactions. This means that the Arrhenius function \eqref{arrhenius_eqn} is only semi-empirical, but it does allow easy comparison between studies.
+
+Another frequently used method to describe a dependency on temperature is the \emph{$Q_{10}$ temperature coefficient}. This is a measure of of the rate of  change of a system as a result of raising the temperature by $\SI{10}{\celsius}$. It is calculated:
+\begin{equation} \label{Q10_gen}
+Q_{10} = \left ( \frac{R(T_2)}{R(T_1)} \right )^{\SI{10}{\celsius}/(T_2 - T_1)}
+\end{equation}
+Where:
+\begin{itemize}
+ \item $Q_{10}$: the factor by which the reaction rate increases when temperature is raised by $\SI{10}{\celsius}$;
+ \item $T_i$: the temperature for the $i^{th}$ measurement; and
+ \item $R(T_i)$: the rate of the reaction at temperature $T_i$.
+\end{itemize}
+Alternatively we can write this in the form:
+\begin{equation}
+R(T_2) = R(T_1) Q_{10}^{(T_2 - T_1)/\SI{10}{\celsius}}
+\end{equation}
+Again, this general form is of less interest as we have a specific, default temperature of $\SI{25}{\celsius}$ for which we are quite well informed. Hence, we use:
+\begin{equation} \label{Q10}
+R(T) = R(\SI{25}{\celsius})Q_{10}^{(T-25)/10}
+\end{equation}
+This function allows us to relate values given at the temperature $T = \SI{25}{\celsius}$ to more general temperatures.
+
+\subsubsection{Model parameters}
+Many parameters can be assigned \emph{a priori}, leaving only the estimation of a small number of key variables. The kinetic constants of rubisco vary very little among C$_3$ species such that one can use the same $K_c$, $K_o$ and $\Gamma^*$ across all members of this category \cite{CaemmererBiochemicalmodelsleaf2000}. This means that the only parameter requiring estimation for Rubisco is the maximal Rubisco activity, $V_{c_{max}}$. 
+%For this parameter:
+%\begin{displayquote}
+%``Rubisco has a molecular weight of $\SI{550}{\kilo \dalton}$ and eight catalytic sites per molecule.  Thus, with a catalytic turnover rate of $\SI{3.5}{\per \second}$ per site, $\SI{1}{\gram \per \metre \squared}$ of Rubisco has a $V_{c_{max}}$ of $\SI{51}{\micro \mol \per \metre \squared \per \second}$ when Rubisco sites are fully carbamylated.'' \cite{CaemmererBiochemicalmodelsleaf2000}
+%\end{displayquote}
+
+For RuBP-limited photosynthesis, we need to solve for $J_{max}$ as we can relate this to $J$ by equation \eqref{nonrectangular_hyperbola}. According to \citet{Walcroftresponsephotosyntheticmodel1997}, the ratio $J_{max} : V_{c_{max}}$ is expected to vary from $2$ to $1.4$ across the range $[\SI{8}{\celsius}, \SI{30}{\celsius}]$.
+
+\citet{EvansCarbonDioxideDiffusion1996} recommend setting $g_m =  0.0045V_{c_{max}}$. Other values can be seen, with an assumption of $g_m = \infty$ used frequently, but this is controversial and can lead to biased estimates of $V_{c_{max}}$ and $J_{max}$ \cite{YinTheoreticalreconsiderationswhen2009}. Specific plants in specific conditions can see diverging values, but we feel this is a sufficient initial value.
+
+This means that if we have an empirically driven initial value for $V_{c_{max}}$ we can initialise all our parameters to some default temperature, however these relationships vary with temperature, the relationship of which we state below.
+
+We use table \ref{photosynthesis_params_T25} for our initial values of photosynthetic parameters in our model. We can combine these with \eqref{Q10} to calculate initial values for our model across a range of temperatures. Many of the values in table \ref{photosynthesis_params_T25} can be found in \citet{CaemmererBiochemicalmodelsleaf2000}.
+
+\ctable[
+cap = Parameters, botcap,
+caption = {Photosynthetic parameters and their activation energy for $T=\SI{25}{\celsius}$},% \cite{CaemmererBiochemicalmodelsleaf2000}},
+label = nowidth,
+pos = !htb,
+label = photosynthesis_params_T25
+] {lcccc} {
+\tnote[a]{The first value is appropriate when an internal diffusion conductance is included; the second value should be used if the internal conductance is not included (i.e. $g_m = \infty$) and $C_c$ is assumed to equal $C_i$.}
+\tnote[b]{From \citet{Farquharbiochemicalmodelphotosynthetic1980}}
+\tnote[c]{From \citet{EvansCarbonDioxideDiffusion1996}}
+}{ \FL
+Parameter & \emph{unit} & Value & E $(\SI{}{\kilo \J \per \mol})$ & $Q_{10} (T = \SI{25}{\celsius})$ \ML
+$K_c$ & $\SI{}{\micro \bar}$ & $260$ or $404$\tmark[a] & $59.36$\tmark[b] & $2.24$ \NN
+$K_o$ & $\SI{}{\milli \bar}$ & 179 or $248$\tmark[a] & 35.94 & 1.63 \NN
+$\Gamma^*$ & $\SI{}{\micro \bar}$ & 38.6 or 37\tmark[a] & 23.4 & 1.37 \NN
+$V_{c_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & 80 & 58.52 & 2.21 \NN
+$V_{o_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.25 \times V_{c_{max}}$  & 58.52 & 2.21 \NN
+$R_d$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.01 - 0.02 \times V_{c_{max}}$ & 66.4 & 2.46 \NN
+$J_{max}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $1.4 - 2.0 \times V_{c_{max}}$ & 37 & 1.65 \NN
+$g_m$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.0045V_{c_{max}}$\tmark[c] or $\infty$ & & \NN
+%H & $\SI{}{\kilo \J \per \mol}$ &  & 220 & \NN
+%S & $\SI{}{\J \per \K \per \mol}$ & & 710 & \NN
+$\theta$ & &  0.7 & \LL
+}
+The assumption that $g_m = \infty$,  equivalent to $C_c = C_i$ is now considered redundant but would severely change these values. We include a sample of this impact to enable comparison with older papers and research.
+
+\subsection{Mixed-effects models}
+\subsubsection{Linear mixed-effects models}
 Traditional parametric models incorporate only \emph{fixed effects}. That is, they have a set of parameters describing with the entire population. For example, consider a system of $n \in \mathbb{N}$ observations of dependent variable, $Y=(y_1,\ldots,y_n)$, and the $n \times p$ matrix of associated independent variable measurements, $X=\left\{x_{i,j}\right\}$ for $i \in [1,n], j \in [1,p]$ for some $p \in \mathbb{N}$, and a $p$-vector of weights, $\beta$, represented:
 \begin{equation} \label{linear_model}
 Y = X \beta  + \epsilon
@@ -215,8 +433,8 @@ The assumption of normality can be modified if deemed inappropriate and it is po
 
 The $b_i$ are called \emph{random effects} as they are associated with the experimental unit and selected at random from the population of interest (at least in theory, obviously there are limitations on this particularly in the area of medicine) They represent that the effect of choosing the sample $i$ is to shift the mean expression of $Y$ from $\beta$ to $\beta + b_i$ - i.e. they effect a deviation from an overall mean. Technical replicates share the same random effect $b_i$ and are correlated. The covariance between technical replicates on the same experimental unit is $\sigma^2_b$; this corresponds to a correlation of $\frac{\sigma^2_b}{\left(\sigma^2_b + \sigma^2\right)}$.
 
-\subsection{Non-linear mixed effects models}
-Non-linear mixed effects models, also known as \emph{non-linear hierarchical models}, are an extension to the more traditional linear mixed effects models. They are used in scenarios where all of the following features are present \cite{DavidianNonlinearmodelsrepeated2003}:
+\subsubsection{Non-linear mixed effects models}
+Non-linear mixed effects models, also known as \emph{non-linear hierarchical models}, are an extension to the more traditional linear mixed effects models. They are used in scenarios where all of the following features are present \cite{DavidianNonlinearmodelsrepeated2003a}:
 \begin{enumerate}  \label{when_nlme}
  \item Repeated observations of a continuous variable on each of several \emph{experimental units} (in our case these are individuals, thus individual is considered equivalent to empircial unit in the following section) over time or another condition (e.g. measurements at given heights on a tree) (the \emph{condition variable});
  \item We expect the relationship between the response variable and the condition variable to vary across individuals; and
@@ -265,7 +483,7 @@ In \eqref{stage1_population_model}, $\beta_i$ is considered to have an associate
 \subsection{Our model}
 Much of the preceding concepts and theory make for very pleasant reading, but we consider it useful to explicitly state our model and it's assumptions in one place.
 
-First, recall the FvCB model:
+First, recall the FvCB model \eqref{FvCB_equation}:
 \begin{align}
 A &= \min \left \{A_c, A_j\right \} \\
  &= FvCB(C_c, \Gamma_*, I, K_c, K_o, O_{i,j}, J_{max}, V_{c_{max}}, \alpha, \theta, R_{d_i})
@@ -295,9 +513,9 @@ Notice that $U=\emptyset$. Therefore our individual-level model is:
 \end{array}
 \end{equation}
 For our specific version of \eqref{stage1_population_model}, we cannot know in advance what kind of model we will use. This will be based on the ability of different models to converge. We expect, given the paucity of data that we will have a diagonal covariance structure with 0's in the non-diagonal entries imposed on our mixed effects model (as we expect that there is not enough data for more flexible formats to converge). This corresponds to a statement of independence between random effects which may not be the ideal assumption, and with this in mind we will attempt other formats. However we do know that our photosynthetic parameters of interest ($J_{max}, V_{c_{max}}, \alpha, \theta$ and $R_d$) will all be represented in this aspect of the model to consider each individual plant with unique photosynthetic parameters.
-%\newpage
+\newpage
 
 \bibliographystyle{plainnat}
-\bibliography{thesis_references}
+\bibliography{thesis_ref}
 
 \end{document}

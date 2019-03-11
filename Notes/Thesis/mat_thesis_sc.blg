@@ -1,11 +1,8 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: mat_thesis_sc.aux
 The style file: plainnat.bst
-Database file #1: thesis_references.bib
-Repeated entry---line 305 of file thesis_references.bib
- : @article{QianEstimationphotosynthesisparameters2012
- :                                                    ,
-I'm skipping whatever remains of this entry
+Database file #1: thesis_ref.bib
 Warning--empty journal in BatesComputationalMethodsMultilevel
 Warning--empty year in BatesComputationalMethodsMultilevel
 Warning--empty year in BatesComputationalMethodsMultilevel
-(There was 1 error message)
+Warning--empty journal in HarleyimprovedmodelC31991
+(There were 4 warnings)

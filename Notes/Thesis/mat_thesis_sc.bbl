@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -21,7 +21,7 @@ Chandra Bellasio, David~J Beerling, and Howard Griffiths.
 \newblock ISSN 01407791.
 \newblock \doi{10.1111/pce.12560}.
 
-\bibitem[Davidian and Giltinan(2003)]{DavidianNonlinearmodelsrepeated2003}
+\bibitem[Davidian and Giltinan(2003)]{DavidianNonlinearmodelsrepeated2003a}
 Marie Davidian and David~M. Giltinan.
 \newblock Nonlinear models for repeated measurement data: {{An}} overview and
   update.
@@ -38,6 +38,28 @@ Remko~A. Duursma.
 \newblock ISSN 1932-6203.
 \newblock \doi{10.1371/journal.pone.0143346}.
 
+\bibitem[Evans and {von Caemmerer}(1996)]{EvansCarbonDioxideDiffusion1996}
+J.~R. Evans and S.~{von Caemmerer}.
+\newblock Carbon {{Dioxide Diffusion}} inside {{Leaves}}.
+\newblock \emph{Plant Physiology}, 110\penalty0 (2):\penalty0 339--346,
+  February 1996.
+\newblock ISSN 0032-0889, 1532-2548.
+\newblock \doi{10.1104/pp.110.2.339}.
+
+\bibitem[Evans(1989)]{EvansPhotosynthesisnitrogenrelationships1989}
+John~R Evans.
+\newblock Photosynthesis and nitrogen relationships in leaves of {{Ca}} plants.
+\newblock \emph{Oceologica}, 78\penalty0 (1):\penalty0 9--19, 1989.
+
+\bibitem[Evans(1987)]{EvansDependenceQuantumYield1987}
+Jr~Evans.
+\newblock The {{Dependence}} of {{Quantum Yield}} on {{Wavelength}} and
+  {{Growth Irradiance}}.
+\newblock \emph{Australian Journal of Plant Physiology}, 14\penalty0
+  (1):\penalty0 69, 1987.
+\newblock ISSN 0310-7841.
+\newblock \doi{10.1071/PP9870069}.
+
 \bibitem[Farquhar et~al.(1980)Farquhar, {von Caemmerer}, and
   Berry]{Farquharbiochemicalmodelphotosynthetic1980}
 G.~D. Farquhar, S.~{von Caemmerer}, and J.~A. Berry.
@@ -47,9 +69,35 @@ G.~D. Farquhar, S.~{von Caemmerer}, and J.~A. Berry.
 \newblock ISSN 0032-0935, 1432-2048.
 \newblock \doi{10.1007/BF00386231}.
 
+\bibitem[Farquhar(1979)]{FarquharModelsdescribingkinetics1979}
+Graham~D. Farquhar.
+\newblock Models describing the kinetics of ribulose biphosphate
+  carboxylase-oxygenase.
+\newblock \emph{Archives of Biochemistry and Biophysics}, 193\penalty0
+  (2):\penalty0 456--468, April 1979.
+\newblock ISSN 00039861.
+\newblock \doi{10.1016/0003-9861(79)90052-3}.
+
+\bibitem[Grant(1989)]{GrantTestsimplebiochemical1989}
+R.F Grant.
+\newblock Test of a simple biochemical model for photosynthesis of maize and
+  soybean leaves.
+\newblock \emph{Agricultural and Forest Meteorology}, 48\penalty0
+  (1-2):\penalty0 59--74, October 1989.
+\newblock ISSN 01681923.
+\newblock \doi{10.1016/0168-1923(89)90007-5}.
+
+\bibitem[Harley and Sharkey(1991)]{HarleyimprovedmodelC31991}
+Peter~C Harley and Thomas~D Sharkey.
+\newblock An improved model of {{C3}} photosynthesis at high {{CO2}}:
+  {{Reversed}} 02 sensitivity explained by lack of glycerate reentry into the
+  chloroplast.
+\newblock 27\penalty0 (169):\penalty0 10, 1991.
+\newblock \doi{https://doi-org.ezproxy.library.wur.nl/10.1007/BF00035838}.
+
 \bibitem[{Moualeu-Ngangue} et~al.(2017){Moualeu-Ngangue}, Chen, and
-  St{\"u}tzel]{Moualeu-Nganguenewmethodestimate2017}
-Dany~P. {Moualeu-Ngangue}, Tsu-Wei Chen, and Hartmut St{\"u}tzel.
+  St\"utzel]{Moualeu-Nganguenewmethodestimate2017}
+Dany~P. {Moualeu-Ngangue}, Tsu-Wei Chen, and Hartmut St\"utzel.
 \newblock A new method to estimate photosynthetic parameters through net
   assimilation rate-intercellular space {{CO}} {\textsubscript{2}}
   concentration ( {{{\emph{A}}}} - {{{\emph{C}}}} {\textsubscript{i}} ) curve
@@ -59,16 +107,33 @@ Dany~P. {Moualeu-Ngangue}, Tsu-Wei Chen, and Hartmut St{\"u}tzel.
 \newblock ISSN 0028646X.
 \newblock \doi{10.1111/nph.14260}.
 
+\bibitem[Niinemets et~al.(2009)Niinemets, {D\'iaz-Espejo}, Flexas, Galm\'es,
+  and Warren]{NiinemetsImportancemesophylldiffusion2009}
+\"Ulo Niinemets, Antonio {D\'iaz-Espejo}, Jaume Flexas, Jeroni Galm\'es, and
+  Charles~R. Warren.
+\newblock Importance of mesophyll diffusion conductance in estimation of plant
+  photosynthesis in the field.
+\newblock \emph{Journal of Experimental Botany}, 60\penalty0 (8):\penalty0
+  2271--2282, May 2009.
+\newblock ISSN 1460-2431, 0022-0957.
+\newblock \doi{10.1093/jxb/erp063}.
+
 \bibitem[Qian et~al.(2012)Qian, Elings, Dieleman, Gort, and
   Marcelis]{QianEstimationphotosynthesisparameters2012}
 T.~Qian, A.~Elings, J.A. Dieleman, G.~Gort, and L.F.M. Marcelis.
 \newblock Estimation of photosynthesis parameters for a modified
-  {{Farquhar}}\textendash{}von {{Caemmerer}}\textendash{}{{Berry}} model using
+  {{Farquhar}}\textendash{}von {{Caemmerer}}\textendash{{Berry}} model using
   simultaneous estimation method and nonlinear mixed effects model.
 \newblock \emph{Environmental and Experimental Botany}, 82:\penalty0 66--73,
   October 2012.
 \newblock ISSN 00988472.
 \newblock \doi{10.1016/j.envexpbot.2012.03.014}.
+
+\bibitem[Sharkey(1985)]{ThomasD.SharkeyPhotosynthesisIntactLeaves1985}
+Thomas~D. Sharkey.
+\newblock Photosynthesis in {{Intact Leaves}} of {{C3 Plants}}: {{Physics}},
+  {{Physiology}} and {{Rate Limitations}}.
+\newblock \emph{Botanical Review}, 51\penalty0 (1):\penalty0 53--105, 1985.
 
 \bibitem[Sharkey et~al.(2007)Sharkey, Bernacchi, Farquhar, and
   Singsaas]{SharkeyFittingphotosyntheticcarbon2007}
@@ -80,15 +145,73 @@ Thomas~D. Sharkey, Carl~J. Bernacchi, Graham~D. Farquhar, and Eric~L. Singsaas.
 \newblock ISSN 01407791, 13653040.
 \newblock \doi{10.1111/j.1365-3040.2007.01710.x}.
 
-\bibitem[Yin and Struik(2009)]{YinTheoreticalreconsiderationswhen2009}
+\bibitem[Terashima(1992)]{TerashimaAnatomynonuniformleaf1992}
+Ichiro Terashima.
+\newblock Anatomy of non-uniform leaf photosynthesis.
+\newblock \emph{Photosynthesis Research}, 31\penalty0 (3):\penalty0 195--212,
+  March 1992.
+\newblock ISSN 0166-8595, 1573-5079.
+\newblock \doi{10.1007/BF00035537}.
+
+\bibitem[von Caemmerer(2000)]{CaemmererBiochemicalmodelsleaf2000}
+Susanne von Caemmerer.
+\newblock \emph{Biochemical Models of Leaf Photosynthesis}.
+\newblock Number~2 in Techniques in Plant Science. {CSIRO}, Collingwood, 2000.
+\newblock ISBN 978-0-643-06379-2.
+\newblock OCLC: 247732918.
+
+\bibitem[Von~Caemmerer(2013)]{VonCaemmererSteadystatemodelsphotosynthesis2013}
+Susanne Von~Caemmerer.
+\newblock Steady-state models of photosynthesis: {{Steady}}-state models of
+  photosynthesis.
+\newblock \emph{Plant, Cell \& Environment}, 36\penalty0 (9):\penalty0
+  1617--1630, September 2013.
+\newblock ISSN 01407791.
+\newblock \doi{10.1111/pce.12098}.
+
+\bibitem[Walcroft et~al.(1997)Walcroft, Whitehead, Silvester, and
+  Kelliher]{Walcroftresponsephotosyntheticmodel1997}
+A.~S. Walcroft, D.~Whitehead, W.~B. Silvester, and F.~M. Kelliher.
+\newblock The response of photosynthetic model parameters to temperature and
+  nitrogen concentration in {{Pinus}} radiata {{D}}. {{Don}}.
+\newblock \emph{Plant, Cell and Environment}, 20\penalty0 (11):\penalty0
+  1338--1348, November 1997.
+\newblock ISSN 0140-7791, 1365-3040.
+\newblock \doi{10.1046/j.1365-3040.1997.d01-31.x}.
+
+\bibitem[Yin and Struik(2009{\natexlab{a}})]{YinC3C4photosynthesis2009}
+X.~Yin and P.C. Struik.
+\newblock C3 and {{C4}} photosynthesis models: {{An}} overview from the
+  perspective of crop modelling.
+\newblock \emph{NJAS - Wageningen Journal of Life Sciences}, 57\penalty0
+  (1):\penalty0 27--38, December 2009{\natexlab{a}}.
+\newblock ISSN 15735214.
+\newblock \doi{10.1016/j.njas.2009.07.001}.
+
+\bibitem[Yin and
+  Struik(2009{\natexlab{b}})]{YinTheoreticalreconsiderationswhen2009}
 Xinyou Yin and Paul~C. Struik.
 \newblock Theoretical reconsiderations when estimating the mesophyll
   conductance to {{CO}} {\textsubscript{2}} diffusion in leaves of {{C}}
   {\textsubscript{3}} plants by analysis of combined gas exchange and
   chlorophyll fluorescence measurements.
 \newblock \emph{Plant, Cell \& Environment}, 32\penalty0 (11):\penalty0
-  1513--1524, November 2009.
+  1513--1524, November 2009{\natexlab{b}}.
 \newblock ISSN 01407791, 13653040.
 \newblock \doi{10.1111/j.1365-3040.2009.02016.x}.
+
+\bibitem[Yin et~al.(2009)Yin, Struik, Romero, Harbinson, Evers, Van Der~Putten,
+  and Vos]{YinUsingcombinedmeasurements2009}
+Xinyou Yin, Paul~C. Struik, Pascual Romero, Jeremy Harbinson, Jochem~B. Evers,
+  Peter E.~L. Van Der~Putten, and Jan Vos.
+\newblock Using combined measurements of gas exchange and chlorophyll
+  fluorescence to estimate parameters of a biochemical {{C}}
+  {\textsubscript{3}} photosynthesis model: A critical appraisal and a new
+  integrated approach applied to leaves in a wheat (
+  {{{\emph{Triticum}}}}{\emph{ aestivum}} ) canopy.
+\newblock \emph{Plant, Cell \& Environment}, 32\penalty0 (5):\penalty0
+  448--464, May 2009.
+\newblock ISSN 01407791, 13653040.
+\newblock \doi{10.1111/j.1365-3040.2009.01934.x}.
 
 \end{thebibliography}
