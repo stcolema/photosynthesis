@@ -140,6 +140,8 @@ calc_s_rd <- function(LRC2, LRC2_F,
                       i_inc_param = I,
                       id_var = ID,
                       other_var_to_keep = NULL,
+                      i_lower_bound = 0,
+                      i_upper_bound = Inf,
                       ...) {
   # Enclose the variables used to avoid use of strings and enable use of dplyr
   A <- rlang::enquo(A_param)
@@ -150,10 +152,13 @@ calc_s_rd <- function(LRC2, LRC2_F,
 
   # select the relevant subsets of the datasets
   LRC2_rel <- LRC2 %>%
-    dplyr::select(!!!c(A, I, ID, other_var_kept))
+    dplyr::select(!!!c(A, I, ID, other_var_kept)) %>% 
+    dplyr::filter(!! I > i_lower_bound, !! I < i_upper_bound)
 
   LRC2_F_rel <- LRC2_F %>%
-    dplyr::select(!!!c(phi, ID, other_var_kept))
+    dplyr::select(!!!c(phi, I, ID, other_var_kept)) %>% 
+    dplyr::filter(!! I > i_lower_bound, !! I < i_upper_bound) %>% 
+    dplyr::select(- !! I)
 
   # combine the dataframes and add the variable that the regression is on
   comb_data <- dplyr::bind_cols(LRC2_rel, LRC2_F_rel)
@@ -162,8 +167,10 @@ calc_s_rd <- function(LRC2, LRC2_F,
   formula_to_use <- formula(substitute(~New_var | id_var))
 
   # Create the variable to perform regression upon
+  # we add an intercept to access it for boundary purposes
+  # (can access the variable Intercept using lmeControl)
   comb_data <- comb_data %>%
-    dplyr::mutate(New_var = 0.25 * !!phi * !!I)
+    dplyr::mutate(New_var = 0.25 * !!phi * !!I) 
 
   # Carry out regression using a mixed effects model
   # Limit the intercept to being positive
@@ -795,7 +802,74 @@ LRC2_F_AD <- LRC2_F_new %>%
   dplyr::filter(SIDE == "AD", TREATMENT == "A1") # %>%
 # dplyr::filter(ID != 1)
 
+ggplot(data = LRC2_new, aes(x = PAR, y = Photosynthesis, colour = SIDE)) +
+  geom_point() +
+  facet_wrap(~ID)  +
+  labs(
+    title = "LCR curves",
+    subtitle = "Coloured by SIDE", # google units cran package
+    x = "Light intensity",
+    y = "Net photosynthesis rate"
+  )
 
+LRC2_new %>%
+  ggplot(aes(x = PAR, y = Photosynthesis, colour = SIDE)) +
+  geom_point() +
+  facet_wrap(~ID)  +
+  labs(
+    title = "LCR curves",
+    subtitle = "All measurements",
+    x = "Light intensity",
+    y = "Net photosynthesis rate"
+  )
+
+
+LRC2_new %>%
+  filter(PAR < 200) %>% 
+  ggplot(aes(x = PAR, y = Photosynthesis, colour = SIDE)) +
+    geom_point() +
+    facet_wrap(~ID) +
+  labs(
+    title = "LCR curves",
+    subtitle = "Intensity filtered below 200",
+    x = "Light intensity",
+    y = "Net photosynthesis rate"
+  )
+
+
+LRC2_new %>%
+  filter(PAR < 100) %>% 
+  ggplot(aes(x = PAR, y = Photosynthesis, colour = SIDE)) +
+  geom_point() +
+  facet_wrap(~ID)  +
+  labs(
+    title = "LCR curves",
+    subtitle = "Coloured by SIDE, intensity filtered below 100", # google units cran package
+    x = "Light intensity",
+    y = "Net photosynthesis rate"
+  )
+
+
+LRC2_new %>%
+  filter(PAR > 30, PAR < 100) %>% 
+  ggplot(aes(x = PAR, y = Photosynthesis, colour = SIDE)) +
+  geom_point() +
+  facet_wrap(~ID) +
+  labs(
+    title = "LCR curves",
+    subtitle = "Coloured by SIDE, intensity filtered below 100, above 30", # google units cran package
+    x = "Light intensity",
+    y = "Net photosynthesis rate"
+  )
+
+# Based on plots filter below 100 I
+
+start <- list(Intercept = c(1), New_var = c(1))
+lower <- list(Intercept = c(0), New_var = c(0))
+upper <- list(Intercept = c(2), New_var = c(2))
+
+i_lower_bound <- 30
+i_upper_bound <- 100
 
 out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
   A_param = Photosynthesis,
@@ -803,6 +877,8 @@ out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
   i_inc_param = PAR,
   id_var = ID,
   other_var_to_keep = TREATMENT,
+  i_lower_bound = i_lower_bound,
+  i_upper_bound = i_upper_bound,
   control = lmeControl(
     opt = "nlminb",
     maxIter = 1000,
@@ -814,9 +890,12 @@ out_AD <- calc_s_rd(LRC2_AD, LRC2_F_AD,
     niterEM = 1000,
     msMaxEval = 1000,
     sing.tol = 1e-20,
-    lower = list(Intercept = 0)
+    start = start,
+    lower = lower,
+    upper = upper
   )
 )
+
 
 # small_model <- nlme::lme(Photosynthesis ~ New_var,
 #   data = out_AD$data,
@@ -852,6 +931,8 @@ out_AB <- calc_s_rd(LRC2_AB, LRC2_F_AB,
   i_inc_param = PAR,
   id_var = ID,
   other_var_to_keep = TREATMENT,
+  i_lower_bound = i_lower_bound,
+  i_upper_bound = i_upper_bound,
   control = lmeControl(
     opt = "nlminb",
     maxIter = 1000,
@@ -882,6 +963,8 @@ out_ADA2 <- calc_s_rd(LRC2_ADA2, LRC2_F_ADA2,
   i_inc_param = PAR,
   id_var = ID,
   other_var_to_keep = TREATMENT,
+  i_lower_bound = i_lower_bound,
+  i_upper_bound = i_upper_bound,
   control = list(
     maxIter = 1000,
     msMaxIter = 1000,
@@ -909,6 +992,8 @@ out_ABA2 <- calc_s_rd(LRC2_ABA2, LRC2_F_ABA2,
   i_inc_param = PAR,
   id_var = ID,
   other_var_to_keep = TREATMENT,
+  i_lower_bound = i_lower_bound,
+  i_upper_bound = i_upper_bound,
   control = list(
     maxIter = 1000,
     msMaxIter = 1000,
@@ -955,11 +1040,14 @@ ggplot(data = out_full, aes(y = Rd, x = SIDE, group = SIDE, colour = TREATMENT))
   facet_wrap(~ID) +
   geom_boxplot()
 
-xyplot(Photosynthesis ~ New_var | as.factor(ID),
-  group = as.factor(ID),
-  data = out
-)
+out$SIDE_ID <- paste(out$ID, out$SIDE, sep = "_")
 
+xyplot(Photosynthesis ~ New_var | as.factor(ID),
+  group = as.factor(SIDE_ID),
+  data = out,
+  xlab = bquote(~frac(1, 4) ~ "I" ~ Phi[PSII]),
+  ylab = "A"
+)
 
 out_full %>% filter(TREATMENT == "A2", ID == 2)
 
@@ -979,7 +1067,12 @@ plot_data_AB <- out_AB$data %>%
 ggplot2::ggplot(data = plot_data, aes(x = New_var, y = Photosynthesis)) +
   facet_wrap(~ID) +
   geom_point() +
-  geom_line(aes(y = prediction), lty = 1, color = "steelblue", size = 1.4)
+  geom_line(aes(y = prediction), lty = 1, color = "steelblue", size = 1.4) +
+  labs(
+    title = bquote(~ "Regression for " ~ R[d] ~ "," ~ S ~ "(Side AD)"),
+    x = bquote(~frac(1, 4) ~ "I" ~ Phi[PSII]),
+    y = "A"
+  )
 
 ggplot2::ggplot(data = plot_data, aes(x = New_var, y = Photosynthesis)) +
   facet_wrap(~ID) +
@@ -994,7 +1087,12 @@ ggplot2::ggplot(data = plot_data, aes(x = New_var, y = Photosynthesis)) +
 ggplot2::ggplot(data = plot_data_AB, aes(x = New_var, y = Photosynthesis)) +
   facet_wrap(~ID) +
   geom_point() +
-  geom_line(aes(y = prediction), lty = 1, color = "steelblue", size = 1.4)
+  geom_line(aes(y = prediction), lty = 1, color = "steelblue", size = 1.4)+
+  labs(
+    title = bquote(~ "Regression for " ~ R[d] ~ "," ~ S ~ "(Side AB)"),
+    x = bquote(~frac(1, 4) ~ "I" ~ Phi[PSII]),
+    y = "A"
+  )
 
 ggplot2::ggplot(data = plot_data_AB, aes(x = New_var, y = Photosynthesis)) +
   facet_wrap(~ID) +
@@ -1021,7 +1119,7 @@ ggplot(coef_est, aes(x = SIDE, colour = TREATMENT)) +
     position = "dodge"
   ) +
   labs(
-    title = "Estimate of Rd",
+    title = bquote(~ "Variability of " ~ R[d] ~ " across effects"),
     y = "Rd",
     x = "Side"
   )
@@ -1090,8 +1188,9 @@ ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
     position = "dodge"
   ) +
   labs(
-    title = "LME model estimate of Rd",
-    y = "Rd", x = "Side"
+    title = bquote(~ "LME model estimate of " ~ R[d]), 
+    y = bquote(~ R[d]), 
+    x = "Side"
   )
 
 ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
@@ -1245,18 +1344,18 @@ ggplot2::ggplot(data = data_sco_AD, aes(y = S_co, x = ID, group = ID, colour = T
 # sco_data_AD <- data_sco_AD %>%
 #   group_by(ID) %>%
 #   filter(!(abs(S_co - median(S_co)) > 2 * sd(S_co)))
-
-# ggplot2::ggplot(data = sco_data_AD, aes(x = S_co)) +
-#   geom_density() +
-#   facet_wrap(~ID)
-#
-# ggplot2::ggplot(data = sco_data_AD, aes(y = S_co, group = ID, colour = SIDE)) +
+# 
+# # ggplot2::ggplot(data = sco_data_AD, aes(x = S_co)) +
+# #   geom_density() +
+# #   facet_wrap(~ID)
+# #
+# # ggplot2::ggplot(data = sco_data_AD, aes(y = S_co, group = ID, colour = SIDE)) +
+# #   geom_boxplot()
+# 
+# 
+# ggplot2::ggplot(data = sco_data_AD, aes(y = S_co, x = ID, group = ID, colour = TREATMENT)) +
+#   facet_wrap(~ID) +
 #   geom_boxplot()
-
-
-ggplot2::ggplot(data = sco_data_AD, aes(y = S_co, x = ID, group = ID, colour = TREATMENT)) +
-  facet_wrap(~ID) +
-  geom_boxplot()
 
 # sco_data_2 <- sco_data_AD %>%
 #   group_by(ID) %>%
