@@ -309,7 +309,7 @@ Where:
  \item $\theta$ is an empirical curvature factor (often around 0.7 \cite{EvansPhotosynthesisnitrogenrelationships1989}).
 \end{itemize}
 $I_2$ is related to total incident irradiance $I$ (sometimes referred to as the Photosynthetically Active Radiation, $PAR$, in the literature) by:
-\begin{equation}
+\begin{equation} \label{I_2_def}
 I_2 = I \times \textrm{abs}(1-f)/2
 \end{equation}
 The coefficient of $I$ here is often collapsed into a lump term, $\alpha$ which is estimated. 
@@ -324,6 +324,32 @@ We can thus solve for $J$ in the usual way (\cite{QianEstimationphotosynthesispa
 J = \frac{\alpha \cdot I + J_{max} - \sqrt{\left (\alpha \cdot I + J_{max}\right )^2 - 4 \cdot \alpha \cdot \theta \cdot I \cdot J_{max}}}{2  \cdot\theta}
 \end{equation}
 Equations of this form are referred to as \emph{non-rectangular hyperbola functions}.
+
+\subsubsection{Lump parameter, $s$}
+\citet{YinUsingcombinedmeasurements2009} propose use of a lump parameter, $s$, in their photosynthesis model. This parameter is a function of several variables describing the photosystems I and II. Specifically it is:
+\begin{equation} \label{lump_parameter_def}
+s = \rho_2\beta\left(1 - \frac{f_{pseudo(b)}}{1 - f_{cyc}}\right)
+\end{equation}
+Where:
+\begin{itemize}
+ \item $\rho_2$ is the proportion of light absorbed by photosynthetic pigments partitioned to PSII (\citet{YinUsingcombinedmeasurements2009} suggest this is in the range of 0.5 but suggest some caution in using this value. We suspect that the 2 in the denominator of \eqref{I_2_def} corresponds to this coefficient. Again the literature finds a new name and symbol for a pre-existing concept);
+ \item $\beta$ is the absorptance by leaf photosynthetic pigments (abs in \eqref{I_2_def});
+ \item $f_{pseudo(b)}$ is the fraction of electrons at PSI that follow the basal pseudocyclic e$^-$ flow; and
+ \item $f_{cyc}$ is the fraction of electrons at PSI that follow cyclic transport around PSI.
+\end{itemize}
+Note that $f$ in \eqref{I_2_def} corresponds to $ \frac{f_{pseudo(b)}}{1 - f_{cyc}}$.
+
+This highlights the problem rampant in the photosynthesis modeling literature - this appears to be another way of representing the previously defined lump parameter $\alpha$ with more detail (more aspects of the photosystems are accounted for). However, it is a completely different set of symbols and no acknowledgment of overlap despite $\alpha$ being far more common in preceding papers. Possibly this is not problematic for plant physiologists, but we suspect that this has lead to confusion and could be avoided by either continuity in symbols or else directly acknowledging past preferences in the current form.
+
+\subsubsection{Relative CO$_2$/O$_2$ specificity factor for Rubisco, $S_{c/o}$}
+The relative CO$_2$/O$_2$ specificity factor for Rubisco, $S_{c/o}$, is used in calculating both $\Gamma_*$ and $J$ in the linear part of the light response curve \cite{YinUsingcombinedmeasurements2009}. It is estimated using the linear part of the high and low oxygen ACI curves. \citet{YinUsingcombinedmeasurements2009} propose a relationship between the net rate of photosynthesis in the linear part of the high and low oxygen ACI curves defined by:
+\begin{align}
+A_h = (A_l + R_d) \frac{b_h}{b_l} - \left( \frac{O_h - O_l}{2 S_{c/o}} + C_{i_l} - C_{i_h} \right) b_h - R_d
+\end{align}
+By solving for $S_{c/o}$ we find:
+\begin{align}
+S_{c/o} &= \frac{(O_h - O_l)}{2 ((A_l + R_d) / b_l - (A_h + R_d) / b_h - (C_{i_l} - C_{i_h}))}
+\end{align}
 
 \subsubsection{Temperature dependency}
 The dependency of the rate of carboxylation and oxygenation of Rubisco is reflected in the temperature dependency of $A$. As a rate dependent upon temperature, we will be using Arrhenius functions, equations of the form:
