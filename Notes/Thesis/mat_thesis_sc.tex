@@ -162,6 +162,12 @@ frametitleaboveskip=\dimexpr-\ht\strutbox\relax
 }
 \makeatother % changes the catcode of @ to 12 (i.e. back to default, other)
 
+% Command for named label for referencing
+%\def\namedlabel#1#2{\begingroup
+%    #2%
+%    \def\@currentlabel{#2}%
+%    \phantomsection\label{#1}\endgroup
+%}
 
 %%% The "real" document content comes below...
 
@@ -296,6 +302,12 @@ C_c = C_i - \frac{A}{g_m}
 \end{equation}
 Thus we can calculate $C_c$, the variable relevant to our models, using $C_i$.
 
+\subsubsection{Mesophyll conductance}
+To estimate values of $C_c$ we need to have an estimate of $g_m$. \citet{HarleyTheoreticalConsiderationswhen1992a} propose a model for this:
+\begin{equation} \label{eqn_g_m}
+g_m = \frac{A}{C_i - \frac{\Gamma_* \left[J + 8 (A + R_d) \right]}{J - 4 (A + R_d)}}
+\end{equation}
+
 \subsubsection{Light dependence of electron transport rate}
 We can relate $J_{max}$ to the incident irradiance by empirical equation:
 \begin{equation} \label{J_J_max_relationship}
@@ -347,9 +359,16 @@ The relative CO$_2$/O$_2$ specificity factor for Rubisco, $S_{c/o}$, is used in 
 A_h = (A_l + R_d) \frac{b_h}{b_l} - \left( \frac{O_h - O_l}{2 S_{c/o}} + C_{i_l} - C_{i_h} \right) b_h - R_d
 \end{align}
 By solving for $S_{c/o}$ we find:
-\begin{align}
-S_{c/o} &= \frac{(O_h - O_l)}{2 ((A_l + R_d) / b_l - (A_h + R_d) / b_h - (C_{i_l} - C_{i_h}))}
-\end{align}
+\begin{equation} \label{Sco_eqn}
+S_{c/o} = \frac{(O_h - O_l)}{2 ((A_l + R_d) / b_l - (A_h + R_d) / b_h - (C_{i_l} - C_{i_h}))}
+\end{equation}
+In these equations the subscripts refer to which dataset the parameter is from, $l$ for the low oxygen dataset and $h$ for the high oxygen set respectively. An explanation of these different datasets is sketched below in section \ref{datasets}. $b_h$ and $b_l$ are the slope of the linear part of the ACI curve under the different oxygen conditions.
+
+\subsubsection{CO$_2$ compensation point in the absence of $R_d$}
+The $C_i$-based CO$_2$ compensation point in the absence of $R_d$, $\Gamma_*$, is point at which the plant's production of $CO_2$ has a net value of $0$; i.e. it is consuming as much CO$_2$ in photosynthesis as it produces through photorespiration (as $R_d$, the day respiration, is respiratory CO$_2$ release other than by photorespiration). We let:
+\begin{equation} \label{Gstar_eqn}
+\Gamma_* = \frac{O}{2S_{c/o}}
+\end{equation}
 
 \subsubsection{Temperature dependency}
 The dependency of the rate of carboxylation and oxygenation of Rubisco is reflected in the temperature dependency of $A$. As a rate dependent upon temperature, we will be using Arrhenius functions, equations of the form:
@@ -507,7 +526,7 @@ Here, $D$ is an unstructured covariance matrix and is common to all $i$. It char
 
 In \eqref{stage1_population_model}, $\beta_i$ is considered to have an associated random effect, reflecting the belief that each component varies non-negligibly in the population even after systematic relationships with subject characteristics are accounted for. It may happen that ``unexplained'' variance in a component of $\beta_i$ may be very small in magnitude relative to that in the remaining elements. In this situation it is common to drop the negligible quantity entirely. This lacks biological sense as each parameter is part of the ``scientifically relevant model'' and thus is unlikely to have no associated unexplained variation. Hence, one must recognise that this omission of an element of $\beta_i$ is adopted to achieve numerical stability in fitting rather than to reflect belief in perfect biological consistency across individuals and analyses in the literature to determine whether elements of $\beta_i$ are fixed or random effects should be interpreted so.
 
-\subsection{Our model}
+\subsection{Our model} \label{subsect_model}
 Much of the preceding concepts and theory make for very pleasant reading, but we consider it useful to explicitly state our mixed-effects model and it's assumptions in one place.
 
 First, recall the FvCB model \eqref{FvCB_equation}:
@@ -542,25 +561,32 @@ Notice that $U=\emptyset$. Therefore our individual-level model is:
 For our specific version of \eqref{stage1_population_model}, we cannot know in advance what kind of model we will use. This will be based on the ability of different models to converge. We expect, given the paucity of data that we will have a diagonal covariance structure with 0's in the non-diagonal entries imposed on our mixed effects model (as we expect that there is not enough data for more flexible formats to converge). This corresponds to a statement of independence between random effects which may not be the ideal assumption, and with this in mind we will attempt other formats. However we do know that our photosynthetic parameters of interest ($J_{max}, V_{c_{max}}, \alpha, \theta$ and $R_d$) will all be represented in this aspect of the model to consider each individual plant with unique photosynthetic parameters.
 
 \section{Methods}
-The methods entailed hereafter are based upon those described by \citet{YinUsingcombinedmeasurements2009} except for the inclusion of mixed-effects models which is, insofar as the authors are aware, unly previously used in \cite{QianEstimationphotosynthesisparameters2012}. The method described in \cite{YinUsingcombinedmeasurements2009} uses several different datasets to estimate the parameters of interest over several steps. We acknowledge the flaw of this disjoint model which does not accumulate error but instead uses the point estimates in each succeeding step with no error accumulation. If this work is extended upon this is probably the area which most requires improvement, i.e. conversion to a full joint model. We suspect that this should also enable ease of convergence as the point estimates used in any given step might be wrong and restrict the current estimate from moving to the correct subspace of the possible solution space.
+The methods entailed hereafter are based upon those described by \citet{YinUsingcombinedmeasurements2009} except for the inclusion of mixed-effects models which is, insofar as the author is aware, only previously used in \cite{QianEstimationphotosynthesisparameters2012}. The method described in \cite{YinUsingcombinedmeasurements2009} uses several different datasets to estimate the parameters of interest over several steps. We acknowledge the flaw of this disjoint model which does not accumulate error but instead uses the point estimates in each succeeding step with no error accumulation. If this work is extended upon this is probably the area which most requires improvement, i.e. conversion to a full joint model. We suspect that this should also enable ease of convergence as the point estimates used in any given step might be wrong and restrict the current estimate from moving to the correct subspace of the possible solution space.
 
 We have five datasets available for this method. For each dataset we have the same 12 individual plants present.
-\begin{enumerate}
+\begin{enumerate} \label{datasets}
  \item \emph{LRC1}: Repeated measurements for plants acclimatised to increasing values of light intensity ($I$) at constant intercellular CO$_2$ ($C_i$) and atmospheric (i.e. $\SI{210}{\micro \mol}$) O$_2$;
  \item \emph{LRC2}: Repeated measurements for plants acclimatised to increasing values of $I$ at constant CO$_2$ and low (i.e. $\SI{20}{\micro \mol}$) O$_2$;
  \item \emph{LRC2-F}: as LRC2 with the addition of measurements taken using fluorescence;
  \item \emph{ACI1}: Repeated measurements for plants acclimatised to increasing values of $C_i$ at constant $I$ and atmospheric O$_2$; and
  \item \emph{ACI2}: Repeated measurements for plants acclimatised to increasing values of $C_i$ at constant $I$ and low O$_2$.
 \end{enumerate}
-The method uses 5 separate steps.
+The method is to calculate or estimate various parameters in individual steps.
 \begin{enumerate}
  \item Calculate lump parameter $S$ and $R_d$ using the datasets LRC2 and LRC2-F;
  \item Using the results of the previous step and LRC2-F, estimate J for the low light data;
- \item Calculate $S_{c/o}$, the specificity of something or other using the ACI1 and ACI2 datasets;
- \item Using the value of $S_{c/o}$ from the previous step, calculate $\Gamma_*$ in the ACI1 data; and
- \item Using all of the values previously estimated, estimate $V_{c_{max}}$ and $J_{max}$ using the ACI1 and LRC1 datasets.
+ \item Calculate the relative CO$_2$/O$_2$ specificity factor for Rubisco, $S_{c/o}$, using the ACI1 and ACI2 datasets by \eqref{Sco_eqn};
+ \item Using the value of $S_{c/o}$ from the previous step, calculate $\Gamma_*$ by \eqref{Gstar_eqn};
+ \item Calculate $g_m$ using \eqref{eqn_g_m};
+ \item Calculate $C_c$ values for each observation via \eqref{Ci_Cc_relationship}; and
+ \item Using all of the values previously estimated, estimate $V_{c_{max}}$ and $J_{max}$ using the ACI1 and LRC1 datasets and the model described in \ref{subsect_model}.
 \end{enumerate}
 
+\subsection{Estimating $R_d$ and $s$}
+
+\subsection{Estimating $J$ in low-light conditions}
+
+\section{Results}
 
 \newpage
 

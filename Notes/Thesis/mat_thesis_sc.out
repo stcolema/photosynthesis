@@ -6,14 +6,19 @@
 \BOOKMARK [3][-]{subsubsection.1.1.4}{TPU limited net photosynthesis rate}{subsection.1.1}% 6
 \BOOKMARK [3][-]{subsubsection.1.1.5}{FvCB summary}{subsection.1.1}% 7
 \BOOKMARK [3][-]{subsubsection.1.1.6}{Relating Ci to Cc}{subsection.1.1}% 8
-\BOOKMARK [3][-]{subsubsection.1.1.7}{Light dependence of electron transport rate}{subsection.1.1}% 9
-\BOOKMARK [3][-]{subsubsection.1.1.8}{Lump parameter, s}{subsection.1.1}% 10
-\BOOKMARK [3][-]{subsubsection.1.1.9}{Relative CO2/O2 specificity factor for Rubisco, Sc/o}{subsection.1.1}% 11
-\BOOKMARK [3][-]{subsubsection.1.1.10}{Temperature dependency}{subsection.1.1}% 12
-\BOOKMARK [3][-]{subsubsection.1.1.11}{Model parameters}{subsection.1.1}% 13
-\BOOKMARK [2][-]{subsection.1.2}{Mixed-effects models}{section.1}% 14
-\BOOKMARK [3][-]{subsubsection.1.2.1}{Linear mixed-effects models}{subsection.1.2}% 15
-\BOOKMARK [3][-]{subsubsection.1.2.2}{Non-linear mixed effects models}{subsection.1.2}% 16
-\BOOKMARK [2][-]{subsection.1.3}{Our model}{section.1}% 17
-\BOOKMARK [1][-]{section.2}{Methods}{}% 18
-\BOOKMARK [1][-]{section*.2}{References}{}% 19
+\BOOKMARK [3][-]{subsubsection.1.1.7}{Mesophyll conductance}{subsection.1.1}% 9
+\BOOKMARK [3][-]{subsubsection.1.1.8}{Light dependence of electron transport rate}{subsection.1.1}% 10
+\BOOKMARK [3][-]{subsubsection.1.1.9}{Lump parameter, s}{subsection.1.1}% 11
+\BOOKMARK [3][-]{subsubsection.1.1.10}{Relative CO2/O2 specificity factor for Rubisco, Sc/o}{subsection.1.1}% 12
+\BOOKMARK [3][-]{subsubsection.1.1.11}{CO2 compensation point in the absence of Rd}{subsection.1.1}% 13
+\BOOKMARK [3][-]{subsubsection.1.1.12}{Temperature dependency}{subsection.1.1}% 14
+\BOOKMARK [3][-]{subsubsection.1.1.13}{Model parameters}{subsection.1.1}% 15
+\BOOKMARK [2][-]{subsection.1.2}{Mixed-effects models}{section.1}% 16
+\BOOKMARK [3][-]{subsubsection.1.2.1}{Linear mixed-effects models}{subsection.1.2}% 17
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Non-linear mixed effects models}{subsection.1.2}% 18
+\BOOKMARK [2][-]{subsection.1.3}{Our model}{section.1}% 19
+\BOOKMARK [1][-]{section.2}{Methods}{}% 20
+\BOOKMARK [2][-]{subsection.2.1}{Estimating Rd and s}{section.2}% 21
+\BOOKMARK [2][-]{subsection.2.2}{Estimating J in low-light conditions}{section.2}% 22
+\BOOKMARK [1][-]{section.3}{Results}{}% 23
+\BOOKMARK [1][-]{section*.2}{References}{}% 24

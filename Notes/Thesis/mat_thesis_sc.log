@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  31 MAR 2019 13:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  7 APR 2019 12:00
 entering extended mode
 **./mat_thesis_sc.tex
 (mat_thesis_sc.tex
@@ -2404,21 +2404,21 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
  (mat_thesis_sc.aux)
 \openout1 = `mat_thesis_sc.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 173.
-LaTeX Font Info:    ... okay on input line 173.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 173.
-LaTeX Font Info:    ... okay on input line 173.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 173.
-LaTeX Font Info:    ... okay on input line 173.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 173.
-LaTeX Font Info:    ... okay on input line 173.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 173.
-LaTeX Font Info:    ... okay on input line 173.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 173.
-LaTeX Font Info:    ... okay on input line 173.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 173.
-LaTeX Font Info:    ... okay on input line 173.
-LaTeX Font Info:    Try loading font information for OT1+ppl on input line 173.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 179.
+LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 179.
+LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 179.
+LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 179.
+LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 179.
+LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 179.
+LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 179.
+LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 179.
 
  ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ppl.fd"
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
@@ -2490,10 +2490,10 @@ Package caption Info: listings package is loaded.
 Package caption Info: rotating package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box77
-Package hyperref Info: Link coloring ON on input line 173.
-LaTeX Info: Redefining \ref on input line 173.
-LaTeX Info: Redefining \pageref on input line 173.
-LaTeX Info: Redefining \nameref on input line 173.
+Package hyperref Info: Link coloring ON on input line 179.
+LaTeX Info: Redefining \ref on input line 179.
+LaTeX Info: Redefining \pageref on input line 179.
+LaTeX Info: Redefining \nameref on input line 179.
 
 (mat_thesis_sc.out) (mat_thesis_sc.out)
 \@outlinefile=\write4
@@ -2506,7 +2506,7 @@ LaTeX Info: Redefining \nameref on input line 173.
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.16} into 
 your preamble.
- on input line 173.
+ on input line 179.
 
 Now handling font encoding TS1 ...
 ... processing UTF-8 mapping file for font encoding TS1
@@ -2590,64 +2590,64 @@ Dictionary: translator-basic-dictionary, Language: English
 ("C:\Program Files\MiKTeX 2.9\tex\latex\siunitx\siunitx-abbreviations.cfg"
 File: siunitx-abbreviations.cfg 2017/11/26 v2.7k siunitx: Abbreviated units
 )
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 173
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 179
 .
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omlzplm.fd"
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 173
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 179
 .
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omszplm.fd"
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 173
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 179
 .
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omxzplm.fd"
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 173
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 179
 .
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1zplm.fd"
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 176.
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 179.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 182.
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 185.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsppl.fd"
 File: omsppl.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 179.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 185.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 188.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 194.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 190.
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 190.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 196.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 196.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1phv.fd"
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 190.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 196.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 191.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 197.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 191.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 197.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 194.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 200.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 194.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 200.
  [1
 
 {C:/Users/steph/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Try loading font information for TS1+ppl on input line 197.
+LaTeX Font Info:    Try loading font information for TS1+ppl on input line 203.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ts1ppl.fd"
@@ -2655,106 +2655,165 @@ File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 ) [2] [3]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 273.
+(hyperref)                removing `math shift' on input line 279.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 273.
+(hyperref)                removing `subscript' on input line 279.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 273.
+(hyperref)                removing `math shift' on input line 279.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 273.
+(hyperref)                removing `math shift' on input line 279.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 273.
+(hyperref)                removing `subscript' on input line 279.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 273.
+(hyperref)                removing `math shift' on input line 279.
 
 [4]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 328.
+(hyperref)                removing `math shift' on input line 340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 328.
+(hyperref)                removing `math shift' on input line 340.
+
+[5]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 344.
+(hyperref)                removing `subscript' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 344.
+(hyperref)                removing `math shift' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 344.
+(hyperref)                removing `math shift' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 344.
+(hyperref)                removing `subscript' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 344.
+(hyperref)                removing `math shift' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 344.
+(hyperref)                removing `math shift' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 344.
+(hyperref)                removing `subscript' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 344.
+(hyperref)                removing `math shift' on input line 356.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 344.
+(hyperref)                removing `math shift' on input line 367.
 
-[5] [6] [7]
-LaTeX Font Info:    Try loading font information for U+fplmbb on input line 437
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 367.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 367.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 367.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 367.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 367.
+
+[6] [7]
+LaTeX Font Info:    Try loading font information for U+fplmbb on input line 456
 .
  ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ufplmbb.fd"
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
-)
-[8]
-Overfull \hbox (3.94629pt too wide) in paragraph at lines 470--471
+) [8]
+Overfull \hbox (3.94629pt too wide) in paragraph at lines 489--490
 \OT1/ppl/m/n/10 nis-tic func-tion de-scrib-ing a phys-i-cal or chem-i-cal sys-t
 em (for ex-am-ple in tox-i-cokineitcs physiologically-
  []
 
-[9] [10] [11] [12] (mat_thesis_sc.bbl [13]) [14]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 570.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 570.
- (mat_thesis_sc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 570.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 570.
-Package rerunfilecheck Info: File `mat_thesis_sc.out' has not changed.
-(rerunfilecheck)             Checksum: 4C79F4D607FF5E7AB0DF694F8183BE00;1499.
+[9] [10] [11]
 
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 585.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 585.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 585.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 585.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 585.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 587.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 587.
+
+[12] (mat_thesis_sc.bbl [13] [14]) [15]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 596.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 596.
+ (mat_thesis_sc.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 596.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 596.
+
+
+Package rerunfilecheck Warning: File `mat_thesis_sc.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `mat_thesis_sc.out':
+(rerunfilecheck)             Before: 96745E3986C41609C0EC1117DF77A284;1731
+(rerunfilecheck)             After:  8677DCDDE735961199706C033A6215FB;1888.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 3.75237pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 570.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 596.
  ) 
 Here is how much of TeX's memory you used:
- 46547 strings out of 492973
- 1031900 string characters out of 3135932
- 1206177 words of memory out of 3000000
- 49619 multiletter control sequences out of 15000+200000
- 606842 words of font info for 218 fonts, out of 3000000 for 9000
+ 46581 strings out of 492973
+ 1032469 string characters out of 3135932
+ 1209177 words of memory out of 3000000
+ 49638 multiletter control sequences out of 15000+200000
+ 608735 words of font info for 225 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  73i,21n,127p,1357b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
@@ -2768,9 +2827,9 @@ les/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
 urw/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/u
 plri8a.pfb>
-Output written on mat_thesis_sc.pdf (14 pages, 210478 bytes).
+Output written on mat_thesis_sc.pdf (15 pages, 216857 bytes).
 PDF statistics:
- 390 PDF objects out of 1000 (max. 8388607)
- 117 named destinations out of 1000 (max. 500000)
- 165 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 422 PDF objects out of 1000 (max. 8388607)
+ 128 named destinations out of 1000 (max. 500000)
+ 189 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -86,6 +86,17 @@ R.F Grant.
   (1-2):\penalty0 59--74, October 1989.
 \newblock ISSN 01681923.
 \newblock \doi{10.1016/0168-1923(89)90007-5}.
+
+\bibitem[Harley et~al.(1992)Harley, Loreto, Di~Marco, and
+  Sharkey]{HarleyTheoreticalConsiderationswhen1992a}
+P.~C. Harley, F.~Loreto, G.~Di~Marco, and T.~D. Sharkey.
+\newblock Theoretical {{Considerations}} when {{Estimating}} the {{Mesophyll
+  Conductance}} to {{CO2 Flux}} by {{Analysis}} of the {{Response}} of
+  {{Photosynthesis}} to {{CO2}}.
+\newblock \emph{PLANT PHYSIOLOGY}, 98\penalty0 (4):\penalty0 1429--1436, April
+  1992.
+\newblock ISSN 0032-0889, 1532-2548.
+\newblock \doi{10.1104/pp.98.4.1429}.
 
 \bibitem[Harley and Sharkey(1991)]{HarleyimprovedmodelC31991}
 Peter~C Harley and Thomas~D Sharkey.
