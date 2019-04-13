@@ -583,10 +583,94 @@ The method is to calculate or estimate various parameters in individual steps.
 \end{enumerate}
 
 \subsection{Estimating $R_d$ and $s$}
+We use the relationship proposed by \citet{YinUsingcombinedmeasurements2009} allowing for individual values for each plant. This regresses $A$ on $\frac{1}{4}\phi I$ using a linear mixed effect (LME) model. This combines information from LRC2 and LRC2F (the $\phi$ parameter is measured used flourescence, hence the need for LRC2F). The intercept of the model is $R_d$ and the slope is $s$. It is assumed that $R_d$ and $s$ are constant for each plant regardless of conditions and can thus be used in all datasets for each plant.
 
 \subsection{Estimating $J$ in low-light conditions}
+$J$ an be estimated in low light conditions. 
 
 \section{Results}
+\subsection{$R_d$ and $s$}
+The estimates of $R_d$ and $s$ are shown in figures \ref{fig:lme_rd} and \ref{fig:lme_s} respectively. We notice that the values estimated are generally positive, which is required for these parameters. However, the standard error (s.e.) on the estimate of $R_d$ does include negative values. We notice that the estimate of $R_d$ is not precise in comparison to $s$ (the point estimates are on the same order of magnitude, but the associated errors are not).
+
+\ctable[
+cap = lme_parameters, botcap,
+caption = {Estimate of parameters, $R_d$ and $s$},% \cite{CaemmererBiochemicalmodelsleaf2000}},
+label = nowidth,
+pos = !htb,
+label = params_est
+] {cccccc} {} { \FL
+Side & Treatment & $R_d$ & $R_d$ s.e & $s$ & $s$ s.e \ML
+AB & A1 & 0.09 & 0.20 & 0.36 & 0.02 \NN
+AD & A1 & 0.10 & 0.26 & 0.46 & 0.03 \NN
+AB & A2 & 0.30 & 0.40 & 0.38 & 0.04 \NN
+AD & A2 & 0.38 & 0.20 & 0.40 & 0.04 \ML
+}
+
+Only consider the linear part of LRC2 and LRC2F we were obliged to include only points for $I \in [30, 100]$ (see Appendix \ref{appendix:lcr_linear}). This reduced the dataset for each individual to three points as shown in figures \ref{fig:lme_fit_ab} and \ref{fig:lme_fit_ad}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.85]{Images/lme_estimate_rd}
+\caption{LME model estimates of $R_d$ for treatment and side effects.}
+\label{fig:lme_rd}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.85]{Images/lme_estimate_s}
+\caption{LME model estimates of $s$ for treatment and side effects.}
+\label{fig:lme_s}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.85]{Images/rd_s_ab}
+\caption{Model fit for LME model regressing $A$ on $\frac{1}{4} I \phi_{PSII}$ for side AB and treatment A1 faceted by individual plant ID.}
+\label{fig:lme_fit_ab}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.85]{Images/rd_s_ad}
+\caption{Model fit for LME model regressing $A$ on $\frac{1}{4} I \phi_{PSII}$ for side AD and treatment A1 faceted by individual plant ID.}
+\label{fig:lme_fit_ad}
+\end{figure}
+
+\section{Conclusion and recommendations}
+The main realisation of this project is that there is a severe lack of homogeneity in the field of plant physiology. Different modelling techniques and underlying, unstated assumptions mean that many papers cannot be directly compared in their results. As a small example, no paper we read explicitly stated accounting for the Kok effect, however it appears to be standard practice based on correspondence and conversation with plant scientists. This is a serious flaw, as many models use the same name (i.e. the FvCB model), but actually refer to different versions. Beyond this all examples we could find in the literature use models that do not account for correlation within the data despite the use of repeated measurements (another unwritten assumption). This, coupled with a lack of reporting of errors on parameter estimates, brings many results into doubt. With so many parameters, with so many methods available (either for estimating photosynthetic parameters as mentioned above or in estimating the Michaelis-Menten constants) and an understanding that dropping certain data points is dependent solely upon the modeler's discretion, there is sufficient room to play with choices of relevant data, models used, auxiliary parameters to ensure that the point estimates found for the key parameters are within a reasonable distance of those previously published. We recommend that plant scientists be explicit in their modelling assumptions, in their data selection and in their estimated error values. 
+
+\newpage
+
+\appendix
+\section{Linear light curves} \label{appendix:lcr_linear}
+We include plots of the light response curves to show which points are relevant to the linear part of the curve and not influenced by the Kok effect.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.0]{Images/lcr_curves_all_low_o2}
+\caption{LCR.}
+\label{fig:lcr_curves_all_low_o2}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.0]{Images/lcr_curves_b200_low_o2}
+\caption{LCR.}
+\label{fig:lcr_curves_b200_low_o2}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.0]{Images/lcr_curves_b100_low_o2}
+\caption{LCR.}
+\label{fig:lcr_curves_b100_low_o2}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.0]{Images/lcr_curves_b100_a30_low_o2}
+\caption{LCR.}
+\label{fig:lcr_curves_b100_a30_low_o2}
+\end{figure}
 
 \newpage
 
