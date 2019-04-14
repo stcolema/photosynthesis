@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  13 APR 2019 18:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  14 APR 2019 15:15
 entering extended mode
 **./mat_thesis_sc.tex
 (mat_thesis_sc.tex
@@ -2789,141 +2789,175 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 592.
+(hyperref)                removing `math shift' on input line 595.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 592.
+(hyperref)                removing `subscript' on input line 595.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 592.
+(hyperref)                removing `math shift' on input line 595.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 592.
+(hyperref)                removing `math shift' on input line 595.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 592.
+(hyperref)                removing `math shift' on input line 595.
 
 [12]
-<Images/lme_estimate_rd.jpeg, id=368, 463.7325pt x 332.74312pt>
+<Images/lme_estimate_rd.jpeg, id=385, 463.7325pt x 332.74312pt>
 File: Images/lme_estimate_rd.jpeg Graphic file (type jpg)
 <use Images/lme_estimate_rd.jpeg>
-Package pdftex.def Info: Images/lme_estimate_rd.jpeg  used on input line 613.
-(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
-<Images/lme_estimate_s.jpeg, id=369, 463.7325pt x 332.74312pt>
+Package pdftex.def Info: Images/lme_estimate_rd.jpeg  used on input line 616.
+(pdftex.def)             Requested size: 370.9865pt x 266.19484pt.
+<Images/lme_estimate_s.jpeg, id=386, 463.7325pt x 332.74312pt>
 File: Images/lme_estimate_s.jpeg Graphic file (type jpg)
 <use Images/lme_estimate_s.jpeg>
-Package pdftex.def Info: Images/lme_estimate_s.jpeg  used on input line 620.
-(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
+Package pdftex.def Info: Images/lme_estimate_s.jpeg  used on input line 623.
+(pdftex.def)             Requested size: 370.9865pt x 266.19484pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/rd_s_ab.jpeg, id=370, 463.7325pt x 332.74312pt>
+<Images/rd_s_ab.jpeg, id=387, 463.7325pt x 332.74312pt>
 File: Images/rd_s_ab.jpeg Graphic file (type jpg)
 <use Images/rd_s_ab.jpeg>
-Package pdftex.def Info: Images/rd_s_ab.jpeg  used on input line 627.
-(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
+Package pdftex.def Info: Images/rd_s_ab.jpeg  used on input line 630.
+(pdftex.def)             Requested size: 347.79851pt x 249.55672pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/rd_s_ad.jpeg, id=371, 463.7325pt x 332.74312pt>
+<Images/rd_s_ad.jpeg, id=388, 463.7325pt x 332.74312pt>
 File: Images/rd_s_ad.jpeg Graphic file (type jpg)
 <use Images/rd_s_ad.jpeg>
-Package pdftex.def Info: Images/rd_s_ad.jpeg  used on input line 634.
-(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
+Package pdftex.def Info: Images/rd_s_ad.jpeg  used on input line 637.
+(pdftex.def)             Requested size: 347.79851pt x 249.55672pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[13 <./Images/lme_estimate_rd.jpeg>] [14 <./Images/lme_estimate_s.jpeg>]
-<Images/lcr_curves_all_low_o2.jpeg, id=386, 463.7325pt x 332.74312pt>
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 642.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 642.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 642.
+
+
+Underfull \hbox (badness 1845) in paragraph at lines 657--657
+[]\OT1/ppl/m/n/10.95 Table 3: |[][]Me-dian es-ti-
+ []
+
+
+Underfull \hbox (badness 2452) in paragraph at lines 657--657
+\OT1/ppl/m/n/10.95 each side / treat-ment
+ []
+
+[13 <./Images/lme_estimate_rd.jpeg>]
+<Images/sco_boxplot_ab.png, id=402, 463.4916pt x 332.6829pt>
+File: Images/sco_boxplot_ab.png Graphic file (type png)
+<use Images/sco_boxplot_ab.png>
+Package pdftex.def Info: Images/sco_boxplot_ab.png  used on input line 661.
+(pdftex.def)             Requested size: 347.61783pt x 249.51155pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<Images/sco_boxplot_ad.png, id=403, 463.4916pt x 332.6829pt>
+File: Images/sco_boxplot_ad.png Graphic file (type png)
+<use Images/sco_boxplot_ad.png>
+Package pdftex.def Info: Images/sco_boxplot_ad.png  used on input line 668.
+(pdftex.def)             Requested size: 347.61783pt x 249.51155pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 673.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 673.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 673.
+
+[14 <./Images/lme_estimate_s.jpeg>] [15 <./Images/rd_s_ab.jpeg>] [16 <./Images/
+rd_s_ad.jpeg>] [17 <./Images/sco_boxplot_ab.png>]
+<Images/lcr_curves_all_low_o2.jpeg, id=435, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_all_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_all_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_all_low_o2.jpeg  used on input line 
-649.
-(pdftex.def)             Requested size: 463.73135pt x 332.7423pt.
-
-Overfull \hbox (22.71362pt too wide) in paragraph at lines 649--650
- [][] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<Images/lcr_curves_b200_low_o2.jpeg, id=387, 463.7325pt x 332.74312pt>
+714.
+(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
+ [18 <./Images/sco_boxplot_ad.png>]
+<Images/lcr_curves_b200_low_o2.jpeg, id=441, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b200_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b200_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b200_low_o2.jpeg  used on input line
- 656.
-(pdftex.def)             Requested size: 463.73135pt x 332.7423pt.
-
-Overfull \hbox (22.71362pt too wide) in paragraph at lines 656--657
- [][] 
- []
+ 721.
+(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/lcr_curves_b100_low_o2.jpeg, id=388, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_low_o2.jpeg, id=442, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_low_o2.jpeg  used on input line
- 663.
-(pdftex.def)             Requested size: 463.73135pt x 332.7423pt.
-
-Overfull \hbox (22.71362pt too wide) in paragraph at lines 663--664
- [][] 
- []
-
+ 728.
+(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/lcr_curves_b100_a30_low_o2.jpeg, id=389, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_a30_low_o2.jpeg, id=443, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_a30_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_a30_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_a30_low_o2.jpeg  used on input 
-line 670.
-(pdftex.def)             Requested size: 463.73135pt x 332.7423pt.
-
-Overfull \hbox (22.71362pt too wide) in paragraph at lines 670--671
- [][] 
- []
-
+line 735.
+(pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[15 <./Images/rd_s_ab.jpeg>] (mat_thesis_sc.bbl [16 <./Images/rd_s_ad.jpeg>]
-[17 <./Images/lcr_curves_all_low_o2.jpeg>] [18 <./Images/lcr_curves_b200_low_o2
-.jpeg>] [19 <./Images/lcr_curves_b100_low_o2.jpeg>] [20 <./Images/lcr_curves_b1
-00_a30_low_o2.jpeg>]) [21]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 680.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 680.
+[19 <./Images/lcr_curves_all_low_o2.jpeg>] (mat_thesis_sc.bbl [20 <./Images/lcr
+_curves_b200_low_o2.jpeg>] [21 <./Images/lcr_curves_b100_low_o2.jpeg>] [22 <./I
+mages/lcr_curves_b100_a30_low_o2.jpeg>]) [23]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 745.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 745.
  (mat_thesis_sc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 680.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 680.
-Package rerunfilecheck Info: File `mat_thesis_sc.out' has not changed.
-(rerunfilecheck)             Checksum: 6C09DE52F0F9B00EB8B1D977ABB8376A;2072.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 745.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 745.
 
+
+Package rerunfilecheck Warning: File `mat_thesis_sc.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `mat_thesis_sc.out':
+(rerunfilecheck)             Before: 125228442F9A9591024F00E03A05AD62;2301
+(rerunfilecheck)             After:  53E6597FC27D31CEC4F0DF3B5E4E85E7;2342.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 3.75237pt have occurred.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 680.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 745.
  ) 
 Here is how much of TeX's memory you used:
- 46672 strings out of 492973
- 1034529 string characters out of 3135932
+ 46705 strings out of 492973
+ 1035140 string characters out of 3135932
  1209177 words of memory out of 3000000
- 49698 multiletter control sequences out of 15000+200000
+ 49718 multiletter control sequences out of 15000+200000
  608969 words of font info for 227 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 73i,21n,127p,1534b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 73i,21n,127p,1447b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
@@ -2935,9 +2969,9 @@ les/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
 urw/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/u
 plri8a.pfb>
-Output written on mat_thesis_sc.pdf (21 pages, 1038366 bytes).
+Output written on mat_thesis_sc.pdf (23 pages, 1093015 bytes).
 PDF statistics:
- 492 PDF objects out of 1000 (max. 8388607)
- 146 named destinations out of 1000 (max. 500000)
- 269 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 540 PDF objects out of 1000 (max. 8388607)
+ 157 named destinations out of 1000 (max. 500000)
+ 311 words of extra memory for PDF output out of 10000 (max. 10000000)
 

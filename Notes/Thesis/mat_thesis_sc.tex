@@ -586,7 +586,10 @@ The method is to calculate or estimate various parameters in individual steps.
 We use the relationship proposed by \citet{YinUsingcombinedmeasurements2009} allowing for individual values for each plant. This regresses $A$ on $\frac{1}{4}\phi I$ using a linear mixed effect (LME) model. This combines information from LRC2 and LRC2F (the $\phi$ parameter is measured used flourescence, hence the need for LRC2F). The intercept of the model is $R_d$ and the slope is $s$. It is assumed that $R_d$ and $s$ are constant for each plant regardless of conditions and can thus be used in all datasets for each plant.
 
 \subsection{Estimating $J$ in low-light conditions}
-$J$ an be estimated in low light conditions. 
+$J$ can be estimated in low light conditions for the linear part of the LCR curve. The calculation is:
+\begin{equation}
+J = sI \phi_{PSII}
+\end{equation}
 
 \section{Results}
 \subsection{$R_d$ and $s$}
@@ -610,64 +613,126 @@ Only consider the linear part of LRC2 and LRC2F we were obliged to include only 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.85]{Images/lme_estimate_rd}
+\includegraphics[scale=0.80]{Images/lme_estimate_rd}
 \caption{LME model estimates of $R_d$ for treatment and side effects.}
 \label{fig:lme_rd}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.85]{Images/lme_estimate_s}
+\includegraphics[scale=0.80]{Images/lme_estimate_s}
 \caption{LME model estimates of $s$ for treatment and side effects.}
 \label{fig:lme_s}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.85]{Images/rd_s_ab}
+\includegraphics[scale=0.75]{Images/rd_s_ab}
 \caption{Model fit for LME model regressing $A$ on $\frac{1}{4} I \phi_{PSII}$ for side AB and treatment A1 faceted by individual plant ID.}
 \label{fig:lme_fit_ab}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.85]{Images/rd_s_ad}
+\includegraphics[scale=0.75]{Images/rd_s_ad}
 \caption{Model fit for LME model regressing $A$ on $\frac{1}{4} I \phi_{PSII}$ for side AD and treatment A1 faceted by individual plant ID.}
 \label{fig:lme_fit_ad}
 \end{figure}
 
+\subsection{$S_{c/o}$}
+We include boxplots showing the range of values calculated for $S_{c/o}$ across different side and treatment effects for each individual in figures \ref{fig:sco_ab} and \ref{fig:sco_ad}. The median values are given in table \ref{sco_median}.
+
+\ctable[
+cap = sco_medians, botcap,
+caption = {Median estimated values of $S_{c/o}$ for each side / treatment combination},% \cite{CaemmererBiochemicalmodelsleaf2000}},
+label = nowidth,
+pos = !htb,
+label = sco_median
+] {ccc} {} { \FL
+Side & Treatment & $S_{c/o}$ \ML
+AB & A1 & 1.46  \NN
+AD & A1 & 1.71  \NN
+AB & A2 & 1.45  \NN
+AD & A2 & 1.60 \ML
+}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{Images/sco_boxplot_ab}
+\caption{Range of values for $S_{c/o}$ for side measurement of AB.}
+\label{fig:sco_ab}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{Images/sco_boxplot_ad}
+\caption{Range of values for $S_{c/o}$ for side measurement of AD.}
+\label{fig:sco_ad}
+\end{figure}
+
+\subsection{$g_m$}
+Using the previous results $g_m$ is estimated. We use a restricted range of $C_i \in [250, 300]$ based on correspondence with Elias Konig. This gives a median estimate of $g_m$ of $0.03$.
+
+\subsection{Non linear fixed effects model}
+We attempt to fit a non-linear fixed effect model using the values estimated and allowing $V_{c_{max}}, J_{max}$ and $\theta$  to vary. Our results for the combinations of side and treatment (A1, AB) and (A2, AD) are found in table \ref{params_nls_est}; other side and treatment combinations could not converge.
+\ctable[
+cap = nls_parameters, botcap,
+caption = {Estimate of parameters, $R_d$ and $s$, using fixed effect models},% \cite{CaemmererBiochemicalmodelsleaf2000}},
+label = nowidth,
+pos = !htb,
+label = params_nls_est
+] {cccccccc} {} { \FL
+Side & Treatment & $V_{c_{max}}$ & $V_{c_{max}}$ s.e. & $J_{max}$ & $J_{max}$ s.e. & $\theta$ & $\theta$ s.e \ML
+AB & A1 & 53.54 & 1.94 & 166.153 & 212.99 & -3.75 & 12.23 \NN
+AD & A2 & 44.38 & 2.90 & 192.00 & 300.98 & -9.25 & 26.29 \ML
+}
+
+\subsection{Non-linear mixed effects model}
+Unfortunately no on-linear mixed effects models could converge, so we have no results for this section.
+
 \section{Conclusion and recommendations}
-The main realisation of this project is that there is a severe lack of homogeneity in the field of plant physiology. Different modelling techniques and underlying, unstated assumptions mean that many papers cannot be directly compared in their results. As a small example, no paper we read explicitly stated accounting for the Kok effect, however it appears to be standard practice based on correspondence and conversation with plant scientists. This is a serious flaw, as many models use the same name (i.e. the FvCB model), but actually refer to different versions. Beyond this all examples we could find in the literature use models that do not account for correlation within the data despite the use of repeated measurements (another unwritten assumption). This, coupled with a lack of reporting of errors on parameter estimates, brings many results into doubt. With so many parameters, with so many methods available (either for estimating photosynthetic parameters as mentioned above or in estimating the Michaelis-Menten constants) and an understanding that dropping certain data points is dependent solely upon the modeler's discretion, there is sufficient room to play with choices of relevant data, models used, auxiliary parameters to ensure that the point estimates found for the key parameters are within a reasonable distance of those previously published. We recommend that plant scientists be explicit in their modelling assumptions, in their data selection and in their estimated error values. 
+If we consider the results here, the values of $S_{c/o}$ are approximately half the expected value based upon the literature, $g_m$ is an order of magnitude smaller than what we expect to see. This suggests either our analysis is flawed; we expect that this partially why no nlme model would converge, giving no esitmates of the value for $V_{c_{max}}$ or $J_{max}$. Based on figure \ref{fig:lme_rd}, $R_d$ is more strongly affected by side than treatment, as is $s$ (see table \ref{params_est} and figure \ref{fig:lme_s}) and $S_{c/o}$ (see table \ref{sco_median} and figures \ref{fig:sco_ab} and \ref{fig:sco_ad}). However, as our results are strange and limited we have not implemented a full analysis.
+
+The main realisation of this project is that there is a severe lack of transparency in the field of plant physiology. Different modelling techniques and underlying, unstated assumptions mean that many papers cannot be directly compared in their results. As a small example of unstated assumptions, no paper we read explicitly stated accounting for the Kok effect, however it appears to be standard practice based on correspondence and conversation with plant scientists. This is a serious flaw, as many models use the same name (i.e. the FvCB model), but actually refer to different versions. Beyond this all examples we could find in the literature use models that do not account for correlation within the data despite the use of repeated measurements (another unwritten assumption). This, coupled with a lack of reporting of errors on parameter estimates, leaves many published results highly opaque. Consider the table \ref{params_nls_est}. Here the point estimates of $V_{c_{max}}$ and $J_{max}$ appear sensible in comparison with the published literature. However, the error on $J_{max}$ is so large as to disfigure the result entirely. Furthermore, $\theta$ is negative (which is not expected) and also has a large error. If this result is not unique to this paper, many published results become questionable. Without explicit statement of the error on these estimates it is hard to comment on them.
+
+With so many parameters, with so many methods available (either for estimating photosynthetic parameters as mentioned above or in estimating the Michaelis-Menten constants) and an understanding that dropping certain data points is dependent solely upon the modeler's discretion (which points are under the Kok effect, which points are part of the linear part of the ACI and LCR curves) it leaves the final results difficult to interpret. Arguably there is sufficient room to play with choices of relevant data, models used, auxiliary parameters to ensure that the point estimates found for the key parameters are within a reasonable distance of those previously published. We do not know if this flexibility is taken advantage of to produce results that are ``sensible'', but it does create difficulty in reproducing results or recreating a given method. We recommend that plant scientists be explicit in their modelling assumptions, in their data selection and in their estimated error values. A thorough review paper comparing the performance of different variations of the FvCB model, and within each model comparing the use of mixed effect and fixed effect models could be of great interest. If such a paper included error estimations and an explicit statement of the assumptions and data selection process for each model, it could be of great benefit.
+
+As there is a lack of sufficient data and there exists strong domain knowledge, we also recommend use of Bayesian methods. Using a model such as that described by \citet{YinUsingcombinedmeasurements2009} also allows one to use the initial steps to produce priors on the parameters such as $s$ and $R_d$ while allowing the model to fit all variables simultaneously as in the work published by \citet{QianEstimationphotosynthesisparameters2012}. This would be advantageous as there is greater flexibility in fitting all of the parameters simultaneously and also the error associated with each parameters is present in the final model. Furthermore, the Bayesian methods allow principled quantification of the uncertainty associated with each parameter, so not only is the credible range on the parameter included, but we have the full posterior distribution.
+
+%As the mechanistic model underlying the data is well understood, simulating data should be feasible if known is available (we understand that producing sufficient data for a single experiment can take up to a year's work and that plant scientists might be unwilling to share such results). 
 
 \newpage
 
 \appendix
 \section{Linear light curves} \label{appendix:lcr_linear}
 We include plots of the light response curves to show which points are relevant to the linear part of the curve and not influenced by the Kok effect.
+
+\vspace{70cm}
+
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.0]{Images/lcr_curves_all_low_o2}
+\includegraphics[scale=0.85]{Images/lcr_curves_all_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_all_low_o2}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.0]{Images/lcr_curves_b200_low_o2}
+\includegraphics[scale=0.85]{Images/lcr_curves_b200_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_b200_low_o2}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.0]{Images/lcr_curves_b100_low_o2}
+\includegraphics[scale=0.85]{Images/lcr_curves_b100_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_b100_low_o2}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.0]{Images/lcr_curves_b100_a30_low_o2}
+\includegraphics[scale=0.85]{Images/lcr_curves_b100_a30_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_b100_a30_low_o2}
 \end{figure}

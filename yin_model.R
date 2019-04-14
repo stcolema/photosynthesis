@@ -133,6 +133,34 @@ FvCB <- function(C_c, G_star, K_c, K_o, O, V_cmax, J, R_d) {
   ifelse(p1 < p2, p1, p2) - R_d
 }
 
+
+non_rectangular_hyperbola <- function(PAR, J_max, alpha, theta) {
+  # Solve for root of equation:
+  # theta * x2 - (Jmax + alpha * PAR) * x + alpha * PAR * Jmax = 0
+  # model approximates theta and alpha I think? Possibly not
+  a <- theta
+  b <- -(J_max + alpha * PAR)
+  c <- alpha * PAR * J_max
+  determ <- b^2 - 4 * a * c
+  determ <- pmax(determ, 0)
+  x <- (-b - sqrt(determ)) / (2 * a)
+  
+  # below is what Gerrit compared to Rubisco curve for deciding current limiting
+  # factor - possily not part of the NRH function, but a represenation for RuBP
+  # (x / 4) * (C_c - G_star) / (C_c  + 2 * G_star)
+}
+
+
+FvCB_jmax <- function(C_c, G_star, K_c, K_o, O, V_cmax, J_max, R_d, PAR, alpha, theta) {
+  p1 <- Rubisco_limited(V_cmax, C_c, G_star, K_c, O, K_o, R_d) + R_d
+  J <- non_rectangular_hyperbola(PAR, J_max, alpha, theta)
+  # p2 <- J * (C_c - G_star) / (4.5 * C_c  + 10.5 * G_star)
+  p2 <- RuBP_limited(J, C_c, G_star, R_d)
+  ifelse(p1 < p2, p1, p2) - R_d
+}
+
+
+
 # Calculate daytime respiration (Rd) and lump parameter (S)
 calc_s_rd <- function(LRC2, LRC2_F,
                       A_param = A,
@@ -1511,10 +1539,12 @@ nrow(odd_gm)
 
 
 summary(ACI1_final$gm)
-gm_value_ACI1 <- median(ACI1_final$gm[(ACI1_final$gm > 0.05) & (ACI1_final$gm < 1.0)])
+gm_value_ACI1 <- median(ACI1_final_gm$gm) #[(ACI1_final_gm$gm > 0.05) & (ACI1_final_gm$gm < 1.0)])
+
+# this is strangely low, use a vlaue of 0.29
 
 ACI1_final <- ACI1_final %>%
-  dplyr::mutate(gm_est = gm_value_ACI1) %>%
+  dplyr::mutate(gm_est = gm_value_ACI1 * 10) %>%
   dplyr::mutate(Cc = Ci - Photosynthesis / gm_est)
 
 # === Data wrangling ===========================================================
@@ -1592,7 +1622,7 @@ summary(grouped_ACI)
 
 
 # === NLS models ===============================================================
-nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, K_o, O, Vcmax, J, Rd),
+nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, Ko, O, Vcmax, J, Rd),
   data = ACI1_final,
   subset = select_A1_AB,
   start = c(
@@ -1630,8 +1660,61 @@ nls_model_A2_AD <- nls(Photosynthesis ~ FvCB(Cc, G_star, Kc, K_o, O, Vcmax, J, R
   control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
 )
 
+# === Jmax used =====
 
-# Try different G_star
+jmax_i_a1_ab <- max(ACI1_final[select_A1_AB,]$J)
+
+nls_model_A1_AB_jmax <- nls(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd, PAR, S, theta),
+                       data = ACI1_final,
+                       subset = select_A1_AB,
+                       start = c(
+                         Vcmax = c(60),
+                         Jmax = jmax_i_a1_ab,
+                         theta = 0.8
+                       ),
+                       control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+jmax_i_a1_ad <- max(ACI1_final[select_A1_AD,]$J)
+
+nls_model_A1_AD_jmax <- nls(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd, PAR, S, theta),
+                            data = ACI1_final,
+                            subset = select_A1_AD,
+                            start = c(
+                              Vcmax = c(40),
+                              Jmax = jmax_i_a1_ad,
+                              theta = 0.8
+                            ),
+                            control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+jmax_i_a2_ab <- max(ACI1_final[select_A2_AB,]$J)
+
+nls_model_A2_AB_jmax <- nls(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd, PAR, S, theta),
+                            data = ACI1_final,
+                            subset = select_A2_AB,
+                            start = c(
+                              Vcmax = c(40),
+                              Jmax = jmax_i_a2_ab,
+                              theta = 0.8
+                            ),
+                            control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+jmax_i_a2_ad <- max(ACI1_final[select_A2_AD,]$J)
+
+nls_model_A1_AD_jmax <- nls(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd, PAR, S, theta),
+                            data = ACI1_final,
+                            subset = select_A2_AD,
+                            start = c(
+                              Vcmax = c(80),
+                              Jmax = jmax_i_a2_ad,
+                              theta = 0.8
+                            ),
+                            control = list(maxiter = 15000, minFactor = 1e-20, printEval = F, tol = 1e-3)
+)
+
+# === Try different G_star =======
 
 nls_model_A1_AB <- nls(Photosynthesis ~ FvCB(Cc, G_star1, Kc, Ko, O, Vcmax, J, Rd),
   data = ACI1_final,
@@ -2459,4 +2542,158 @@ ggplot(plot_pres_data_LRC, aes(x = PAR, y = Photosynthesis)) +
     x = "PAR",
     y = "A"
   )  
+
+
+# === NLME with Jmax ===========================================================
+
+
+
+nlme_model_jmax <- nlme(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd, PAR, S, theta),
+                data = grouped_ACI,
+                fixed = list(Vcmax ~ TREATMENT, Jmax ~ TREATMENT, theta ~ TREATMENT),
+                random = pdDiag(list(Vcmax ~ ID, JMAX ~ 1, theta ~ 1)), #  %in% TREATMENT
+                start = c(
+                  Vcmax = c(50, 0),
+                  Jmax = c(jmax_i_a1_ab, jmax_i_a2_ab - jmax_i_a1_ab),
+                  theta = c(2, 0)
+                ),
+                subset = select_AB,
+                method = "REML",
+                control = nlmeControl(
+                  opt = "nlminb",
+                  # upper = c(
+                  #   Vcmax = c(500, 500)
+                  # ),
+                  
+                  maxIter = 500,
+                  msMaxIter = 500,
+                  msVerbose = F,
+                  msTol = 1e-2,
+                  pnlsTol = 1e-30,
+                  pnlsMaxIter = 500,
+                  niterEM = 500,
+                  msMaxEval = 500,
+                  minScale = 1e-20,
+                  returnObject = T,
+                  lower = c(
+                    Vcmax = c(0, 0)
+                  ),
+                  iter.max = 500,
+                  sing.tol = 1e-45
+                )
+)
+
+s_a1_ab <- median(grouped_ACI$S[select_A1_AB])
+
+nlme_model_jmax_a1_ab <- nlme(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd, PAR, alpha, theta),
+                        data = grouped_ACI,
+                        fixed = list(Vcmax ~ 1, Jmax ~ 1, alpha ~ 1, theta ~ 1),
+                        random = pdDiag(list(Vcmax ~ ID, JMAX ~ 1, alpha ~ 1, theta ~ 1)), #  %in% TREATMENT
+                        start = c(
+                          Vcmax = c(40),
+                          Jmax = c(jmax_i_a1_ab),
+                          theta = c(2),
+                          alpha = c(s_a1_ab)
+                        ),
+                        subset = select_A1_AB,
+                        method = "REML",
+                        control = nlmeControl(
+                          opt = "nlminb",
+                          # upper = c(
+                          #   Vcmax = c(500, 500)
+                          # ),
+                          
+                          maxIter = 500,
+                          msMaxIter = 500,
+                          msVerbose = F,
+                          msTol = 1e-2,
+                          pnlsTol = 1e-30,
+                          pnlsMaxIter = 500,
+                          niterEM = 500,
+                          msMaxEval = 500,
+                          minScale = 1e-20,
+                          returnObject = T,
+                          lower = c(
+                            Vcmax = c(0, 0)
+                          ),
+                          iter.max = 500,
+                          sing.tol = 1e-45
+                        )
+)
+
+
+nlme_model_jmax_a1_ab <- nlme(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd, PAR, alpha, theta),
+                              data = grouped_ACI,
+                              fixed = list(Vcmax ~ 1, Jmax ~ 1, alpha ~ 1, theta ~ 1),
+                              random = pdDiag(list(Vcmax ~ 1, JMAX ~ 1, alpha ~ 1, theta ~ 1)), #  %in% TREATMENT
+                              start = c(
+                                Vcmax = c(80),
+                                Jmax = c(jmax_i_a1_ab),
+                                theta = c(1),
+                                alpha = c(s_a1_ab)
+                              ),
+                              subset = select_A1_AB,
+                              method = "REML",
+                              control = nlmeControl(
+                                opt = "nlminb",
+                                # upper = c(
+                                #   Vcmax = c(500, 500)
+                                # ),
+                                
+                                maxIter = 500,
+                                msMaxIter = 500,
+                                msVerbose = F,
+                                msTol = 1e-2,
+                                pnlsTol = 1e-30,
+                                pnlsMaxIter = 500,
+                                niterEM = 500,
+                                msMaxEval = 500,
+                                minScale = 1e-20,
+                                returnObject = T,
+                                lower = c(
+                                  Vcmax = c(0, 0)
+                                ),
+                                iter.max = 500,
+                                sing.tol = 1e-45
+                              )
+)
+
+rd_a1_ab <- median(grouped_ACI$Rd[select_A1_AB])
+
+nlme_model_jmax_a1_ab <- nlme(Photosynthesis ~ FvCB_jmax(Cc, G_star, Kc, Ko, O, Vcmax, Jmax, Rd_var, PAR, alpha, theta),
+                              data = grouped_ACI,
+                              fixed = list(Vcmax ~ 1, Jmax ~ 1, Rd_var ~ 1, alpha ~ 1, theta ~ 1),
+                              random = pdDiag(list(Vcmax ~ 1, JMAX ~ 1, Rd_var ~ 1, alpha ~ 1, theta ~ 1)), #  %in% TREATMENT
+                              start = c(
+                                Vcmax = c(40),
+                                Jmax = c(jmax_i_a1_ab),
+                                Rd_var = 1,
+                                theta = c(-1),
+                                alpha = c(s_a1_ab)
+                              ),
+                              subset = select_A1_AB,
+                              method = "REML",
+                              control = nlmeControl(
+                                opt = "nlminb",
+                                # upper = c(
+                                #   Vcmax = c(500, 500)
+                                # ),
+                                
+                                maxIter = 500,
+                                msMaxIter = 500,
+                                msVerbose = F,
+                                msTol = 1e-2,
+                                pnlsTol = 1e-30,
+                                pnlsMaxIter = 500,
+                                niterEM = 500,
+                                msMaxEval = 500,
+                                minScale = 1e-20,
+                                returnObject = T,
+                                lower = c(
+                                  Vcmax = c(0, 0)
+                                ),
+                                iter.max = 500,
+                                sing.tol = 1e-45
+                              )
+)
 
