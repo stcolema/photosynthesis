@@ -171,13 +171,57 @@ frametitleaboveskip=\dimexpr-\ht\strutbox\relax
 
 %%% The "real" document content comes below...
 
-\title{Modelling photosynthetic parameters via mixed effects models and the Farquhar-van Cammerer-Berry model}
+%\title{Modelling photosynthetic parameters via mixed effects models and the Farquhar-van Cammerer-Berry model}
 \author{Stephen D. Coleman}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
 
-\begin{document} \pgfplotsset{compat=1.16}
-\maketitle
+\begin{document} \pgfplotsset{compat=1.15}
+%\maketitle
+
+\begin{titlepage}
+\begin{center}
+\vspace*{1cm}
+
+\par{\LARGE \textbf{Modelling photosynthetic parameters via mixed effects models and the Farquhar-van Cammerer-Berry model}}
+
+\vspace{0.5cm}
+MAT80436
+
+\vspace{1.5cm}
+
+\textbf{Stephen D. Coleman \\ 940309160050}
+
+\vspace{2.8cm}
+
+supervised by \\
+\textbf{Gerrit Gort} \\
+Biometris, Wageningen University, \\
+\textbf{Elias Kaiser} \\
+Max Planck Institute of Molecular Plant Physiology, \\
+\textbf{Rachel Schipper} \\
+Horticulture and Product Physiology, Wageningen University, \\
+and \\
+\textbf{Anne Elings} \\
+Wageningen Plant Research.
+
+%\vspace{1.0cm}
+
+
+\vfill
+
+A thesis presented for the degree of \\
+Master's in Bioinformatics
+
+\vspace{0.8cm}
+
+%		\includegraphics[width=0.4\textwidth]{university}
+
+%			Genetics \\
+Wageningen University
+
+\end{center}
+\end{titlepage}
 
 \begin{abstract}
 The study of the photosynthetic process frequently involves analysis of net assimilation - intercellular CO$_2$ concentration (ACI) curves. These are used in the estimation of key parameters associated with the Farquhar-van Caemmerer-Berry (FvCB) \cite{Farquharbiochemicalmodelphotosynthetic1980} model:
@@ -193,9 +237,37 @@ The data collected for the purpose of modelling steady-state photosynthesis is i
 \end{abstract}
 \keywords{ACI curves, parameter estimation, FvCB model, non-linear mixed effects models}
 
+\newpage
+
+\section*{Acknowledgements}
+Thanks are due to my supervisors, Gerrit, Elias, Rachel and Anne without whom this project would not have been possible. Gerrit's patience with dealing with me as the primary supervisor was exemplary. He had to explain a few basic parts of the non-linear mixed effect model on more than one occasion. He ensured that the project kept focused and had some conclusion - difficult things to guarantee. Elias provided much needed clarity in the murky world of plant physiology. Rachel arrived at the 11th hour and provided the data we used - a relevant modern dataset. She also provided much cheer and her best efforts in understanding the models we used. Jeremy Harbinson also offered guidance and advice which were appreciated - he pointed us towards the paper by \citet{YinUsingcombinedmeasurements2009} originally. Maikel Verouden was of help, kindly solving several network issues I had within Biometris.
+
+\newpage
+
+%\begin{abstract}
+%The study of the photosynthetic process frequently involves analysis of net assimilation - intercellular CO$_2$ concentration (ACI) curves. These are used in the estimation of key parameters associated with the Farquhar-van Caemmerer-Berry (FvCB) \cite{Farquharbiochemicalmodelphotosynthetic1980} model:
+%\begin{itemize}
+% \item $V_{c_{max}}$: the rate of maximum Rubisco carboxylation;
+% \item $J$: electron transport rate;
+% \item $R_d$: daytime respiration; and
+% \item $g_m$: mesophyll conductance.
+%\end{itemize}
+%Accurate, unbiased estimation of these parameters is a non-trivial exercise with the optimal method still a matter of debate within the field \cite{Moualeu-Nganguenewmethodestimate2017}\cite{YinTheoreticalreconsiderationswhen2009}\cite{QianEstimationphotosynthesisparameters2012}. The problem of selecting suitable starting values for a non-linear model is thus complicated by the lack of unanimity on what is a ``good'' estimate of these. The core model we are using to estimate the parameters is based on \citet{YinUsingcombinedmeasurements2009}. This method offers several steps to estimate various parameters rather than attempting estimation in a single step. % and Laisk (NEED REFERENCE - think 1977 paper).
+%
+%The data collected for the purpose of modelling steady-state photosynthesis is inevitably repeated measurements on individual plants. This leads to correlation between measurements, a fact that violates the assumptions in the fixed effects models used in estimating the parameters of interest \cite{DuursmaPlantecophysPackageAnalysing2015}\cite{BellasioExceltoolderiving2016}. We introduce the use of non-linear mixed effects models in keeping with \citet{QianEstimationphotosynthesisparameters2012} to overcome this issue, and extend on their work by considering more modern versions of the FvCB model.
+%\end{abstract}
+%\keywords{ACI curves, parameter estimation, FvCB model, non-linear mixed effects models}
+
 \section{Theory}
 \subsection{FvCB model}
 The brilliant realisation of \citet{Farquharbiochemicalmodelphotosynthetic1980} was that the net photosynthesis rate, $A$, of C$_3$ plants could be accurately modeled at the leaf level as being in one of two steady-state systems. In \emph{Rubisco activity limited net photosynthesis rate} ($A_c$), the net rate of photosynthesis is limited by the properties of the enzyme ribulose 1.5 biphosphate carboxylase/oxygenase (Rubisco) (we assume saturating levels of the substrate, RuBP). In the second we assume that it is the substrate that determines the rate of assimilation; specifically its regeneration rate. Hence the second state is referred to as RuBP-regeneration limited or \emph{electron transport limited net photosynthesis rate} ($A_j$)\cite{YinUsingcombinedmeasurements2009}. We prefer the latter name for being a more clear difference for readers unfamiliar with the biochemical constituents of the photosynthesis cycle.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{Images/fvcb_model}
+\caption{Diagram of metabolic pathways described in the FvCB model.}
+\label{fig:fvcb}
+\end{figure}
 
 \subsubsection{Some assumptions} \label{Assumptions}
 For parsimony's sake, we make several simplifying assumptions regarding the homogeneity of conditions within the leaf. We disregard any gradient of temperature ($T$) or O$_2$ within the leaf. According to \citet{CaemmererBiochemicalmodelsleaf2000}, these, specifically within C$_3$ species, are unlikely to be important. Due to the thinness of leaves we also assume an equal distribution of light to all chloroplasts within the leaf; however, it has been shown that under certain conditions these assumptions and their corollary, that photosynthesis itself is homogeneous across the leaf, do not hold. Non-uniform photosynthesis can occur and this will affect the gas-exchange measurements and their interpretation \cite{TerashimaAnatomynonuniformleaf1992}.
@@ -563,6 +635,8 @@ For our specific version of \eqref{stage1_population_model}, we cannot know in a
 \section{Methods}
 The methods entailed hereafter are based upon those described by \citet{YinUsingcombinedmeasurements2009} except for the inclusion of mixed-effects models which is, insofar as the author is aware, only previously used in \cite{QianEstimationphotosynthesisparameters2012}. The method described in \cite{YinUsingcombinedmeasurements2009} uses several different datasets to estimate the parameters of interest over several steps. We acknowledge the flaw of this disjoint model which does not accumulate error but instead uses the point estimates in each succeeding step with no error accumulation. If this work is extended upon this is probably the area which most requires improvement, i.e. conversion to a full joint model. We suspect that this should also enable ease of convergence as the point estimates used in any given step might be wrong and restrict the current estimate from moving to the correct subspace of the possible solution space.
 
+The data has been produced by Rachel Schipper as part of her PhD. It is a two-sided photosynthesis experiment; plants (with individual tags) are grown under two treatments (denoted A1 and A2). Measurements are taken from each side of the plants (adaxial or AD and abaxial or AB). The treatment effect is long term - the plants acclimatise to this; the side effect is instantaneoue - a measurement is taken from a side of the leaf.
+
 We have five datasets available for this method. For each dataset we have the same 12 individual plants present.
 \begin{enumerate} \label{datasets}
  \item \emph{LRC1}: Repeated measurements for plants acclimatised to increasing values of light intensity ($I$) at constant intercellular CO$_2$ ($C_i$) and atmospheric (i.e. $\SI{210}{\micro \mol}$) O$_2$;
@@ -707,30 +781,28 @@ As there is a lack of sufficient data and there exists strong domain knowledge, 
 \section{Linear light curves} \label{appendix:lcr_linear}
 We include plots of the light response curves to show which points are relevant to the linear part of the curve and not influenced by the Kok effect.
 
-\vspace{70cm}
-
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_all_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_all_low_o2}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_b200_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_b200_low_o2}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_b100_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_b100_low_o2}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_b100_a30_low_o2}
 \caption{LCR.}

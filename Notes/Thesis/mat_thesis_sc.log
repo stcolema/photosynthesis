@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  14 APR 2019 15:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  14 APR 2019 16:39
 entering extended mode
 **./mat_thesis_sc.tex
 (mat_thesis_sc.tex
@@ -2614,350 +2614,363 @@ LaTeX Font Info:    Try loading font information for OT1+zplm on input line 179
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1zplm.fd"
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 186.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 193.
+ [1
+
+{C:/Users/steph/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 182.
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 185.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 226.
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 229.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsppl.fd"
 File: omsppl.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 185.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 229.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 194.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 238.
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.240 \newpage
+               [1]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 196.
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 196.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 242.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 242.
 
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1phv.fd"
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1phv.fd"
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 196.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 242.
+
+[2]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 197.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 262.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 197.
-LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 200.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 262.
+<Images/fvcb_model.png, id=167, 426.84468pt x 228.10219pt>
+File: Images/fvcb_model.png Graphic file (type png)
+<use Images/fvcb_model.png>
+Package pdftex.def Info: Images/fvcb_model.png  used on input line 267.
+(pdftex.def)             Requested size: 320.13272pt x 171.0762pt.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 200.
- [1
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 272.
+LaTeX Font Info:    Try loading font information for TS1+ppl on input line 275.
 
-{C:/Users/steph/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Try loading font information for TS1+ppl on input line 203.
-
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ts1ppl.fd"
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ts1ppl.fd"
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
-) [2] [3]
+) [3 <./Images/fvcb_model.png>] [4]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 279.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 279.
+(hyperref)                removing `math shift' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 279.
+(hyperref)                removing `subscript' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 279.
+(hyperref)                removing `math shift' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 279.
+(hyperref)                removing `math shift' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 279.
-
-[4]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 340.
+(hyperref)                removing `subscript' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 340.
+(hyperref)                removing `math shift' on input line 351.
 
-[5]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 356.
-
+[5] [6]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 356.
+(hyperref)                removing `math shift' on input line 412.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 356.
+(hyperref)                removing `math shift' on input line 412.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 356.
+(hyperref)                removing `math shift' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 356.
+(hyperref)                removing `subscript' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 356.
+(hyperref)                removing `math shift' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 356.
+(hyperref)                removing `math shift' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 356.
+(hyperref)                removing `subscript' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 356.
+(hyperref)                removing `math shift' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 367.
+(hyperref)                removing `math shift' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 367.
+(hyperref)                removing `subscript' on input line 428.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 367.
+(hyperref)                removing `math shift' on input line 428.
+
+[7]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 439.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 367.
+(hyperref)                removing `subscript' on input line 439.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 367.
+(hyperref)                removing `math shift' on input line 439.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 367.
+(hyperref)                removing `math shift' on input line 439.
 
-[6] [7]
-LaTeX Font Info:    Try loading font information for U+fplmbb on input line 456
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 439.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 439.
+
+[8]
+LaTeX Font Info:    Try loading font information for U+fplmbb on input line 528
 .
  ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ufplmbb.fd"
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
-) [8]
-Overfull \hbox (3.94629pt too wide) in paragraph at lines 489--490
+) [9] [10]
+Overfull \hbox (3.94629pt too wide) in paragraph at lines 561--562
 \OT1/ppl/m/n/10 nis-tic func-tion de-scrib-ing a phys-i-cal or chem-i-cal sys-t
 em (for ex-am-ple in tox-i-cokineitcs physiologically-
  []
 
-[9] [10] [11]
+[11] [12] [13]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 585.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 585.
+(hyperref)                removing `math shift' on input line 659.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 585.
+(hyperref)                removing `subscript' on input line 659.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 585.
+(hyperref)                removing `math shift' on input line 659.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 585.
+(hyperref)                removing `math shift' on input line 659.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 588.
+(hyperref)                removing `math shift' on input line 659.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 588.
+(hyperref)                removing `math shift' on input line 662.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 595.
+(hyperref)                removing `math shift' on input line 662.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 595.
+(hyperref)                removing `math shift' on input line 669.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 595.
+(hyperref)                removing `subscript' on input line 669.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 595.
+(hyperref)                removing `math shift' on input line 669.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 595.
+(hyperref)                removing `math shift' on input line 669.
 
-[12]
-<Images/lme_estimate_rd.jpeg, id=385, 463.7325pt x 332.74312pt>
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 669.
+
+[14]
+<Images/lme_estimate_rd.jpeg, id=402, 463.7325pt x 332.74312pt>
 File: Images/lme_estimate_rd.jpeg Graphic file (type jpg)
 <use Images/lme_estimate_rd.jpeg>
-Package pdftex.def Info: Images/lme_estimate_rd.jpeg  used on input line 616.
+Package pdftex.def Info: Images/lme_estimate_rd.jpeg  used on input line 690.
 (pdftex.def)             Requested size: 370.9865pt x 266.19484pt.
-<Images/lme_estimate_s.jpeg, id=386, 463.7325pt x 332.74312pt>
+<Images/lme_estimate_s.jpeg, id=403, 463.7325pt x 332.74312pt>
 File: Images/lme_estimate_s.jpeg Graphic file (type jpg)
 <use Images/lme_estimate_s.jpeg>
-Package pdftex.def Info: Images/lme_estimate_s.jpeg  used on input line 623.
+Package pdftex.def Info: Images/lme_estimate_s.jpeg  used on input line 697.
 (pdftex.def)             Requested size: 370.9865pt x 266.19484pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/rd_s_ab.jpeg, id=387, 463.7325pt x 332.74312pt>
+<Images/rd_s_ab.jpeg, id=404, 463.7325pt x 332.74312pt>
 File: Images/rd_s_ab.jpeg Graphic file (type jpg)
 <use Images/rd_s_ab.jpeg>
-Package pdftex.def Info: Images/rd_s_ab.jpeg  used on input line 630.
+Package pdftex.def Info: Images/rd_s_ab.jpeg  used on input line 704.
 (pdftex.def)             Requested size: 347.79851pt x 249.55672pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/rd_s_ad.jpeg, id=388, 463.7325pt x 332.74312pt>
+<Images/rd_s_ad.jpeg, id=405, 463.7325pt x 332.74312pt>
 File: Images/rd_s_ad.jpeg Graphic file (type jpg)
 <use Images/rd_s_ad.jpeg>
-Package pdftex.def Info: Images/rd_s_ad.jpeg  used on input line 637.
+Package pdftex.def Info: Images/rd_s_ad.jpeg  used on input line 711.
 (pdftex.def)             Requested size: 347.79851pt x 249.55672pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 642.
+(hyperref)                removing `math shift' on input line 716.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 642.
+(hyperref)                removing `subscript' on input line 716.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 642.
+(hyperref)                removing `math shift' on input line 716.
 
 
-Underfull \hbox (badness 1845) in paragraph at lines 657--657
+Underfull \hbox (badness 1845) in paragraph at lines 731--731
 []\OT1/ppl/m/n/10.95 Table 3: |[][]Me-dian es-ti-
  []
 
 
-Underfull \hbox (badness 2452) in paragraph at lines 657--657
+Underfull \hbox (badness 2452) in paragraph at lines 731--731
 \OT1/ppl/m/n/10.95 each side / treat-ment
  []
 
-[13 <./Images/lme_estimate_rd.jpeg>]
-<Images/sco_boxplot_ab.png, id=402, 463.4916pt x 332.6829pt>
+[15 <./Images/lme_estimate_rd.jpeg>]
+<Images/sco_boxplot_ab.png, id=418, 463.4916pt x 332.6829pt>
 File: Images/sco_boxplot_ab.png Graphic file (type png)
 <use Images/sco_boxplot_ab.png>
-Package pdftex.def Info: Images/sco_boxplot_ab.png  used on input line 661.
+Package pdftex.def Info: Images/sco_boxplot_ab.png  used on input line 735.
 (pdftex.def)             Requested size: 347.61783pt x 249.51155pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/sco_boxplot_ad.png, id=403, 463.4916pt x 332.6829pt>
+<Images/sco_boxplot_ad.png, id=419, 463.4916pt x 332.6829pt>
 File: Images/sco_boxplot_ad.png Graphic file (type png)
 <use Images/sco_boxplot_ad.png>
-Package pdftex.def Info: Images/sco_boxplot_ad.png  used on input line 668.
+Package pdftex.def Info: Images/sco_boxplot_ad.png  used on input line 742.
 (pdftex.def)             Requested size: 347.61783pt x 249.51155pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 673.
+(hyperref)                removing `math shift' on input line 747.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 673.
+(hyperref)                removing `subscript' on input line 747.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 673.
+(hyperref)                removing `math shift' on input line 747.
 
-[14 <./Images/lme_estimate_s.jpeg>] [15 <./Images/rd_s_ab.jpeg>] [16 <./Images/
-rd_s_ad.jpeg>] [17 <./Images/sco_boxplot_ab.png>]
-<Images/lcr_curves_all_low_o2.jpeg, id=435, 463.7325pt x 332.74312pt>
+[16 <./Images/lme_estimate_s.jpeg>] [17 <./Images/rd_s_ab.jpeg>] [18 <./Images/
+rd_s_ad.jpeg>] [19 <./Images/sco_boxplot_ab.png>]
+<Images/lcr_curves_all_low_o2.jpeg, id=452, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_all_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_all_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_all_low_o2.jpeg  used on input line 
-714.
+786.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
- [18 <./Images/sco_boxplot_ad.png>]
-<Images/lcr_curves_b200_low_o2.jpeg, id=441, 463.7325pt x 332.74312pt>
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Images/lcr_curves_b200_low_o2.jpeg, id=453, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b200_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b200_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b200_low_o2.jpeg  used on input line
- 721.
+ 793.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<Images/lcr_curves_b100_low_o2.jpeg, id=442, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_low_o2.jpeg, id=454, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_low_o2.jpeg  used on input line
- 728.
+ 800.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Images/lcr_curves_b100_a30_low_o2.jpeg, id=443, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_a30_low_o2.jpeg, id=455, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_a30_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_a30_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_a30_low_o2.jpeg  used on input 
-line 735.
+line 807.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[19 <./Images/lcr_curves_all_low_o2.jpeg>] (mat_thesis_sc.bbl [20 <./Images/lcr
-_curves_b200_low_o2.jpeg>] [21 <./Images/lcr_curves_b100_low_o2.jpeg>] [22 <./I
-mages/lcr_curves_b100_a30_low_o2.jpeg>]) [23]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 745.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 745.
+[20 <./Images/sco_boxplot_ad.png>] (mat_thesis_sc.bbl [21 <./Images/lcr_curves_
+all_low_o2.jpeg>] [22 <./Images/lcr_curves_b200_low_o2.jpeg>] [23 <./Images/lcr
+_curves_b100_low_o2.jpeg>] [24 <./Images/lcr_curves_b100_a30_low_o2.jpeg>])
+[25]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 817.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 817.
  (mat_thesis_sc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 745.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 745.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 817.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 817.
+Package rerunfilecheck Info: File `mat_thesis_sc.out' has not changed.
+(rerunfilecheck)             Checksum: B298B5DB30BFF0BF46578297BFE7B39B;2342.
 
-
-Package rerunfilecheck Warning: File `mat_thesis_sc.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `mat_thesis_sc.out':
-(rerunfilecheck)             Before: 125228442F9A9591024F00E03A05AD62;2301
-(rerunfilecheck)             After:  53E6597FC27D31CEC4F0DF3B5E4E85E7;2342.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 3.75237pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 745.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 817.
  ) 
 Here is how much of TeX's memory you used:
- 46705 strings out of 492973
- 1035140 string characters out of 3135932
- 1209177 words of memory out of 3000000
- 49718 multiletter control sequences out of 15000+200000
- 608969 words of font info for 227 fonts, out of 3000000 for 9000
+ 46719 strings out of 492973
+ 1035365 string characters out of 3135932
+ 1209169 words of memory out of 3000000
+ 49726 multiletter control sequences out of 15000+200000
+ 609892 words of font info for 229 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 73i,21n,127p,1447b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 69i,21n,119p,1447b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
@@ -2969,9 +2982,9 @@ les/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
 urw/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/u
 plri8a.pfb>
-Output written on mat_thesis_sc.pdf (23 pages, 1093015 bytes).
+Output written on mat_thesis_sc.pdf (26 pages, 1117325 bytes).
 PDF statistics:
- 540 PDF objects out of 1000 (max. 8388607)
- 157 named destinations out of 1000 (max. 500000)
- 311 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 557 PDF objects out of 1000 (max. 8388607)
+ 161 named destinations out of 1000 (max. 500000)
+ 316 words of extra memory for PDF output out of 10000 (max. 10000000)
 
