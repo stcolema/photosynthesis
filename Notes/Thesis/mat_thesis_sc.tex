@@ -771,7 +771,7 @@ The main realisation of this project is that there is a severe lack of transpare
 
 With so many parameters, with so many methods available (either for estimating photosynthetic parameters as mentioned above or in estimating the Michaelis-Menten constants) and an understanding that dropping certain data points is dependent solely upon the modeler's discretion (which points are under the Kok effect, which points are part of the linear part of the ACI and LCR curves) it leaves the final results difficult to interpret. Arguably there is sufficient room to play with choices of relevant data, models used, auxiliary parameters to ensure that the point estimates found for the key parameters are within a reasonable distance of those previously published. We do not know if this flexibility is taken advantage of to produce results that are ``sensible'', but it does create difficulty in reproducing results or recreating a given method. We recommend that plant scientists be explicit in their modelling assumptions, in their data selection and in their estimated error values. A thorough review paper comparing the performance of different variations of the FvCB model, and within each model comparing the use of mixed effect and fixed effect models could be of great interest. If such a paper included error estimations and an explicit statement of the assumptions and data selection process for each model, it could be of great benefit.
 
-As there is a lack of sufficient data and there exists strong domain knowledge, we also recommend use of Bayesian methods. Using a model such as that described by \citet{YinUsingcombinedmeasurements2009} also allows one to use the initial steps to produce priors on the parameters such as $s$ and $R_d$ while allowing the model to fit all variables simultaneously as in the work published by \citet{QianEstimationphotosynthesisparameters2012}. This would be advantageous as there is greater flexibility in fitting all of the parameters simultaneously and also the error associated with each parameters is present in the final model. Furthermore, the Bayesian methods allow principled quantification of the uncertainty associated with each parameter, so not only is the credible range on the parameter included, but we have the full posterior distribution.
+As there is a lack of sufficient data and there exists strong domain knowledge, we also recommend use of Bayesian methods. Using a model such as that described by \citet{YinUsingcombinedmeasurements2009} also allows one to use the initial steps to produce priors on the parameters such as $s$ and $R_d$ while allowing the model to fit all variables simultaneously as in the work published by \citet{QianEstimationphotosynthesisparameters2012}. This would be advantageous as there is greater flexibility in fitting all of the parameters simultaneously and also the error associated with each parameters is present in the final model. Furthermore, the Bayesian methods allow principled quantification of the uncertainty associated with each parameter, so not only is the credible range on the parameter included, but we have the full posterior distribution. The main problem that we foresee is that with the paucity of data it is possible that final model could be dominated by our priors; however if these priors are fed from other datasets from the same experiment (as in \cite{YinUsingcombinedmeasurements2009}) we suspect that this is still an improvement on the current approach.
 
 %As the mechanistic model underlying the data is well understood, simulating data should be feasible if known is available (we understand that producing sufficient data for a single experiment can take up to a year's work and that plant scientists might be unwilling to share such results). 
 
@@ -781,28 +781,28 @@ As there is a lack of sufficient data and there exists strong domain knowledge, 
 \section{Linear light curves} \label{appendix:lcr_linear}
 We include plots of the light response curves to show which points are relevant to the linear part of the curve and not influenced by the Kok effect.
 
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_all_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_all_low_o2}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_b200_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_b200_low_o2}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_b100_low_o2}
 \caption{LCR.}
 \label{fig:lcr_curves_b100_low_o2}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.85]{Images/lcr_curves_b100_a30_low_o2}
 \caption{LCR.}

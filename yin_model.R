@@ -1367,7 +1367,17 @@ ggplot2::ggplot(data = data_sco_AD, aes(x = S_co)) +
 
 ggplot2::ggplot(data = data_sco_AD, aes(y = S_co, x = ID, group = ID, colour = TREATMENT)) +
   # facet_wrap(~ID) +
-  geom_boxplot()
+  geom_boxplot() +
+  labs(
+    title = bquote(~ "Estimate of" ~S[c/o] ~"for SIDE AD"),
+    x = "Plant ID", 
+    y = bquote(~S[c/o])
+  )
+
+sco_a1_ad <- median(data_sco_AD$S_co[data_sco_AD$TREATMENT == "A1"])
+sco_a1_ab <- median(data_sco_AB$S_co[data_sco_AB$TREATMENT == "A1"])
+sco_a2_ad <- median(data_sco_AD$S_co[data_sco_AD$TREATMENT == "A2"])
+sco_a2_ab <- median(data_sco_AB$S_co[data_sco_AB$TREATMENT == "A2"])
 
 # sco_data_AD <- data_sco_AD %>%
 #   group_by(ID) %>%
@@ -1439,6 +1449,15 @@ ggplot2::ggplot(data = data_sco_AB, aes(y = S_co, x = ID, group = ID, colour = T
   # facet_wrap(~ID) +
   geom_boxplot()
 
+ggplot2::ggplot(data = data_sco_AB, aes(y = S_co, x = ID, group = ID, colour = TREATMENT)) +
+  # facet_wrap(~ID) +
+  geom_boxplot() +
+  labs(
+    title = bquote(~ "Estimate of" ~S[c/o] ~"for SIDE AB"),
+    x = "Plant ID", 
+    y = bquote(~S[c/o])
+  )
+
 # sco_data_2_AB <- data_sco_AB %>%
 #   group_by(ID) %>%
 #   filter(!(abs(S_co - median(S_co)) > 2 * sd(S_co)))
@@ -1453,7 +1472,7 @@ S_co_est_df <- sco_data %>%
   group_by(TREATMENT, SIDE) %>%
   summarise(S_co_mean = mean(S_co))
 
-S_co_est <- mean(sco_data$S_co)
+S_co_est <- median(sco_data$S_co)
 names(sco_data)
 sco_data_rel <- sco_data %>%
   dplyr::select(ID, SIDE, S_co) %>%
@@ -1527,6 +1546,19 @@ ACI1_final_gm <- calc_gm(ACI1_final %>% filter(Ci > 250 & Ci < 300),
   G_star_par = G_star,
   J_par = J
 )
+
+median(ACI1_final_gm$gm)
+
+# ACI1_final_gm
+ggplot2::ggplot(data = ACI1_final_gm, aes(y = gm, x = ID, group = ID, colour = TREATMENT)) +
+  # facet_wrap(~ID) +
+  geom_boxplot() +
+  labs(
+    title = bquote(~ "Estimate of" ~g[m]),
+    x = "Plant ID", 
+    y = bquote(~g[m])
+  ) +
+  facet_wrap(~SIDE)
 
 summary(ACI1_final_gm)
 

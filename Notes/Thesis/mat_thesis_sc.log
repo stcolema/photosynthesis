@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  14 APR 2019 16:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  14 APR 2019 18:12
 entering extended mode
 **./mat_thesis_sc.tex
 (mat_thesis_sc.tex
@@ -2905,7 +2905,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 
 [16 <./Images/lme_estimate_s.jpeg>] [17 <./Images/rd_s_ab.jpeg>] [18 <./Images/
 rd_s_ad.jpeg>] [19 <./Images/sco_boxplot_ab.png>]
-<Images/lcr_curves_all_low_o2.jpeg, id=452, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_all_low_o2.jpeg, id=453, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_all_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_all_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_all_low_o2.jpeg  used on input line 
@@ -2913,34 +2913,34 @@ Package pdftex.def Info: Images/lcr_curves_all_low_o2.jpeg  used on input line
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/lcr_curves_b200_low_o2.jpeg, id=453, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b200_low_o2.jpeg, id=454, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b200_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b200_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b200_low_o2.jpeg  used on input line
  793.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/lcr_curves_b100_low_o2.jpeg, id=454, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_low_o2.jpeg, id=455, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_low_o2.jpeg  used on input line
  800.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/lcr_curves_b100_a30_low_o2.jpeg, id=455, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_a30_low_o2.jpeg, id=456, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_a30_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_a30_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_a30_low_o2.jpeg  used on input 
 line 807.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 [20 <./Images/sco_boxplot_ad.png>] (mat_thesis_sc.bbl [21 <./Images/lcr_curves_
 all_low_o2.jpeg>] [22 <./Images/lcr_curves_b200_low_o2.jpeg>] [23 <./Images/lcr
@@ -2957,9 +2957,6 @@ Package rerunfilecheck Info: File `mat_thesis_sc.out' has not changed.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 3.75237pt have occurred.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 817.
  ) 
@@ -2982,9 +2979,9 @@ les/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
 urw/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/u
 plri8a.pfb>
-Output written on mat_thesis_sc.pdf (26 pages, 1117325 bytes).
+Output written on mat_thesis_sc.pdf (26 pages, 1117776 bytes).
 PDF statistics:
- 557 PDF objects out of 1000 (max. 8388607)
+ 558 PDF objects out of 1000 (max. 8388607)
  161 named destinations out of 1000 (max. 500000)
  316 words of extra memory for PDF output out of 10000 (max. 10000000)
 
