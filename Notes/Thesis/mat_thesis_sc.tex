@@ -16,7 +16,8 @@
 \usepackage{geometry} % to change the page dimensions
 \geometry{a4paper} % or letterpaper (US) or a5paper or....
 %\geometry{margin=2in} % for example, change the margins to 2 inches all round
-\geometry{left=2.75cm, right=2.75cm, top=3.5cm, bottom=4.5cm}
+%\geometry{left=2.75cm, right=2.75cm, top=3.5cm, bottom=4.5cm}
+\geometry{left=3.0cm, right=3.0cm, top=3.5cm, bottom=4.0cm}
 % \geometry{landscape} % set up the page for landscape
 %   read geometry.pdf for detailed page layout information
 
@@ -332,7 +333,7 @@ Other models extend to different cases (such as C$_4$ species) or to encompass m
 \begin{equation} \label{TPU_photosynthesis}
 A_p = 3TPU - R_d
 \end{equation}
-Where $TPU$ is the rate of triose phosphate utilization. This extension is only relevant under high $C_i$ and $I$ environments and is normally modeled as a upper bound on $A$. We do not include this in our model, but recommend extending the model to this scenario in later versions. From \citet{CaemmererBiochemicalmodelsleaf2000} we know that this model is too simple for the reality, please see section 2.4.3 for an extension as formulated by \citet{HarleyimprovedmodelC31991}. As \eqref{TPU_photosynthesis} is only apparent in extreme cases and we ignore it for now but recommend inclusion of this additional case in any extensions to our work.
+Where $TPU$ is the rate of triose phosphate utilization. This extension is only relevant under high $C_i$ and $I$ environments and is normally modeled as a upper bound on $A$. We do not include this in our model, but recommend extending the model to this scenario in later versions. From \citet{CaemmererBiochemicalmodelsleaf2000} we know that this model is too simple for the reality, please see \citet{HarleyimprovedmodelC31991} an extension. However, this linear assumption is normally considered sufficient as the majority of ACI curves will have only the most extreme measurements affected by this mode. As a result of this (that TPU limited photosynthesis \eqref{TPU_photosynthesis} only emerges in extreme conditions) we ignore it for now but recommend inclusion of this additional case in any extensions to our work.
 
 \subsubsection{FvCB summary}
 For the final model, our actual assimilation rate is calculated by combining these individual curves. The curve fitted is:
@@ -387,7 +388,7 @@ We can relate $J_{max}$ to the incident irradiance by empirical equation:
 \end{equation}
 Where:
 \begin{itemize}
- \item $I_2$ is the useful light absorbed by PSII (photosystem two);
+ \item $I_2$ is the useful light absorbed by photosystem two (PSII);
  \item $J$ is the electron transport;
  \item $J_{max}$ is the maximum electron transport; and
  \item $\theta$ is an empirical curvature factor (often around 0.7 \cite{EvansPhotosynthesisnitrogenrelationships1989}).
@@ -403,11 +404,11 @@ Where:
  \item $f$ is the correction for the spectral quality of light (approximately 0.15 \cite{EvansDependenceQuantumYield1987}); and
  \item The 2 in the denominator is due to the split of light between photosystems I and II (PSI and PSII respectively).
 \end{itemize}
-We can thus solve for $J$ in the usual way (\cite{QianEstimationphotosynthesisparameters2012} \cite{YinC3C4photosynthesis2009}):
+We can thus solve for $J$ in the usual way \cite{QianEstimationphotosynthesisparameters2012}\cite{YinC3C4photosynthesis2009}:
 \begin{equation} \label{nonrectangular_hyperbola}
 J = \frac{\alpha \cdot I + J_{max} - \sqrt{\left (\alpha \cdot I + J_{max}\right )^2 - 4 \cdot \alpha \cdot \theta \cdot I \cdot J_{max}}}{2  \cdot\theta}
 \end{equation}
-Equations of this form are referred to as \emph{non-rectangular hyperbola functions}.
+Equations of this form are referred to as \emph{non-rectangular hyperbola functions}, a fact which mention due to references to this term in the literature.
 
 \subsubsection{Lump parameter, $s$}
 \citet{YinUsingcombinedmeasurements2009} propose use of a lump parameter, $s$, in their photosynthesis model. This parameter is a function of several variables describing the photosystems I and II. Specifically it is:
@@ -443,7 +444,7 @@ The $C_i$-based CO$_2$ compensation point in the absence of $R_d$, $\Gamma_*$, i
 \end{equation}
 
 \subsubsection{Temperature dependency}
-The dependency of the rate of carboxylation and oxygenation of Rubisco is reflected in the temperature dependency of $A$. As a rate dependent upon temperature, we will be using Arrhenius functions, equations of the form:
+The dependency of the rate of carboxylation and oxygenation of Rubisco is reflected in the temperature dependency of $A$. As a rate dependent upon temperature, we consider using Arrhenius functions, equations of the form:
 \begin{equation} \label{arrhenius_eqn_kelvin}
 x(T) = k \cdot \exp \left(-\frac{E_a}{R \cdot T}\right)
 \end{equation}
@@ -480,7 +481,7 @@ Again, this general form is of less interest as we have a specific, default temp
 \begin{equation} \label{Q10}
 R(T) = R(\SI{25}{\celsius})Q_{10}^{(T-25)/10}
 \end{equation}
-This function allows us to relate values given at the temperature $T = \SI{25}{\celsius}$ to more general temperatures.
+This function allows us to relate values given at the temperature $T = \SI{25}{\celsius}$ to more general temperatures. This was not integrated into the final project here (temperatures where approximately $\SI{25}{\celsius}$), but it is information to be aware of in attempting to generalise some of the models to different conditions. We give the required $Q_{10}$ in table \ref{photosynthesis_params_T25} for several key parameters.
 
 \subsubsection{Model parameters}
 Many parameters can be assigned \emph{a priori}, leaving only the estimation of a small number of key variables. The kinetic constants of rubisco vary very little among C$_3$ species such that one can use the same $K_c$, $K_o$ and $\Gamma_*$ across all members of this category \cite{CaemmererBiochemicalmodelsleaf2000}. This means that the only parameter requiring estimation for Rubisco is the maximal Rubisco activity, $V_{c_{max}}$. 
@@ -513,12 +514,13 @@ $K_c$ & $\SI{}{\micro \bar}$ & $260$ or $404$\tmark[a] & $59.36$\tmark[b] & $2.2
 $K_o$ & $\SI{}{\milli \bar}$ & 179 or $248$\tmark[a] & 35.94 & 1.63 \NN
 $\Gamma_*$ & $\SI{}{\micro \bar}$ & 38.6 or 37\tmark[a] & 23.4 & 1.37 \NN
 $V_{c_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & 80 & 58.52 & 2.21 \NN
-$V_{o_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.25 \times V_{c_{max}}$  & 58.52 & 2.21 \NN
-$R_d$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.01 - 0.02 \times V_{c_{max}}$ & 66.4 & 2.46 \NN
-$J_{max}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $1.4 - 2.0 \times V_{c_{max}}$ & 37 & 1.65 \NN
-$g_m$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.0045V_{c_{max}}$\tmark[c] or $\infty$ & & \NN
+$V_{o_{max}}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & 20  & 58.52 & 2.21 \NN
+$R_d$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.8 - 1.6$ & 66.4 & 2.46 \NN
+$J_{max}$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $100 - 160$ & 37 & 1.65 \NN
+$g_m$ & $\SI{}{\micro \mol \per \m \squared \per \s}$ & $0.35 $\tmark[c] or $\infty$ & & \NN
 %H & $\SI{}{\kilo \J \per \mol}$ &  & 220 & \NN
 %S & $\SI{}{\J \per \K \per \mol}$ & & 710 & \NN
+$\alpha$ or $s$ & & 1.2 & \NN
 $\theta$ & &  0.7 & \LL
 }
 The assumption that $g_m = \infty$,  equivalent to $C_c = C_i$ is now considered redundant but would severely change these values. We include a sample of this impact to enable comparison with older papers and research.
@@ -558,7 +560,7 @@ Non-linear mixed effects models, also known as \emph{non-linear hierarchical mod
  \item We expect the relationship between the response variable and the condition variable to vary across individuals; and
  \item Availability of a scientifically relevant model characterising the behaviour of the individual response in terms of meaningful parameters that vary across individuals and dictate variation in patterns of condition-response (for us this will be the Farquhar-van Cammerer-Berry model).
 \end{enumerate}
-The final point from the list in \ref{when_nlme} is where the non-linear aspect is introduced. This is often a mechanistic function describing a physical or chemical system (for example in toxicokineitcs physiologically-based pharmacokinetics models are used or HIV dynamics in ``precision medicine''); that is the model is described by by meaningful, interpretable parameters rather than being an empirical best fit. It is expected that the mechanistic model will better describe data beyond the range of the measurements used here (whereas an empirical fit might describe the data over the range captured in the measurement data but then misbehave woefully beyond these boundaries).
+The final point from the list in \ref{when_nlme} is where the non-linear aspect is introduced. This is often a mechanistic function describing a physical or chemical system (for example in toxicokinetics physiologically-based pharmacokinetics models are used or HIV dynamics in ``precision medicine''); that is the model is described by by meaningful, interpretable parameters rather than being an empirical best fit. It is expected that the mechanistic model will better describe data beyond the range of the measurements used here (whereas an empirical fit might describe the data over the range captured in the measurement data but then misbehave woefully beyond these boundaries).
 
 The analysis tends to have the goal of understanding one or more of the following:
 \begin{enumerate}
@@ -594,7 +596,9 @@ Here, the \emph{population model} in \eqref{stage1_population_model} describes h
 \mathbb{V}ar(b_i|a_i) = \mathbb{V}ar(b_i) = D
 \end{array}
 \end{equation}
-Here, $D$ is an unstructured covariance matrix and is common to all $i$. It characterises the degree of unexplained variation in the elements of $\beta_i$ and associations among them; the ubiquitous assumption is $b_i \sim \mathcal{N}(0,D)$. However, if this set of assumptions regarding the conditional distribution of $b_i$ on $a_i$ is found to be insufficient, then $b_i \sim \mathcal{N}\left(0,D(a_i)\right)$ is frequently used.
+Here, $D$ is an unstructured covariance matrix and is common to all $i$. It characterises the degree of unexplained variation in the elements of $\beta_i$ and associations among them; the ubiquitous assumption is $b_i \sim \mathcal{N}(0,D)$.
+
+% However, if this set of assumptions regarding the conditional distribution of $b_i$ on $a_i$ is found to be insufficient, then $b_i \sim \mathcal{N}\left(0,D(a_i)\right)$ is frequently used.
 
 In \eqref{stage1_population_model}, $\beta_i$ is considered to have an associated random effect, reflecting the belief that each component varies non-negligibly in the population even after systematic relationships with subject characteristics are accounted for. It may happen that ``unexplained'' variance in a component of $\beta_i$ may be very small in magnitude relative to that in the remaining elements. In this situation it is common to drop the negligible quantity entirely. This lacks biological sense as each parameter is part of the ``scientifically relevant model'' and thus is unlikely to have no associated unexplained variation. Hence, one must recognise that this omission of an element of $\beta_i$ is adopted to achieve numerical stability in fitting rather than to reflect belief in perfect biological consistency across individuals and analyses in the literature to determine whether elements of $\beta_i$ are fixed or random effects should be interpreted so.
 
@@ -745,7 +749,7 @@ AD & A2 & 1.60 \ML
 \end{figure}
 
 \subsection{$g_m$}
-Using the previous results $g_m$ is estimated. We use a restricted range of $C_i \in [250, 300]$ based on correspondence with Elias Konig. This gives a median estimate of $g_m$ of $0.03$.
+Using the previous results $g_m$ is estimated. We use a restricted range of $C_i \in [250, 300]$ based on conversation with Elias Kaiser. This gives a median estimate of $g_m$ of $0.03$.
 
 \subsection{Non linear fixed effects model}
 We attempt to fit a non-linear fixed effect model using the values estimated and allowing $V_{c_{max}}, J_{max}$ and $\theta$  to vary. Our results for the combinations of side and treatment (A1, AB) and (A2, AD) are found in table \ref{params_nls_est}; other side and treatment combinations could not converge.
@@ -765,15 +769,20 @@ AD & A2 & 44.38 & 2.90 & 192.00 & 300.98 & -9.25 & 26.29 \ML
 Unfortunately no on-linear mixed effects models could converge, so we have no results for this section.
 
 \section{Conclusion and recommendations}
-If we consider the results here, the values of $S_{c/o}$ are approximately half the expected value based upon the literature, $g_m$ is an order of magnitude smaller than what we expect to see. This suggests either our analysis is flawed; we expect that this partially why no nlme model would converge, giving no esitmates of the value for $V_{c_{max}}$ or $J_{max}$. Based on figure \ref{fig:lme_rd}, $R_d$ is more strongly affected by side than treatment, as is $s$ (see table \ref{params_est} and figure \ref{fig:lme_s}) and $S_{c/o}$ (see table \ref{sco_median} and figures \ref{fig:sco_ab} and \ref{fig:sco_ad}). However, as our results are strange and limited we have not implemented a full analysis.
+If we consider the results here, the values of $S_{c/o}$ are approximately half the expected value based upon the literature, $g_m$ is an order of magnitude smaller than what we expect to see. This suggests our analysis is flawed or else that these plants differ more from generic $C_3$ species than expected. We expect that the analysis being flawed would partially explain why no nlme model would converge, giving no estimates of the value for $V_{c_{max}}$ or $J_{max}$. Based on figure \ref{fig:lme_rd}, $R_d$ is more strongly affected by side than treatment, as is $s$ (see table \ref{params_est} and figure \ref{fig:lme_s}) and $S_{c/o}$ (see table \ref{sco_median} and figures \ref{fig:sco_ab} and \ref{fig:sco_ad}). However, as our results are strange and limited we have not implemented a full analysis.
 
 The main realisation of this project is that there is a severe lack of transparency in the field of plant physiology. Different modelling techniques and underlying, unstated assumptions mean that many papers cannot be directly compared in their results. As a small example of unstated assumptions, no paper we read explicitly stated accounting for the Kok effect, however it appears to be standard practice based on correspondence and conversation with plant scientists. This is a serious flaw, as many models use the same name (i.e. the FvCB model), but actually refer to different versions. Beyond this all examples we could find in the literature use models that do not account for correlation within the data despite the use of repeated measurements (another unwritten assumption). This, coupled with a lack of reporting of errors on parameter estimates, leaves many published results highly opaque. Consider the table \ref{params_nls_est}. Here the point estimates of $V_{c_{max}}$ and $J_{max}$ appear sensible in comparison with the published literature. However, the error on $J_{max}$ is so large as to disfigure the result entirely. Furthermore, $\theta$ is negative (which is not expected) and also has a large error. If this result is not unique to this paper, many published results become questionable. Without explicit statement of the error on these estimates it is hard to comment on them.
 
 With so many parameters, with so many methods available (either for estimating photosynthetic parameters as mentioned above or in estimating the Michaelis-Menten constants) and an understanding that dropping certain data points is dependent solely upon the modeler's discretion (which points are under the Kok effect, which points are part of the linear part of the ACI and LCR curves) it leaves the final results difficult to interpret. Arguably there is sufficient room to play with choices of relevant data, models used, auxiliary parameters to ensure that the point estimates found for the key parameters are within a reasonable distance of those previously published. We do not know if this flexibility is taken advantage of to produce results that are ``sensible'', but it does create difficulty in reproducing results or recreating a given method. We recommend that plant scientists be explicit in their modelling assumptions, in their data selection and in their estimated error values. A thorough review paper comparing the performance of different variations of the FvCB model, and within each model comparing the use of mixed effect and fixed effect models could be of great interest. If such a paper included error estimations and an explicit statement of the assumptions and data selection process for each model, it could be of great benefit.
 
-As there is a lack of sufficient data and there exists strong domain knowledge, we also recommend use of Bayesian methods. Using a model such as that described by \citet{YinUsingcombinedmeasurements2009} also allows one to use the initial steps to produce priors on the parameters such as $s$ and $R_d$ while allowing the model to fit all variables simultaneously as in the work published by \citet{QianEstimationphotosynthesisparameters2012}. This would be advantageous as there is greater flexibility in fitting all of the parameters simultaneously and also the error associated with each parameters is present in the final model. Furthermore, the Bayesian methods allow principled quantification of the uncertainty associated with each parameter, so not only is the credible range on the parameter included, but we have the full posterior distribution. The main problem that we foresee is that with the paucity of data it is possible that final model could be dominated by our priors; however if these priors are fed from other datasets from the same experiment (as in \cite{YinUsingcombinedmeasurements2009}) we suspect that this is still an improvement on the current approach.
+As there is a lack of sufficient data and there exists strong domain knowledge, we also recommend use of Bayesian methods. Using a model such as that described by \citet{YinUsingcombinedmeasurements2009} also allows one to use the initial steps to produce priors on the parameters such as $s$ and $R_d$ while allowing the model to fit all variables simultaneously as in the work published by \citet{QianEstimationphotosynthesisparameters2012}. This would be advantageous as there is greater flexibility in fitting all of the parameters simultaneously and also the error associated with each parameters is present in the final model. Furthermore, the Bayesian methods allow principled quantification of the uncertainty associated with each parameter, not only is the credible range on the parameter included, but we have the full posterior distribution. The main problem that we foresee is that with the paucity of data it is possible that final model could be dominated by our priors; however if these priors are fed from other datasets from the same experiment (as in \cite{YinUsingcombinedmeasurements2009}) we suspect that this is still an improvement on the current approach.
 
 %As the mechanistic model underlying the data is well understood, simulating data should be feasible if known is available (we understand that producing sufficient data for a single experiment can take up to a year's work and that plant scientists might be unwilling to share such results). 
+
+\newpage
+
+\bibliographystyle{plainnat}
+\bibliography{thesis_ref}
 
 \newpage
 
@@ -808,10 +817,5 @@ We include plots of the light response curves to show which points are relevant 
 \caption{LCR.}
 \label{fig:lcr_curves_b100_a30_low_o2}
 \end{figure}
-
-\newpage
-
-\bibliographystyle{plainnat}
-\bibliography{thesis_ref}
 
 \end{document}
