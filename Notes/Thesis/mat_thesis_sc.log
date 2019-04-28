@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  20 APR 2019 15:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700 64-bit) (preloaded format=pdflatex 2018.6.11)  28 APR 2019 14:23
 entering extended mode
 **./mat_thesis_sc.tex
 (mat_thesis_sc.tex
@@ -2868,15 +2868,17 @@ Underfull \hbox (badness 2452) in paragraph at lines 735--735
 \OT1/ppl/m/n/10.95 each side / treat-ment
  []
 
-<Images/sco_boxplot_ab.png, id=410, 463.4916pt x 332.6829pt>
+[15 <./Images/lme_estimate_rd.jpeg>]
+<Images/sco_boxplot_ab.png, id=419, 463.4916pt x 332.6829pt>
 File: Images/sco_boxplot_ab.png Graphic file (type png)
 <use Images/sco_boxplot_ab.png>
 Package pdftex.def Info: Images/sco_boxplot_ab.png  used on input line 739.
 (pdftex.def)             Requested size: 347.61783pt x 249.51155pt.
 
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/sco_boxplot_ad.png, id=411, 463.4916pt x 332.6829pt>
+<Images/sco_boxplot_ad.png, id=420, 463.4916pt x 332.6829pt>
 File: Images/sco_boxplot_ad.png Graphic file (type png)
 <use Images/sco_boxplot_ad.png>
 Package pdftex.def Info: Images/sco_boxplot_ad.png  used on input line 746.
@@ -2896,7 +2898,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 751.
 
-[15 <./Images/lme_estimate_rd.jpeg>]
+
 Overfull \hbox (2.98418pt too wide) in paragraph at lines 755--767
 \OT1/ppl/m/n/10 We at-tempt to fit a non-linear fixed ef-fect model us-ing the 
 val-ues es-ti-mated and al-low-ing $\OML/zplm/m/it/10 V[]\OT1/ppl/m/n/10 , \OML
@@ -2906,91 +2908,79 @@ val-ues es-ti-mated and al-low-ing $\OML/zplm/m/it/10 V[]\OT1/ppl/m/n/10 , \OML
 [16 <./Images/lme_estimate_s.jpeg>] [17 <./Images/rd_s_ab.jpeg>] [18 <./Images/
 rd_s_ad.jpeg>] [19 <./Images/sco_boxplot_ab.png>] (mat_thesis_sc.bbl [20 <./Ima
 ges/sco_boxplot_ad.png>] [21]) [22]
-<Images/lcr_curves_all_low_o2.jpeg, id=468, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_all_low_o2.jpeg, id=467, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_all_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_all_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_all_low_o2.jpeg  used on input line 
-795.
+797.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
-<Images/lcr_curves_b200_low_o2.jpeg, id=469, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b200_low_o2.jpeg, id=468, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b200_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b200_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b200_low_o2.jpeg  used on input line
- 802.
+ 804.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/lcr_curves_b100_low_o2.jpeg, id=470, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_low_o2.jpeg, id=469, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_low_o2.jpeg  used on input line
- 809.
+ 811.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/lcr_curves_b100_a30_low_o2.jpeg, id=471, 463.7325pt x 332.74312pt>
+<Images/lcr_curves_b100_a30_low_o2.jpeg, id=470, 463.7325pt x 332.74312pt>
 File: Images/lcr_curves_b100_a30_low_o2.jpeg Graphic file (type jpg)
 <use Images/lcr_curves_b100_a30_low_o2.jpeg>
 Package pdftex.def Info: Images/lcr_curves_b100_a30_low_o2.jpeg  used on input 
-line 816.
+line 818.
 (pdftex.def)             Requested size: 394.17447pt x 282.83298pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [23 <./Images/lcr_curves_all_low_o2.jpeg>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 821.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 823.
  [24 <./Images/lcr_curves_b200_low_o2.jpeg> <./Images/lcr_curves_b100_low_o2.jp
 eg>] [25 <./Images/lcr_curves_b100_a30_low_o2.jpeg>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 821.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 823.
  (mat_thesis_sc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 821.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 821.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 823.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 823.
+Package rerunfilecheck Info: File `mat_thesis_sc.out' has not changed.
+(rerunfilecheck)             Checksum: 09AF308E7DB2AF020739DC5CAFD99513;2342.
 
-
-Package rerunfilecheck Warning: File `mat_thesis_sc.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `mat_thesis_sc.out':
-(rerunfilecheck)             Before: B298B5DB30BFF0BF46578297BFE7B39B;2342
-(rerunfilecheck)             After:  09AF308E7DB2AF020739DC5CAFD99513;2342.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 3.75237pt have occurred.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 821.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 823.
  ) 
 Here is how much of TeX's memory you used:
  46720 strings out of 492973
- 1035376 string characters out of 3135932
+ 1035371 string characters out of 3135932
  1209171 words of memory out of 3000000
  49726 multiletter control sequences out of 15000+200000
- 609892 words of font info for 229 fonts, out of 3000000 for 9000
+ 610149 words of font info for 230 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,21n,119p,1447b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{section*.17} has been referenced but does not exi
-st, replaced by a fixed one
-
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
-1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public
-/mathpazo/fplmbb.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/mathpazo/f
-plmr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/mathpazo/fplmri.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/f
-onts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/ur
-w/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/upl
-ri8a.pfb>
-Output written on mat_thesis_sc.pdf (26 pages, 1118111 bytes).
+ 69i,21n,119p,1377b,1212s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
+ic/mathpazo/fplmbb.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/mathpazo
+/fplmr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/mathpazo/fplmri.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+urw/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/u
+plri8a.pfb>
+Output written on mat_thesis_sc.pdf (26 pages, 1121850 bytes).
 PDF statistics:
- 560 PDF objects out of 1000 (max. 8388607)
- 162 named destinations out of 1000 (max. 500000)
+ 559 PDF objects out of 1000 (max. 8388607)
+ 161 named destinations out of 1000 (max. 500000)
  316 words of extra memory for PDF output out of 10000 (max. 10000000)
 

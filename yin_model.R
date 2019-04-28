@@ -1212,7 +1212,7 @@ est_df <- est_df %>%
 
 
 ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
-  geom_errorbar(aes(ymax = Rd + Rd_error, ymin = Rd - Rd_error),
+  geom_errorbar(aes(ymax = Rd + 2 * Rd_error, ymin = Rd - 2 * Rd_error),
     position = "dodge"
   ) +
   labs(
@@ -1222,7 +1222,7 @@ ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
   )
 
 ggplot(est_df, aes(x = SIDE, colour = TREATMENT)) +
-  geom_errorbar(aes(ymax = S + S_error, ymin = S - S_error),
+  geom_errorbar(aes(ymax = S + 2 * S_error, ymin = S - 2 * S_error),
     position = "dodge"
   ) +
   labs(
